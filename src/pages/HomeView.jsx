@@ -2,7 +2,7 @@ import React from 'react'
 
 const HomeView = () => {
   return (
-    <div>HomeView</div>
+    <div className="text-3xl font-bold underline">HomeView</div>
   )
 }
 
