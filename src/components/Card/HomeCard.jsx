@@ -4,9 +4,16 @@ const HomeCard = () => {
   return (
     <>
       <div className="grid grid-cols-5 px-[200px]">
-        <div className="flex flex-col items-center justify-center w-[166.939px] h-[194px] bg-white rounded shadow-lg px-3 py-3">
-          <div className="mb-3">
-            <img src={destination1} alt="" />
+        <div className="relative flex flex-col items-center justify-center w-[166.939px] h-[194px] bg-white rounded shadow-lg p-3">
+          <div className="relative mb-3 w-full">
+            <img
+              src={destination1}
+              alt="Destination Image"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute top-0 right-0 w-[72px] h-[24px] text-[10px] rounded-tl-xl rounded-bl-xl bg-[#A06ECE] text-center text-white flex items-center justify-center">
+              Limited!
+            </div>
           </div>
           <div>
             <p className="text-xs font-medium">Jakarta - Bangkok</p>
