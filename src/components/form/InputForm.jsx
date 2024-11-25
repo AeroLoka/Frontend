@@ -3,25 +3,46 @@ import { useFormContext } from "react-hook-form";
 
 const InputForm = ({ type = "text", name, label, validation, placeholder, className }) => {
     const { register, formState: { errors } } = useFormContext();
+    
+    // Get nested error using the name path
+    const getNestedError = (errors, path) => {
+        const keys = path.split('.');
+        let currentError = errors;
+        
+        for (const key of keys) {
+            if (currentError && currentError[key]) {
+                currentError = currentError[key];
+            } else {
+                return null;
+            }
+        }
+        
+        return currentError;
+    };
+
+    const error = getNestedError(errors, name);
 
     return (
         <div className="flex flex-col gap-1">
             {label && (
-                <label htmlFor={name} className="text-sm font-medium">
+                <label htmlFor={name} className="text-sm font-medium text-gray-700">
                     {label}
                 </label>
             )}
             <input
                 id={name}
+                name={name}
                 type={type}
                 placeholder={placeholder}
-                className={`p-2 border rounded-md ${errors[name] ? 'border-red-500' : 'border-gray-300'} ${className}`}
+                className={`p-2 border rounded-md ${
+                    error ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'
+                } ${className}`}
                 {...register(name, validation)}
-                aria-invalid={errors[name] ? "true" : "false"}
+                aria-invalid={error ? "true" : "false"}
             />
-            {errors[name] && (
-                <p className="text-sm text-red-500" role="alert">
-                    {errors[name]?.message || `${label || name} is required`}
+            {error && (
+                <p className="text-sm text-red-500 mt-1" role="alert">
+                    {error.message}
                 </p>
             )}
         </div>
