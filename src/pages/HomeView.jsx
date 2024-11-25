@@ -9,11 +9,11 @@ const HomeView = () => {
     <>
       <Navbar />
 
-      <section className="container mx-auto">
-        <div className="pt-40 text-3xl font-bold underline">HomeView</div>
+      <section className="container mx-auto relative pt-[84px]">
+        {/* <div className="pt-40 text-3xl font-bold underline">HomeView</div> */}
 
         <div>
-          <h2 className="text-base font-bold px-[200px] mb-4">
+          <h2 className="text-base font-bold px-[200px] mb-4 mt-8">
             Destinasi Favorit
           </h2>
           <SearchDestination />
