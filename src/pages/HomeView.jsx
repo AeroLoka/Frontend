@@ -2,7 +2,7 @@ import React from "react";
 import FormSkeleton from "../components/skeletons/FormSkeleton";
 import Navbar from "../components/Navbar/Navbar";
 import HomeCard from "../components/Card/HomeCard";
-import SearchDestination from "../components/Button/Search";
+import SearchDestination from "../components/Button/SearchButton";
 import DiscountBanner from "../components/Banner/Banner";
 
 const HomeView = () => {
