@@ -2,18 +2,25 @@ import React from "react";
 import FormSkeleton from "../components/skeletons/FormSkeleton";
 import Navbar from "../components/Navbar/Navbar";
 import HomeCard from "../components/Card/HomeCard";
-import SearchDestination from "../components/Button/Search";
+import SearchDestination from "../components/Button/SearchButton";
 import DiscountBanner from "../components/Banner/Banner";
+import SearchFlight from "../components/Flight/SearchFlight";
 
 const HomeView = () => {
   return (
     <>
       <Navbar />
 
-      <section className="container mx-auto relative pt-[84px]">
-        {/* <div className="pt-40 text-3xl font-bold underline">HomeView</div> */}
-        <DiscountBanner />
+      <section>
+        <div className="relative">
+          <DiscountBanner />
+        </div>
+        <div className="">
+          <SearchFlight />
+        </div>
+      </section>
 
+      <section className="container relative mx-auto pt-72 mb-20">
         <div>
           <h2 className="text-base font-bold px-[200px] mb-4 mt-8">
             Destinasi Favorit

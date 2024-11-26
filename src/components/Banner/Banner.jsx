@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const DiscountBanner = () => {
   return (
     <>
-      <div className="flex items-center  mt-8">
+      <div className="flex items-center mt-[148px]">
         {/* <div className=""></div>
          */}
         {/* <span className="bg-[#7126B5] w-12">ada</span> */}
