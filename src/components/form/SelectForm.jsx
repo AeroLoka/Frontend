@@ -1,9 +1,17 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
-const InputForm = ({ type = "text", name, label, validation, placeholder, className }) => {
+const SelectForm = ({ 
+    label, 
+    name, 
+    defaultValue, 
+    list, 
+    validation = {}, 
+    placeholder,
+    className 
+}) => {
     const { register, formState: { errors } } = useFormContext();
-    
+
     // Get nested error using the name path
     const getNestedError = (errors, path) => {
         const keys = path.split('.');
@@ -25,21 +33,33 @@ const InputForm = ({ type = "text", name, label, validation, placeholder, classN
     return (
         <div className="flex flex-col gap-1">
             {label && (
-                <label htmlFor={name} className="text-sm font-medium text-gray-700">
+                <label
+                    htmlFor={name}
+                    className="text-sm font-medium text-gray-700"
+                >
                     {label}
                 </label>
             )}
-            <input
+            <select 
                 id={name}
-                name={name}
-                type={type}
-                placeholder={placeholder}
                 className={`p-2 border rounded-md ${
                     error ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500 mb-4'
                 } ${className}`}
+                defaultValue={defaultValue}
                 {...register(name, validation)}
                 aria-invalid={error ? "true" : "false"}
-            />
+            >
+                {placeholder && (
+                    <option value="" disabled>
+                        {placeholder}
+                    </option>
+                )}
+                {list.map((item) => (
+                    <option key={item} value={item}>
+                        {item}
+                    </option>
+                ))}
+            </select>
             {error && (
                 <p className="text-sm text-red-500 mt-1 mb-4" role="alert">
                     {error.message}
@@ -49,4 +69,4 @@ const InputForm = ({ type = "text", name, label, validation, placeholder, classN
     );
 };
 
-export default InputForm;
+export default SelectForm;

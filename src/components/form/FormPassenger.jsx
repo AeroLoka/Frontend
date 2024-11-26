@@ -1,9 +1,11 @@
 import React from "react";
+import countries from "../../assets/data/countries";
+import SelectForm from "./SelectForm";
 import InputForm from "../form/InputForm";
 
 const FormPassenger = ({ index }) => {
     return (
-        <div className="">
+        <div className="mt-4">
             <h3 className="text-lg font-semibold mb-4 bg-black text-white px-4 py-2 rounded-t-xl">
                 Data Diri Penumpang {index + 1} - Adult
             </h3>
@@ -14,10 +16,6 @@ const FormPassenger = ({ index }) => {
                 placeholder="Enter your first name"
                 validation={{
                     required: "First name is required",
-                    maxLength: {
-                        value: 20,
-                        message: "First name cannot exceed 20 characters",
-                    },
                 }}
             />
 
@@ -25,13 +23,7 @@ const FormPassenger = ({ index }) => {
                 name={`passengers.${index}.last_name`}
                 label="Last Name"
                 placeholder="Enter your last name"
-                validation={{
-                    required: "Last name is required",
-                    maxLength: {
-                        value: 20,
-                        message: "Last name cannot exceed 20 characters",
-                    },
-                }}
+                validation={{}}
             />
 
             <InputForm
@@ -47,13 +39,15 @@ const FormPassenger = ({ index }) => {
                 }}
             />
 
-            <InputForm
+            <SelectForm
+                key={index}
                 name={`passengers.${index}.nationality`}
                 label="Nationality"
-                placeholder="Enter your Nationality"
+                placeholder="Select your Nationality"
                 validation={{
                     required: "Nationality is required",
                 }}
+                list={countries}
             />
 
             <InputForm
@@ -82,13 +76,15 @@ const FormPassenger = ({ index }) => {
                 }}
             />
 
-            <InputForm
+            <SelectForm
+                key={index}
                 name={`passengers.${index}.negara_penerbit`}
                 label="Negara Penerbit"
-                placeholder="Enter your Negara Penerbit"
+                placeholder="Select your negara penerbit"
                 validation={{
-                    required: "Negara Penerbit is required",
+                    required: "negara penerbit is required",
                 }}
+                list={countries}
             />
 
             <InputForm
