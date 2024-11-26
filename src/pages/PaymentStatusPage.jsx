@@ -21,9 +21,8 @@ const PaymentStatusPage = () => {
   return (
     <>
       <Navbar />
-      <div className="mt-[131px]"></div>
       <Stepper />
-      <div className="mt-3 flex flex-col text-center items-center">
+      <div className="mt-[90px] flex flex-col text-center items-center">
         <img
           src="images/cart_shopping_list.png"
           className="w-[204px] mb-5"
