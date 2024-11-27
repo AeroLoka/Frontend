@@ -8,10 +8,11 @@ import FormPemesan from "../components/form/FormPemesan";
 import DetailPenerbangan from "../components/Section/DetailPenerbangan";
 import Navbar from "../components/Navbar/Navbar";
 import Stage from "../components/navbar/Stage";
+import SeatSelection from "../components/Section/SeatSection";
 
 const OrderPage = () => {
     const navigate = useNavigate();
-    const [passengerCount, setPassengerCount] = useState(2);
+    const [passengerCount, setPassengerCount] = useState(1);
 
     const methods = useForm({
         defaultValues: {
@@ -24,6 +25,7 @@ const OrderPage = () => {
                 passport: "",
                 negara_penerbit: "",
                 berlaku_sampai: "",
+                selected_seat: "",
             })),
         },
     });
@@ -35,12 +37,23 @@ const OrderPage = () => {
 
     const onSubmit = async (formData) => {
         try {
+            const unassignedPassengers = formData.passengers.filter(
+                (p) => !p.selected_seat
+            );
+            if (unassignedPassengers.length > 0) {
+                toast.error("Please assign seats to all passengers");
+                return;
+            }
+
             const submissionPromises = formData.passengers.map((passenger) =>
-                axiosInstance.post("/passengers", passenger)
+                axiosInstance.post("/passengers", {
+                    ...passenger,
+                    seats_id: passenger.selected_seat,
+                })
             );
 
             await Promise.all(submissionPromises);
-
+            console.log(submissionPromises)
             toast.success("Successfully added all passengers");
             navigate("/");
         } catch (error) {
@@ -61,8 +74,8 @@ const OrderPage = () => {
                         onSubmit={methods.handleSubmit(onSubmit)}
                         className="grid grid-cols-1 lg:grid-cols-2 gap-6"
                     >
-                        {/* Left Column - Forms */}
                         <div className="space-y-6">
+                            {/* Rest of your existing form components */}
                             <div className="bg-white rounded-lg border p-6">
                                 <h2 className="font-bold text-xl mb-4">
                                     Isi Data Pemesan
@@ -81,6 +94,7 @@ const OrderPage = () => {
                                     />
                                 ))}
                             </div>
+                            <SeatSelection />
                         </div>
 
                         {/* Right Column - Flight Details & Payment */}

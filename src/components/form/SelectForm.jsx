@@ -1,22 +1,26 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
-const SelectForm = ({ 
-    label, 
-    name, 
-    defaultValue, 
-    list, 
-    validation = {}, 
+const SelectForm = ({
+    label,
+    name,
+    defaultValue,
+    list,
+    validation = {},
     placeholder,
-    className 
+    className,
 }) => {
-    const { register, formState: { errors } } = useFormContext();
+    const {
+        register,
+        formState: { errors },
+        watch
+    } = useFormContext();
 
     // Get nested error using the name path
     const getNestedError = (errors, path) => {
-        const keys = path.split('.');
+        const keys = path.split(".");
         let currentError = errors;
-        
+
         for (const key of keys) {
             if (currentError && currentError[key]) {
                 currentError = currentError[key];
@@ -24,7 +28,7 @@ const SelectForm = ({
                 return null;
             }
         }
-        
+
         return currentError;
     };
 
@@ -40,10 +44,12 @@ const SelectForm = ({
                     {label}
                 </label>
             )}
-            <select 
+            <select
                 id={name}
                 className={`p-2 border rounded-md ${
-                    error ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500 mb-4'
+                    error
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-blue-500 mb-4"
                 } ${className}`}
                 defaultValue={defaultValue}
                 {...register(name, validation)}
@@ -55,8 +61,11 @@ const SelectForm = ({
                     </option>
                 )}
                 {list.map((item) => (
-                    <option key={item} value={item}>
-                        {item}
+                    <option
+                        key={typeof item === "object" ? item.value : item}
+                        value={typeof item === "object" ? item.value : item}
+                    >
+                        {typeof item === "object" ? item.label : item}
                     </option>
                 ))}
             </select>
