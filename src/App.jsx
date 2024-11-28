@@ -12,6 +12,8 @@ import PaymentView from "./pages/PaymentView";
 //loader
 
 
+//storage
+import { store } from "./store";
 
 const router = createBrowserRouter([
     {

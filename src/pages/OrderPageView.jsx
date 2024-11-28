@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useForm, FormProvider, useFieldArray } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axiosInstance from "../api/axiosInstance";
 import FormPassenger from "../components/form/FormPassenger";
 import FormPemesan from "../components/form/FormPemesan";
 import DetailPenerbangan from "../components/Section/DetailPenerbangan";
 import Navbar from "../components/Navbar/Navbar";
 import Stage from "../components/navbar/Stage";
 import SeatSelection from "../components/Section/SeatSection";
+import { addBooking } from "../features/bookingSlice";
+import { useDispatch } from "react-redux";
 
 const OrderPage = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [timeLeft, setTimeLeft] = useState(15 * 60);
 
@@ -34,7 +36,7 @@ const OrderPage = () => {
         return `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
     };
 
-    const [passengerCount, setPassengerCount] = useState(1);
+    const [passengerCount, setPassengerCount] = useState(2);
 
     const methods = useForm({
         defaultValues: {
@@ -57,33 +59,23 @@ const OrderPage = () => {
         name: "passengers",
     });
 
-    const onSubmit = async (formData) => {
-        try {
-            const unassignedPassengers = formData.passengers.filter(
-                (p) => !p.selected_seat
-            );
-            if (unassignedPassengers.length > 0) {
-                toast.error("Please assign seats to all passengers");
-                return;
-            }
-
-            const submissionPromises = formData.passengers.map((passenger) =>
-                axiosInstance.post("/passengers", {
-                    ...passenger,
-                    seats_id: passenger.selected_seat,
-                })
-            );
-
-            await Promise.all(submissionPromises);
-            console.log(submissionPromises);
-            toast.success("Successfully added all passengers");
-            navigate("/");
-        } catch (error) {
-            const errorMessage =
-                error?.response?.data?.message ||
-                "An error occurred while submitting passenger data";
-            toast.error(errorMessage);
+    const onSubmit = (formData) => {
+        const unassignedPassengers = formData.passengers.filter(
+            (p) => !p.selected_seat
+        );
+        
+        if (unassignedPassengers.length > 0) {
+            toast.error("Please assign seats to all passengers");
+            return;
         }
+    
+        const { passengers, ...pemesanData } = formData;
+        
+        dispatch(addBooking({
+            ...pemesanData,
+            passengers: passengers
+        }));
+        navigate("/payment");
     };
 
     return (

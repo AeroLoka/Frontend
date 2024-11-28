@@ -15,7 +15,7 @@ const FormPemesan = () => {
     const handleToggle = (newValue) => {
         setValue(`hasLastName`, newValue);
         if (!newValue) {
-            setValue(`last_name`, "");
+            setValue(`booking_last_name`, "");
         }
     };
 
@@ -25,7 +25,7 @@ const FormPemesan = () => {
                 Data Diri Pemesan
             </h3>
             <InputForm
-                name="name"
+                name="booking_name"
                 label="Full Name"
                 placeholder="Enter your full name"
                 validation={{
@@ -39,7 +39,7 @@ const FormPemesan = () => {
 
             {hasLastName && (
                 <InputForm
-                    name={`last_name`}
+                    name={`booking_last_name`}
                     label="Family Name"
                     placeholder="Enter your family name"
                     validation={{
