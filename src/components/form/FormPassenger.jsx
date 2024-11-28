@@ -3,14 +3,27 @@ import countries from "../../assets/data/countries";
 import SelectForm from "./SelectForm";
 import InputForm from "../form/InputForm";
 import { useFormContext, useWatch } from "react-hook-form";
+import ToggleSwitch from "../Button/SwitchButton";
 
 const FormPassenger = ({ index }) => {
-    const { control } = useFormContext();
-    
-    // Gunakan useWatch untuk memantau perubahan nilai identification_type
+    const { control, setValue } = useFormContext();
+
+    const hasLastName = useWatch({
+        control,
+        name: `passengers.${index}.hasLastName`,
+        defaultValue: false,
+    });
+
+    const handleToggle = (newValue) => {
+        setValue(`passengers.${index}.hasLastName`, newValue);
+        if (!newValue) {
+            setValue(`passengers.${index}.last_name`, "");
+        }
+    };
+
     const identificationType = useWatch({
         control,
-        name: `passengers.${index}.identification_type`
+        name: `passengers.${index}.identification_type`,
     });
 
     return (
@@ -28,12 +41,21 @@ const FormPassenger = ({ index }) => {
                 }}
             />
 
-            <InputForm
-                name={`passengers.${index}.last_name`}
-                label="Last Name"
-                placeholder="Enter your last name"
-                validation={{}}
-            />
+            <div className="flex justify-between mb-4">
+                <span className="font-bold">Do you have family name?</span>
+                <ToggleSwitch isOn={hasLastName} onToggle={handleToggle} />
+            </div>
+
+            {hasLastName && (
+                <InputForm
+                    name={`passengers.${index}.last_name`}
+                    label="Family Name"
+                    placeholder="Enter your family name"
+                    validation={{
+                        required: hasLastName ? "Last name is required" : false,
+                    }}
+                />
+            )}
 
             <InputForm
                 name={`passengers.${index}.birth_date`}
@@ -59,7 +81,7 @@ const FormPassenger = ({ index }) => {
                 list={countries}
             />
 
-<SelectForm
+            <SelectForm
                 name={`passengers.${index}.identification_type`}
                 label="Identification Type"
                 placeholder="Select your identification type"

@@ -62,7 +62,7 @@ const PaymentView = () => {
             <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div className="space-y-6">
-                        <div className="w-[600px] h-[500px]" id="snap-container"></div>
+                        <div className="w-[70vw] mx-auto lg:w-[40vw] lg:h-[60vh] m-2" id="snap-container"></div>
                     </div>
                     <div className="space-y-6">
                         <div className="bg-white rounded-lg p-6">

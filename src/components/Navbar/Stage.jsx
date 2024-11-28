@@ -1,7 +1,11 @@
 import { MdNavigateNext } from "react-icons/md";
 
 const Stage = (props) => {
-    const { stage2 = "text-[#8A8A8A]", stage3 = "text-[#8A8A8A]" } = props;
+    const {
+        stage2 = "text-[#8A8A8A]",
+        stage3 = "text-[#8A8A8A]",
+        children,
+    } = props;
     return (
         <div className="shadow-md">
             <div className="max-w-7xl pl-4 mx-auto mt-32 font-bold text-xl flex">
@@ -13,8 +17,11 @@ const Stage = (props) => {
                 <span className="mt-1">
                     <MdNavigateNext />
                 </span>
-                <span className={`${stage3} mb-4`}>Selesai</span>
+                <span className={`${stage3}`}>Selesai</span>
             </div>
+                <div className="max-w-7xl pl-4 mx-auto py-3 text-center">
+                    {children}
+                </div>
         </div>
     );
 };

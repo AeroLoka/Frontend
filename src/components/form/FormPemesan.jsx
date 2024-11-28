@@ -1,7 +1,24 @@
 import React from "react";
 import InputForm from "./InputForm";
+import { useFormContext, useWatch } from "react-hook-form";
+import ToggleSwitch from "../Button/SwitchButton";
 
 const FormPemesan = () => {
+    const { control, setValue } = useFormContext();
+
+    const hasLastName = useWatch({
+        control,
+        name: `hasLastName`,
+        defaultValue: false,
+    });
+
+    const handleToggle = (newValue) => {
+        setValue(`hasLastName`, newValue);
+        if (!newValue) {
+            setValue(`last_name`, "");
+        }
+    };
+
     return (
         <div className="">
             <h3 className="text-lg font-semibold mb-4 bg-black text-white px-4 py-2 rounded-t-xl">
@@ -10,17 +27,26 @@ const FormPemesan = () => {
             <InputForm
                 name="name"
                 label="Full Name"
-                placeholder="Enter your first name"
+                placeholder="Enter your full name"
                 validation={{
                     required: "First name is required",
                 }}
             />
-            <InputForm
-                name="last_name"
-                label="Family Name"
-                placeholder="Enter your last name"
-                validation={{}}
-            />
+            <div className="flex justify-between mb-4">
+                <span className="font-bold">Do you have family name?</span>
+                <ToggleSwitch isOn={hasLastName} onToggle={handleToggle} />
+            </div>
+
+            {hasLastName && (
+                <InputForm
+                    name={`last_name`}
+                    label="Family Name"
+                    placeholder="Enter your family name"
+                    validation={{
+                        required: hasLastName ? "Last name is required" : false,
+                    }}
+                />
+            )}
             <InputForm
                 name="phone_number"
                 label="Phone Number"
