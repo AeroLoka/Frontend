@@ -32,25 +32,21 @@ const SeatClassModal = ({ isOpen, onClose }) => {
                 }`}
                 onClick={() => handleSeatClass(seatClass)}
               >
-                <div>
-                  <h3 className="font-bold">{seatClass.label}</h3>
-                  <p>IDR {seatClass.price.toLocaleString()}</p>
-                </div>
                 <div className="flex justify-between">
-                  {selectSeatClass?.label === seatClass.label && (
-                    <img src="/icons/fi_check.svg" alt="" />
-                  )}
+                  <div>
+                    <h3 className="font-bold">{seatClass.label}</h3>
+                    <p>IDR {seatClass.price.toLocaleString()}</p>
+                  </div>
+                  <div className="flex justify-between">
+                    {selectSeatClass?.label === seatClass.label && (
+                      <img src="/icons/fi_check.svg" alt="" />
+                    )}
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
-
-        {selectSeatClass && (
-          <div className="text-[#4B1979]">
-            <p>{selectSeatClass.label}</p>
-          </div>
-        )}
         <div className="mt-6 flex justify-end">
           <button
             onClick={onClose}
