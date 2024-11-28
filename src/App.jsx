@@ -4,13 +4,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import PublicLayout from "./layouts/PublicLayout";
 import HomeView from "./pages/HomeView";
 import OrderPage from "./pages/OrderPageView";
+import PaymentStatusPage from "./pages/PaymentStatusPage";
 
 import LoginView from "./pages/auth/LoginView";
 import RegisterView from "./pages/auth/RegisterView";
 import PaymentView from "./pages/PaymentView";
 
 //loader
-
 
 //storage
 import { store } from "./store";
@@ -31,7 +31,11 @@ const router = createBrowserRouter([
             {
               path: '/payment',
               element: <PaymentView/>
-            }
+            },
+            {
+              path: `/payment-status`,
+              element: <PaymentStatusPage />,
+            },
         ],
     },
     {
@@ -42,12 +46,11 @@ const router = createBrowserRouter([
       path: "/register",
       element: <RegisterView/>
     }
+
 ]);
 
 function App() {
-    return(
-      <RouterProvider router={router} />
-    )
+  return <RouterProvider router={router} />;
 }
 
 export default App;
