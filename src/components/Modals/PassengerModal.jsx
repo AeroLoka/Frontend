@@ -1,25 +1,19 @@
 import { useState } from "react";
 
-const PassengerModal = ({ isOpen, onClose, onChangePassengers }) => {
-  const [passengers, setPassengers] = useState({
-    Dewasa: 0,
-    Anak: 0,
-    Bayi: 0,
-  });
-
+const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
   const handleIncrement = (type) => {
-    setPassengers((prev) => ({
-      ...prev,
-      [type]: prev[type] + 1,
-    }));
+    onPassengerChange({
+      ...passengers,
+      [type]: passengers[type] + 1,
+    });
   };
 
   const handleDecrement = (type) => {
     if (passengers[type] > 0) {
-      setPassengers((prev) => ({
-        ...prev,
-        [type]: prev[type] - 1,
-      }));
+      onPassengerChange({
+        ...passengers,
+        [type]: passengers[type] - 1,
+      });
     }
   };
 
@@ -29,11 +23,7 @@ const PassengerModal = ({ isOpen, onClose, onChangePassengers }) => {
     <div className="fixed inset-0 z-20 bg-black bg-opacity-70 flex justify-center items-center">
       <div className="w-[400px] h-[305px] bg-white p-6 rounded-lg shadow-xl">
         <button className="w-full pb-5 flex justify-end">
-          <img
-            onClick={onClose}
-            src="/icons/fi_close.svg"
-            alt=""
-          />
+          <img onClick={onClose} src="/icons/fi_close.svg" alt="" />
         </button>
         <div className="space-y-4">
           {["Dewasa", "Anak", "Bayi"].map((type) => (
@@ -64,7 +54,8 @@ const PassengerModal = ({ isOpen, onClose, onChangePassengers }) => {
         </div>
         <div className="mt-6 flex justify-end">
           <button
-            onClick={() => onChangePassengers(passengers)}
+            // onClick={() => onChangePassengers(passengers)}
+            onClick={(console.log(passengers), onClose)}
             className="w-[150px] p-3 py-2 bg-[#4B1979] text-white rounded-lg"
           >
             Simpan

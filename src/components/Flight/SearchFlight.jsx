@@ -41,6 +41,19 @@ const SearchFlight = () => {
     setIsReturnEnabled((prevState) => !prevState);
   };
 
+  const [passengers, setPassengers] = useState({
+    Dewasa: 0,
+    Anak: 0,
+    Bayi: 0,
+  });
+
+  const totalPassengers = passengers.Dewasa + passengers.Anak + passengers.Bayi;
+
+  const handlePassengerChange = (updatedPassengers) => {
+    setPassengers(updatedPassengers);
+    closeModal(); // Close modal after selection.
+  };
+
   const [seatClass, setSeatClass] = useState("");
   const handleSeatClassChange = (selectedClass) => {
     setSeatClass(selectedClass);
@@ -58,6 +71,8 @@ const SearchFlight = () => {
       <PassengerModal
         isOpen={isPassengerModalOpen}
         onClose={() => setIsPassengerModalOpen(false)}
+        onPassengerChange={handlePassengerChange}
+        passengers={passengers}
       />
 
       <SeatClassModal
@@ -170,11 +185,13 @@ const SearchFlight = () => {
                     <p className="block mr-5 text-sm">To</p>
                   </div>
                   <div className="flex flex-col mr-5">
-                    <label htmlFor="" className="text-base mb-1">
+                    <label htmlFor="passengerCount" className="text-base mb-1">
                       Passengers
                     </label>
                     <input
+                      id="passengerCount"
                       type="text"
+                      value={`Total Passengers: ${totalPassengers}`}
                       onClick={() => openModal("passenger")}
                       className="w-[167px] text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
                     />
