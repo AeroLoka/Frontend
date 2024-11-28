@@ -28,9 +28,9 @@ const SearchFlight = () => {
 
   const handleSelectLocation = (location, type) => {
     if (type === "from") {
-      setFrom(location); 
+      setFrom(location);
     } else if (type === "to") {
-      setTo(location); 
+      setTo(location);
     }
     setIsFlightModalOpen(false); // Tutup modal setelah lokasi dipilih
   };
@@ -59,7 +59,7 @@ const SearchFlight = () => {
         onClose={() => setIsSeatClassModalOpen(false)}
       />
 
-      <div className="absolute top-[65%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+      <div className="absolute top-[65%] left-1/2 transform -translate-x-1/2 -translate-y-[75px] z-10">
         <div className="relative w-[968px] h-[298px] mx-auto bg-white rounded-xl shadow-xl border border-gray-300 ">
           <h2 className="text-xl font-bold p-6">
             Pilih Jadwal Penerbangan spesial di
