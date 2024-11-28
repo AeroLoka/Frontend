@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const SeatClassModal = ({ isOpen, onClose }) => {
+const SeatClassModal = ({ isOpen, onClose, onSeatClassChange }) => {
   const seatClasses = [
     { label: "Economy", price: 4950000 },
     { label: "Premium Economy", price: 7550000 },
@@ -12,6 +12,9 @@ const SeatClassModal = ({ isOpen, onClose }) => {
 
   const handleSeatClass = (seatClass) => {
     setSelectSeatClass(seatClass);
+    if (onSeatClassChange) {
+      onSeatClassChange(seatClass);
+    }
   };
 
   if (!isOpen) return null;

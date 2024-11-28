@@ -41,6 +41,12 @@ const SearchFlight = () => {
     setIsReturnEnabled((prevState) => !prevState);
   };
 
+  const [seatClass, setSeatClass] = useState("");
+  const handleSeatClassChange = (selectedClass) => {
+    setSeatClass(selectedClass);
+    console.log("Selected Seat Class:", selectedClass);
+  };
+
   return (
     <div>
       <FlightModal
@@ -57,6 +63,7 @@ const SearchFlight = () => {
       <SeatClassModal
         isOpen={isSeatClassModalOpen}
         onClose={() => setIsSeatClassModalOpen(false)}
+        onSeatClassChange={handleSeatClassChange}
       />
 
       <div className="absolute top-[65%] left-1/2 transform -translate-x-1/2 -translate-y-[75px] z-10">
@@ -173,10 +180,12 @@ const SearchFlight = () => {
                     />
                   </div>
                   <div className="flex flex-col">
-                    <label htmlFor="" className="text-base mb-1">
+                    <label htmlFor="seatClass" className="text-base mb-1">
                       Seat Class
                     </label>
                     <input
+                      id="seatClass"
+                      value={seatClass.label}
                       type="text"
                       onClick={() => openModal("seatclass")}
                       className="w-[167px] text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
