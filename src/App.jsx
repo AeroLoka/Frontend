@@ -7,6 +7,7 @@ import OrderPage from "./pages/OrderPageView";
 
 import LoginView from "./pages/auth/LoginView";
 import RegisterView from "./pages/auth/RegisterView";
+import PaymentView from "./pages/PaymentView";
 
 //loader
 
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
             {
               path: '/order-page',
               element: <OrderPage />,
+            },
+            {
+              path: '/payment',
+              element: <PaymentView/>
             }
         ],
     },
