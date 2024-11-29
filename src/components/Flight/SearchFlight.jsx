@@ -46,6 +46,8 @@ const SearchFlight = () => {
     setIsFlightModalOpen(false);
   };
 
+  const [departureDate, setDepartureDate] = useState("");
+  const [returnDate, setReturnDate] = useState("");
   const [isReturnEnabled, setIsReturnEnabled] = useState(true);
 
   const handleToggle = () => {
@@ -69,6 +71,19 @@ const SearchFlight = () => {
   const handleSeatClassChange = (selectedClass) => {
     setSeatClass(selectedClass);
     console.log("Selected Seat Class:", selectedClass);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const searchFlight = {
+      from,
+      to,
+      departureDate,
+      returnDate: isReturnEnabled ? returnDate : null,
+      passengers,
+      seatClass,
+    };
+    console.log("Data untuk search ticket: ", searchFlight);
   };
 
   return (
@@ -108,7 +123,7 @@ const SearchFlight = () => {
             Pilih Jadwal Penerbangan spesial di
             <span className="text-[#7126B5]"> Tiketku!</span>
           </h2>
-          <form action="">
+          <form action="" onSubmit={handleSearch}>
             <div className="grid grid-cols-3 px-5 gap-16 w-full">
               <div className="flex items-center">
                 <img
@@ -118,6 +133,7 @@ const SearchFlight = () => {
                 />
                 <p className="block mr-5 text-sm">From</p>
                 <input
+                  id="fromFlight"
                   type="text"
                   value={from}
                   onClick={() => openModal("from")}
@@ -140,6 +156,7 @@ const SearchFlight = () => {
                 />
                 <p className="block mr-5 text-sm">To</p>
                 <input
+                  id="toFlight"
                   type="text"
                   value={to}
                   onClick={() => openModal("to")}
@@ -161,7 +178,10 @@ const SearchFlight = () => {
                       Departure
                     </label>
                     <input
+                      id="departureDate"
                       type="date"
+                      value={departureDate}
+                      onChange={(e) => setDepartureDate(e.target.value)}
                       className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
                     />
                   </div>
@@ -170,7 +190,10 @@ const SearchFlight = () => {
                       Return
                     </label>
                     <input
+                      id="returnDate"
                       type="date"
+                      value={returnDate}
+                      onChange={(e) => setReturnDate(e.target.value)}
                       disabled={!isReturnEnabled}
                       className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
                     />
@@ -214,6 +237,7 @@ const SearchFlight = () => {
                       type="text"
                       value={`${totalPassengers} Penumpang`}
                       onClick={() => openModal("passenger")}
+                      readOnly
                       className="w-[167px] text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
                     />
                   </div>
@@ -223,9 +247,10 @@ const SearchFlight = () => {
                     </label>
                     <input
                       id="seatClass"
-                      value={seatClass.label}
                       type="text"
+                      value={seatClass.label}
                       onClick={() => openModal("seatclass")}
+                      readOnly
                       className="w-[167px] text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
                     />
                   </div>
@@ -233,7 +258,10 @@ const SearchFlight = () => {
               </div>
             </div>
 
-            <button className="absolute bottom-0 w-full h-[48px] rounded-bl-xl rounded-br-xl text-[16px] font-bold text-center text-white bg-[#7126B5] hover:bg-purple-900">
+            <button
+              type="submit"
+              className="absolute bottom-0 w-full h-[48px] rounded-bl-xl rounded-br-xl text-[16px] font-bold text-center text-white bg-[#7126B5] hover:bg-purple-900"
+            >
               Cari Penerbangan
             </button>
           </form>
