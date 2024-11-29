@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import searchButton from "../../assets/icons/fi_search.svg";
 
-const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
+const FlightModal = ({
+  isOpen,
+  onClose,
+  onSelectFlight,
+  fromLocation,
+  toLocation,
+  type,
+}) => {
   const [locations, setLocations] = useState([
     "Jakarta",
     "Bandung",
@@ -14,7 +21,7 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
   );
 
   const selectLocation = (location) => {
-    setSearchTerm(location)
+    setSearchTerm(location);
     onSelectFlight(location);
     onClose();
   };

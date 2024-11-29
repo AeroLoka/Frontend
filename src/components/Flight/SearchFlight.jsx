@@ -4,13 +4,17 @@ import PassengerModal from "../Modals/PassengerModal";
 import SeatClassModal from "../Modals/SeatClassModal";
 
 const SearchFlight = () => {
-  const [isFlightModalOpen, setIsFlightModalOpen] = useState(false);
+  const [isFlightFromModalOpen, setIsFlightFromModalOpen] = useState(false);
+  const [isFlightToModalOpen, setIsFlightToModalOpen] = useState(false);
+
   const [isPassengerModalOpen, setIsPassengerModalOpen] = useState(false);
   const [isSeatClassModalOpen, setIsSeatClassModalOpen] = useState(false);
 
   const openModal = (modal) => {
-    if (modal === "from" || modal === "to") {
-      setIsFlightModalOpen(true);
+    if (modal === "from") {
+      setIsFlightFromModalOpen(true);
+    } else if (modal === "to") {
+      setIsFlightToModalOpen(true);
     } else if (modal === "passenger") {
       setIsPassengerModalOpen(true);
     } else if (modal === "seatclass") {
@@ -29,9 +33,13 @@ const SearchFlight = () => {
   const handleSelectLocation = (location, type) => {
     if (type === "from") {
       setFrom(location);
+      console.log(location);
     } else if (type === "to") {
       setTo(location);
+      console.log(to);
     }
+    console.log("luar");
+
     setIsFlightModalOpen(false); // Tutup modal setelah lokasi dipilih
   };
 
@@ -63,9 +71,21 @@ const SearchFlight = () => {
   return (
     <div>
       <FlightModal
-        isOpen={isFlightModalOpen}
-        onClose={() => setIsFlightModalOpen(false)}
-        onSelectFlight={handleSelectLocation}
+        isOpen={isFlightFromModalOpen}
+        onClose={() => setIsFlightFromModalOpen(false)}
+        // onSelectFlight={handleSelectLocation}
+        onSelectFlight={(location) => handleSelectLocation(location, "from")}
+        label="From"
+        fromLocation={to}
+      />
+
+      <FlightModal
+        isOpen={isFlightToModalOpen}
+        onClose={() => setIsFlightToModalOpen(false)}
+        // onSelectFlight={handleSelectLocation}
+        onSelectFlight={(location) => handleSelectLocation(location, "to")}
+        label="to"
+        toLocation={to}
       />
 
       <PassengerModal
