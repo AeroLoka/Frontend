@@ -3,12 +3,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 //view
 import PublicLayout from "./layouts/PublicLayout";
 import HomeView from "./pages/HomeView";
+import DetailTicket from "./pages/DetailTicketView";
 import OrderPage from "./pages/OrderPageView";
+import PaymentView from "./pages/PaymentView";
 import PaymentStatusPage from "./pages/PaymentStatusPage";
 
 import LoginView from "./pages/auth/LoginView";
 import RegisterView from "./pages/auth/RegisterView";
-import PaymentView from "./pages/PaymentView";
 
 //loader
 
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <HomeView />,
+            },
+            {
+              path: "/detail-ticket",
+              element: <DetailTicket />,
             },
             {
               path: '/order-page',
@@ -46,7 +51,6 @@ const router = createBrowserRouter([
       path: "/register",
       element: <RegisterView/>
     }
-
 ]);
 
 function App() {
