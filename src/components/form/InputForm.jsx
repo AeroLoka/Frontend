@@ -35,13 +35,13 @@ const InputForm = ({ type = "text", name, label, validation, placeholder, classN
                 type={type}
                 placeholder={placeholder}
                 className={`p-2 border rounded-md ${
-                    error ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'
+                    error ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500 mb-4'
                 } ${className}`}
                 {...register(name, validation)}
                 aria-invalid={error ? "true" : "false"}
             />
             {error && (
-                <p className="text-sm text-red-500 mt-1" role="alert">
+                <p className="text-sm text-red-500 mt-1 mb-4" role="alert">
                     {error.message}
                 </p>
             )}
