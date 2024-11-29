@@ -1,6 +1,24 @@
 import { useState } from "react";
 
 const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
+  const passengerDetails = [
+    {
+      type: "Dewasa",
+      description: "(12 tahun keatas)",
+      iconPath: "/icons/fi_adult.svg",
+    },
+    {
+      type: "Anak",
+      description: " (2 - 11 tahun)",
+      iconPath: "/icons/fi_child.svg",
+    },
+    {
+      type: "Bayi",
+      description: "(Dibawah 2 tahun)",
+      iconPath: "/icons/fi_baby.svg",
+    },
+  ];
+
   const handleIncrement = (type) => {
     onPassengerChange({
       ...passengers,
@@ -26,11 +44,14 @@ const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
           <img onClick={onClose} src="/icons/fi_close.svg" alt="" />
         </button>
         <div className="space-y-4">
-          {["Dewasa", "Anak", "Bayi"].map((type) => (
+          {passengerDetails.map(({ type, description, iconPath }) => (
             <div key={type} className="flex items-center justify-between">
-              <div>
-                <h3 className="capitalize font-bold">{type}</h3>
-                <p className="text-sm">(12 tahun keatas)</p>
+              <div className="flex items-center">
+                <img src={iconPath} alt="" />
+                <div className="ml-2">
+                  <h3 className="capitalize font-bold">{type}</h3>
+                  <p className="text-sm">{description}</p>
+                </div>
               </div>
               <div className="flex items-center space-x-1">
                 <button
