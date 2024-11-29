@@ -25,7 +25,8 @@ const SearchFlight = () => {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
 
-  const handleSwitch = () => {
+  const handleSwitch = (e) => {
+    e.preventDefault();
     setFrom(to);
     setTo(from);
   };
@@ -33,14 +34,16 @@ const SearchFlight = () => {
   const handleSelectLocation = (location, type) => {
     if (type === "from") {
       setFrom(location);
+      setIsFlightFromModalOpen(false);
       console.log(location);
     } else if (type === "to") {
       setTo(location);
+      setIsFlightToModalOpen(false);
       console.log(to);
     }
     console.log("luar");
 
-    setIsFlightModalOpen(false); // Tutup modal setelah lokasi dipilih
+    setIsFlightModalOpen(false);
   };
 
   const [isReturnEnabled, setIsReturnEnabled] = useState(true);
@@ -59,7 +62,7 @@ const SearchFlight = () => {
 
   const handlePassengerChange = (updatedPassengers) => {
     setPassengers(updatedPassengers);
-    closeModal(); // Close modal after selection.
+    closeModal();
   };
 
   const [seatClass, setSeatClass] = useState("");
@@ -73,7 +76,6 @@ const SearchFlight = () => {
       <FlightModal
         isOpen={isFlightFromModalOpen}
         onClose={() => setIsFlightFromModalOpen(false)}
-        // onSelectFlight={handleSelectLocation}
         onSelectFlight={(location) => handleSelectLocation(location, "from")}
         label="From"
         fromLocation={to}
@@ -82,7 +84,6 @@ const SearchFlight = () => {
       <FlightModal
         isOpen={isFlightToModalOpen}
         onClose={() => setIsFlightToModalOpen(false)}
-        // onSelectFlight={handleSelectLocation}
         onSelectFlight={(location) => handleSelectLocation(location, "to")}
         label="to"
         toLocation={to}
@@ -211,7 +212,7 @@ const SearchFlight = () => {
                     <input
                       id="passengerCount"
                       type="text"
-                      value={`Total Passengers: ${totalPassengers}`}
+                      value={`${totalPassengers} Penumpang`}
                       onClick={() => openModal("passenger")}
                       className="w-[167px] text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
                     />
