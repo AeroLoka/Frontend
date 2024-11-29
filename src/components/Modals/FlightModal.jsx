@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import searchButton from "../../assets/icons/fi_search.svg";
 
-const FlightModal = ({
-  isOpen,
-  onClose,
-  onSelectFlight,
-  fromLocation,
-  toLocation,
-  type,
-}) => {
+const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
   const [locations, setLocations] = useState([
     "Jakarta",
     "Bandung",
@@ -74,7 +67,7 @@ const FlightModal = ({
                 <li
                   key={index}
                   onClick={() => selectLocation(location)}
-                  className="w-full flex justify-between items-center cursor-pointer pb-3 pr-2 border-b-2 border-[#D0D0D0] focus:outline-none hover:border-[#7126B5]" //hover:bg-[#7126B5] hover:text-white
+                  className="w-full flex justify-between items-center cursor-pointer pb-3 pr-2 border-b-2 border-[#D0D0D0] focus:outline-none hover:border-[#7126B5]"
                 >
                   <span>{location}</span>
                   <button

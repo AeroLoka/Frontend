@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
   const passengerDetails = [
     {
@@ -75,7 +73,6 @@ const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
         </div>
         <div className="mt-6 flex justify-end">
           <button
-            // onClick={() => onChangePassengers(passengers)}
             onClick={(console.log(passengers), onClose)}
             className="w-[150px] p-3 py-2 bg-[#4B1979] text-white rounded-lg"
           >

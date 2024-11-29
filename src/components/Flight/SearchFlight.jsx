@@ -117,21 +117,21 @@ const SearchFlight = () => {
         onSeatClassChange={handleSeatClassChange}
       />
 
-      <div className="absolute top-[65%] left-1/2 transform -translate-x-1/2 -translate-y-[75px] z-10">
+      <div className="absolute top-[55%] left-1/2 transform -translate-x-1/2 -translate-y-[75px] z-10">
         <div className="relative w-[968px] h-[298px] mx-auto bg-white rounded-xl shadow-xl border border-gray-300 ">
           <h2 className="text-xl font-bold p-6">
             Pilih Jadwal Penerbangan spesial di
             <span className="text-[#7126B5]"> Tiketku!</span>
           </h2>
           <form action="" onSubmit={handleSearch}>
-            <div className="grid grid-cols-3 px-5 gap-16 w-full">
+            <div className="grid grid-cols-[1fr_auto_1fr] px-5 gap-4 w-full items-center">
               <div className="flex items-center">
                 <img
                   src="/icons/fi_flight-takeoff.svg"
                   alt=""
                   className="mr-2"
                 />
-                <p className="block mr-5 text-sm">From</p>
+                <p className="block mr-5 text-sm text-[#8A8A8A]">From</p>
                 <input
                   id="fromFlight"
                   type="text"
@@ -142,19 +142,19 @@ const SearchFlight = () => {
                 />
               </div>
 
-              <div className="flex items-center justify-center ">
+              <div className="flex justify-center">
                 <button className="" onClick={handleSwitch}>
                   <img src="/icons/fi_return.svg" alt="" />
                 </button>
               </div>
 
-              <div className="flex items-center justify-center">
+              <div className="flex items-center">
                 <img
                   src="/icons/fi_flight-takeoff.svg"
                   alt=""
                   className="mr-2"
                 />
-                <p className="block mr-5 text-sm">To</p>
+                <p className="block mr-5 text-sm text-[#8A8A8A]">To</p>
                 <input
                   id="toFlight"
                   type="text"
@@ -171,10 +171,10 @@ const SearchFlight = () => {
                 <div className="flex items-center">
                   <div className="flex items-center mr-8">
                     <img src="/icons/fi_date.svg" alt="" className="mr-2 w-5" />
-                    <p className="block mr-5 text-sm">Date</p>
+                    <p className="block mr-5 text-sm text-[#8A8A8A]">Date</p>
                   </div>
                   <div className="flex flex-col mr-5">
-                    <label htmlFor="" className="text-base mb-1">
+                    <label htmlFor="" className="text-base mb-1 text-[#8A8A8A]">
                       Departure
                     </label>
                     <input
@@ -186,7 +186,7 @@ const SearchFlight = () => {
                     />
                   </div>
                   <div className="flex flex-col">
-                    <label htmlFor="" className="text-base mb-1">
+                    <label htmlFor="" className="text-base mb-1 text-[#8A8A8A]">
                       Return
                     </label>
                     <input
@@ -226,10 +226,13 @@ const SearchFlight = () => {
                       alt=""
                       className="mr-2"
                     />
-                    <p className="block mr-5 text-sm">To</p>
+                    <p className="block mr-5 text-sm text-[#8A8A8A]">To</p>
                   </div>
                   <div className="flex flex-col mr-5">
-                    <label htmlFor="passengerCount" className="text-base mb-1">
+                    <label
+                      htmlFor="passengerCount"
+                      className="text-base mb-1 text-[#8A8A8A]"
+                    >
                       Passengers
                     </label>
                     <input
@@ -242,7 +245,10 @@ const SearchFlight = () => {
                     />
                   </div>
                   <div className="flex flex-col">
-                    <label htmlFor="seatClass" className="text-base mb-1">
+                    <label
+                      htmlFor="seatClass"
+                      className="text-base mb-1 text-[#8A8A8A]"
+                    >
                       Seat Class
                     </label>
                     <input
