@@ -1,10 +1,19 @@
+import React from "react";
+import { motion } from "framer-motion";
 import destination1 from "../../assets/images/destination.png";
 
 const HomeCard = () => {
   return (
     <>
-      <div className="grid grid-cols-5 px-[200px]">
-        <div className="relative flex flex-col items-center justify-center w-[166.939px] h-[194px] bg-white rounded shadow-lg p-3">
+      <div className="grid grid-cols-5 px-[200px] gap-4">
+        <motion.div
+          whileHover={{
+            scale: 1.05,
+            boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.20)",
+          }}
+          whileTap={{ scale: 0.95 }}
+          className="relative flex flex-col items-center justify-center w-[166.939px] h-[194px] bg-white rounded shadow-lg p-3"
+        >
           <div className="relative mb-3 w-full">
             <img
               src={destination1}
@@ -24,7 +33,7 @@ const HomeCard = () => {
               <span className="text-red-500 font-bold"> IDR 950.000</span>
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );

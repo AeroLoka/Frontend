@@ -21,7 +21,7 @@ const SeatClassModal = ({ isOpen, onClose, onSeatClassChange }) => {
 
   return (
     <div className="fixed inset-0 z-20 bg-black bg-opacity-70 flex justify-center items-center">
-      <div className="w-[400px] h-[375px] bg-white p-6 rounded-lg shadow-xl">
+      <div className="w-[400px] h-[400px] bg-white p-6 rounded-lg shadow-xl">
         <button className="w-full pb-5 flex justify-end">
           <img onClick={onClose} src="/icons/fi_close.svg" alt="" />
         </button>
@@ -30,8 +30,10 @@ const SeatClassModal = ({ isOpen, onClose, onSeatClassChange }) => {
             return (
               <div
                 key={seatClass.label}
-                className={`w-full h-[60px] flex flex-col justify-center p-3 text-sm rounded-md cursor-pointer hover:bg-[#4B1979] hover:text-white ${
+                className={`w-full h-[60px] flex flex-col justify-center p-3 text-sm my-[2px] rounded-md cursor-pointer hover:bg-[#4B1979] hover:text-white  ${
                   selectSeatClass?.label === seatClass.label
+                    ? "bg-[#4B1979] text-white"
+                    : " "
                 }`}
                 onClick={() => handleSeatClass(seatClass)}
               >
