@@ -15,6 +15,7 @@ import RegisterView from "./pages/auth/RegisterView";
 
 //storage
 import { store } from "./store";
+import ProfileView from "./pages/ProfileView";
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <HomeView />,
+            },
+            {
+              path: "profile",
+              element: <ProfileView/>
             },
             {
               path: "/detail-ticket",

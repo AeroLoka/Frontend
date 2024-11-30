@@ -19,7 +19,7 @@ const Stage = (props) => {
                 </span>
                 <span className={`${stage3}`}>Selesai</span>
             </div>
-                <div className="max-w-7xl pl-4 mx-auto py-3 text-center">
+                <div className="max-w-7xl pl-4 mx-auto py-3">
                     {children}
                 </div>
         </div>
