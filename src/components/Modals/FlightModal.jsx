@@ -9,13 +9,29 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
+
   const filteredLocations = locations.filter((location) =>
     location.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const selectLocation = (location) => {
-    setSearchTerm(location);
-    onSelectFlight(location);
+  const handleSearch = () => {
+    if (!searchTerm) return;
+
+    const existingIndex = locations.findIndex(
+      (location) => location.toLowerCase() === searchTerm.toLowerCase()
+    );
+
+    let updatedLocations = [...locations];
+
+    if (existingIndex !== -1) {
+      updatedLocations.splice(existingIndex, 1);
+    }
+
+    updatedLocations = [searchTerm, ...updatedLocations];
+    setLocations(updatedLocations);
+
+    onSelectFlight(searchTerm);
+    setSearchTerm("");
     onClose();
   };
 
@@ -43,6 +59,9 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
             placeholder="Masukkan Kota atau Negara"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSearch();
+            }}
             className="w-full h-[40px] py-5 pl-12 mr-5 rounded-lg border border-[#D0D0D0] focus:outline-none focus:border-[#7126B5]"
           />
           <button onClick={onClose} className="text-gray-600 text-lg font-bold">
@@ -66,7 +85,7 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
               filteredLocations.map((location, index) => (
                 <li
                   key={index}
-                  onClick={() => selectLocation(location)}
+                  onClick={() => handleSearch(location)}
                   className="w-full flex justify-between items-center cursor-pointer pb-3 pr-2 border-b-2 border-[#D0D0D0] focus:outline-none hover:border-[#7126B5]"
                 >
                   <span>{location}</span>
