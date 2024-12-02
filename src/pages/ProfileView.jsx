@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar/Navbar";
-import Stage from "../components/navbar/Stage";
+import SubHeader from "../components/Navbar/SubHeader";
 import { LuPenLine } from "react-icons/lu";
 import { CiSettings } from "react-icons/ci";
 import { RxExit } from "react-icons/rx";
@@ -10,12 +10,12 @@ const ProfileView = () => {
     return (
         <>
             <Navbar />
-            <Stage>
+            <SubHeader label="Akun">
                 <button  className="flex items-center space-x-4 pl-4 text-left text-white w-full bg-red-500 p-2 rounded-lg">
                 <FaArrowLeft />
                 <span>Beranda</span>
                 </button>
-            </Stage>
+            </SubHeader>
             <div className="max-w-7xl mx-auto p-4 bg-black">
                 <div className="grid md:grid-cols-[35%_64%] gap-4">
                     <div className="space-y-6">
