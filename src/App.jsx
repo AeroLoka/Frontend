@@ -10,12 +10,14 @@ import PaymentStatusPage from "./pages/PaymentStatusPage";
 
 import LoginView from "./pages/auth/LoginView";
 import RegisterView from "./pages/auth/RegisterView";
+import ProfileView from "./pages/ProfileView";
 
 //loader
 
 //storage
 import { store } from "./store";
-import ProfileView from "./pages/ProfileView";
+
+import ButtonChange from "./components/Button/ButtonChange";
 
 const router = createBrowserRouter([
     {
@@ -33,6 +35,10 @@ const router = createBrowserRouter([
             {
               path: "/detail-ticket",
               element: <DetailTicket />,
+            },
+            { 
+              path: "/search", 
+              element: <ButtonChange /> 
             },
             {
               path: '/order-page',

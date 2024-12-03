@@ -1,23 +1,27 @@
 import React, { useState } from "react";
 
-const FilterButton = ({ setFilteredData }) => {
+const FilterButton = ({ onFilterChange, selectedFilter }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState("Harga - Termurah");
+  const [temporaryFilter, setTemporaryFilter] = useState(selectedFilter);
 
   const handleModalToggle = () => {
     setIsModalOpen(!isModalOpen);
+    setTemporaryFilter(selectedFilter);
+  };
+
+  const handleFilterSelect = (filter) => {
+    setTemporaryFilter(filter);
   };
 
   const applyFilter = () => {
-    // Contoh pengiriman data filter ke parent atau API
-    setFilteredData(selectedFilter);
-    setIsModalOpen(false);
+    onFilterChange(temporaryFilter);
+    setIsModalOpen(false); // Tutup modal
   };
 
   return (
     <div className="w-full md:w-4/5 mx-auto mt-5 flex items-center justify-end mb-7 px-4">
       <button
-        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 focus:outline-none bg-purple-400 focus:ring-4 focus:ring-purple-400 text-white shadow-lg shadow-purple-500/50 hover:bg-violet-600 hover:text-white h-9 px-4 py-2 rounded-full bg-primaryPurple"
+        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 focus:outline-none bg-white text-purple-500 border border-purple-400 hover:bg-purple-600 hover:text-white shadow-lg h-[32px] min-w-fit px-4 py-2 rounded-[16px]"
         type="button"
         onClick={handleModalToggle}
       >
@@ -39,18 +43,38 @@ const FilterButton = ({ setFilteredData }) => {
           <path d="M7 4v16"></path>
         </svg>
         <span className="text-sm font-medium leading-none cursor-pointer">
-          Filter
+          {selectedFilter}
         </span>
       </button>
 
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg w-96 p-4 shadow-lg">
-            <h3 className="text-lg font-bold text-purple-600 mb-4">
-              Pilih Filter
-            </h3>
-            <ul>
+          <div className="relative bg-white rounded-[16px] shadow-lg w-[400px] h-[384px]">
+            {/* Close */}
+            <button
+              className="absolute top-2 right-4 text-gray-500 hover:text-gray-800"
+              onClick={handleModalToggle}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <div className="bg-white text-center py-3 rounded-t-[16px] mb-2"></div>
+
+            {/* List Options */}
+            <ul className="w-full">
               {[
                 "Harga - Termurah",
                 "Durasi - Terpendek",
@@ -61,18 +85,19 @@ const FilterButton = ({ setFilteredData }) => {
               ].map((option) => (
                 <li
                   key={option}
-                  className={`p-2 rounded cursor-pointer ${
-                    selectedFilter === option
-                      ? "bg-purple-200 font-bold"
+                  onClick={() => handleFilterSelect(option)}
+                  className={`flex items-center justify-between px-4 py-3 border-b border-gray-200 last:border-b-0 cursor-pointer ${
+                    temporaryFilter === option
+                      ? "bg-[#7126B5] text-white"
                       : "hover:bg-gray-100"
                   }`}
-                  onClick={() => setSelectedFilter(option)}
                 >
                   {option}
                 </li>
               ))}
             </ul>
-            <div className="mt-4 flex justify-end gap-2">
+
+            <div className="absolute bottom-4 right-4 flex gap-2">
               <button
                 className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
                 onClick={handleModalToggle}
@@ -80,7 +105,7 @@ const FilterButton = ({ setFilteredData }) => {
                 Batal
               </button>
               <button
-                className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
+                className="px-4 py-2 bg-[#7126B5] text-white rounded hover:bg-[#5a1b8a]"
                 onClick={applyFilter}
               >
                 Pilih
