@@ -13,7 +13,7 @@ const SubHeader = (props) => {
             <div className="max-w-7xl pl-4 mx-auto mt-32 font-bold text-xl flex">
                 <p>{label}</p>
             </div>
-            <div className="max-w-7xl pl-4 mx-auto py-3">
+            <div className="max-w-7xl pl-4 mx-auto py-3 px-4">
                 <button className="flex items-center space-x-4 pl-4 text-left text-white w-full bg-red-500 p-2 rounded-lg" onClick={handleBeranda}>
                     <FaArrowLeft />
                     <span>Beranda</span>
