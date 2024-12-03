@@ -7,9 +7,15 @@ import { RxExit } from "react-icons/rx";
 import { FaArrowLeft } from "react-icons/fa";
 import DetailProfile from "../components/Profile/DetailProfile";
 import AccountSettings from "../components/Profile/AccountSettings";
+import { useNavigate } from "react-router-dom";
 
 const ProfileView = () => {
+    const navigate = useNavigate();
+
     const [activeView, setActiveView] = useState("profile");
+    const handleLogout = () => {
+        navigate("/login");
+    }
     return (
         <>
             <Navbar />
@@ -42,6 +48,7 @@ const ProfileView = () => {
                                 <span>Account Settings</span>
                             </button>
                             <button
+                                onClick={handleLogout}
                                 className={`flex items-center space-x-2 py-2 text-left w-full border-b border-gray-300`}
                             >
                                 <RxExit />
