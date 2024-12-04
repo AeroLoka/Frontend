@@ -82,7 +82,7 @@ const OrderPage = () => {
         <>
             <Navbar />
             <Stage>
-                <div className="text-white bg-red-500 p-2 rounded-lg">Selesaikan dalam {formatTime(timeLeft)}</div>
+                <div className="text-white bg-red-500 p-2 rounded-lg text-center">Selesaikan dalam {formatTime(timeLeft)}</div>
             </Stage>
             <FormProvider {...methods}>
                 <div className="max-w-7xl mx-auto p-4">

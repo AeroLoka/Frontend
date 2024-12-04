@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
-const InputForm = ({ type = "text", name, label, validation, placeholder, className }) => {
+const InputForm = ({ type = "text", name, label, validation, placeholder, className, value = "" }) => {
     const { register, formState: { errors } } = useFormContext();
     
     // Get nested error using the name path
@@ -34,6 +34,7 @@ const InputForm = ({ type = "text", name, label, validation, placeholder, classN
                 name={name}
                 type={type}
                 placeholder={placeholder}
+                value={value}
                 className={`p-2 border rounded-md ${
                     error ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500 mb-4'
                 } ${className}`}
