@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import searchIcon from "../../assets/icons/fi_search.svg";
 import loginIcon from "../../assets/icons/fi_log-in.svg";
@@ -38,15 +39,35 @@ const LoggedInNavbar = () => {
           </div>
 
           <div className="hidden lg:flex gap-6 ">
-            <button aria-label="Open List">
-              <img src={listIcon} alt="" />
-            </button>
-            <button aria-label="Open Notification">
-              <img src={bellIcon} alt="" />
-            </button>
-            <button aria-label="Open User">
-              <img src={userIcon} alt="" />
-            </button>
+            <NavLink
+              to="/list"
+              className={({ isActive }) =>
+                isActive ? "text-blue-500" : "text-gray-500"
+              }
+              aria-label="Open List"
+            >
+              <img src={listIcon} alt="list icon" className="w-6 h-6" />
+            </NavLink>
+
+            <NavLink
+              to="/notifications"
+              className={({ isActive }) =>
+                isActive ? "text-blue-500" : "text-gray-500"
+              }
+              aria-label="Open Notification"
+            >
+              <img src={bellIcon} alt="bell icon" className="w-6 h-6" />
+            </NavLink>
+
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                isActive ? "text-blue-500" : "text-gray-500"
+              }
+              aria-label="Open User"
+            >
+              <img src={userIcon} alt="user icon" className="w-6 h-6" />
+            </NavLink>
           </div>
 
           <div className="lg:hidden">
@@ -70,7 +91,7 @@ const LoggedInNavbar = () => {
             <input
               type="text"
               placeholder="Cari di sini ..."
-              class="w-full h-[48px] bg-[#EEEEEE] pl-4 pr-14 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"
+              className="w-full h-[48px] bg-[#EEEEEE] pl-4 pr-14 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"
             />
             <img
               src={searchIcon}
@@ -79,13 +100,35 @@ const LoggedInNavbar = () => {
             />
           </div>
           <div>
-            <a
-              href="#"
-              className="flex items-center justify-center w-full h-[48px] bg-[#7126B5] text-white rounded-[12px] text-sm font-medium hover:bg-purple-800"
+            <NavLink
+              to="/list"
+              className={({ isActive }) =>
+                isActive ? "text-blue-500" : "text-gray-500"
+              }
+              aria-label="Open List"
             >
-              <img src={loginIcon} alt="Login Icon" />
-              Masuk
-            </a>
+              <img src={listIcon} alt="list icon" className="w-6 h-6" />
+            </NavLink>
+
+            <NavLink
+              to="/notifications"
+              className={({ isActive }) =>
+                isActive ? "text-blue-500" : "text-gray-500"
+              }
+              aria-label="Open Notification"
+            >
+              <img src={bellIcon} alt="bell icon" className="w-6 h-6" />
+            </NavLink>
+
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                isActive ? "text-blue-500" : "text-gray-500"
+              }
+              aria-label="Open User"
+            >
+              <img src={userIcon} alt="user icon" className="w-6 h-6" />
+            </NavLink>
           </div>
         </div>
       </nav>
