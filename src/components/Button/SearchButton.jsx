@@ -3,7 +3,7 @@ import searchIconBlack from "../../assets/icons/fi_search-black.svg";
 
 const SearchDestination = () => {
   return (
-    <div className="px-[200px] flex gap-x-4 mb-5">
+    <div className="px-40 flex gap-x-4 mb-5">
       <div className="w-[126px] h-[48px] bg-[#7126B5] rounded-xl flex items-center justify-center hover:bg-purple-900">
         <a
           href="#"
