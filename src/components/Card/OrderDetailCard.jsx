@@ -31,7 +31,7 @@ const OrderDetailCard = ({ orderDetails }) => {
       : "cancelled";
 
   return (
-    <div className="border-2 border-gray-300 rounded-lg p-6 bg-white shadow-lg">
+    <div className="border-2  border-gray-300 rounded-lg hover:shadow-lg transition-shadow p-6 bg-white shadow-lg">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold">Detail Pesanan</h2>

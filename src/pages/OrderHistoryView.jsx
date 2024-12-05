@@ -174,7 +174,7 @@ const OrderHistory = () => {
         {/* Mobile View */}
         <div className="md:hidden">
           {!isDetailView ? (
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-8 justify-center items-center">
               {Object.keys(groupedTickets).map((monthYear) => (
                 <div key={monthYear} className="mb-10">
                   <h2 className="text-xl font-bold mb-4">{monthYear}</h2>

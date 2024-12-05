@@ -25,7 +25,7 @@ const OrderCard = ({ ticket }) => {
       : "cancelled";
 
   return (
-    <div className="w-[568px] p-6 border-2 hover:border-[#7126B5BF] rounded-lg flex flex-col justify-between items-center active:border-[#7126B5BF]">
+    <div className="w-[568px] p-6 border-2 hover:border-[#7126B5BF] rounded-lg flex flex-col justify-between items-center active:border-[#7126B5BF]  bg-white border-gray-300 shadow-md hover:shadow-lg transition-shadow">
       <div className="self-start">
         <PaidButton type={buttonType}>{status}</PaidButton>
       </div>
