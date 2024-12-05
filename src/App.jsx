@@ -20,48 +20,48 @@ import { store } from "./store";
 import ButtonChange from "./components/Button/ButtonChange";
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <PublicLayout />,
-        children: [
-            {
-                index: true,
-                element: <HomeView />,
-            },
-            {
-              path: "profile",
-              element: <ProfileView/>
-            },
-            {
-              path: "/detail-ticket",
-              element: <DetailTicket />,
-            },
-            { 
-              path: "/search", 
-              element: <ButtonChange /> 
-            },
-            {
-              path: '/order-page',
-              element: <OrderPage />,
-            },
-            {
-              path: '/payment',
-              element: <PaymentView/>
-            },
-            {
-              path: `/payment-status`,
-              element: <PaymentStatusPage />,
-            },
-        ],
-    },
-    {
-      path: "/login",
-      element: <LoginView/>
-    },
-    {
-      path: "/register",
-      element: <RegisterView/>
-    }
+  {
+    path: "/",
+    element: <PublicLayout />,
+    children: [
+      {
+        index: true,
+        element: <HomeView />,
+      },
+      {
+        path: "/profile",
+        element: <ProfileView />,
+      },
+      {
+        path: "/detail-ticket",
+        element: <DetailTicket />,
+      },
+      {
+        path: "/search",
+        element: <ButtonChange />,
+      },
+      {
+        path: "/order-page",
+        element: <OrderPage />,
+      },
+      {
+        path: "/payment",
+        element: <PaymentView />,
+      },
+      {
+        path: `/payment-status`,
+        element: <PaymentStatusPage />,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    element: <LoginView />,
+  },
+  {
+    path: "/register",
+    element: <RegisterView />,
+  },
 ]);
 
 function App() {

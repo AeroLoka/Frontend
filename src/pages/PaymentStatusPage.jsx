@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Navbar from "../components/Navbar/Navbar";
 import Stepper from "../components/Stepper/Stepper";
+import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 
 const PaymentStatusPage = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const PaymentStatusPage = () => {
 
   return (
     <>
-      <Navbar />
+      <LoggedInNavbar />
       <Stepper />
       <div className="mt-[90px] flex flex-col text-center items-center">
         <img
