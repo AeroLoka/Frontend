@@ -42,20 +42,22 @@ const OrderCard = ({ ticket }) => {
             />
           </div>
           <div className="w-[78px] h-[60px] gap-[2px]">
-            <p className="text-[14px] font-[700] leading-[20px]">
+            <p className="font-bold text-[14px] leading-[20px]">
               {departureCity}
             </p>
-            <p className="text-[12px] font-[500] leading-[18px] ">
+            <p className="font-medium text-[12px] leading-[18px] ">
               {departureDate}
             </p>
-            <p className="text-[12px] font-[500] leading-[18px]">
+            <p className="font-medium text-[12px] leading-[18px]">
               {departureTime}
             </p>
           </div>
 
           {/* Duration Section */}
-          <div className="text-sm text-gray-500 flex flex-col items-center flex-1">
-            <p className="mb-2">{duration}</p>
+          <div className="text-sm flex flex-col items-center flex-1">
+            <p className="font-medium text-[12px] leading-[18px] text-[#3C3C3C] mb-2">
+              {duration}
+            </p>
             <div className="w-[233px] h-[1px] bg-gray-300"></div>
           </div>
 
@@ -68,13 +70,13 @@ const OrderCard = ({ ticket }) => {
             />
           </div>
           <div className="w-[78px] h-[60px] gap-[2px]">
-            <p className="text-[14px] font-[700] leading-[20px] text-[#151515]">
+            <p className="font-bold text-[14px] leading-[20px] ">
               {arrivalCity}
             </p>
-            <p className="text-[12px] font-[500] leading-[18px]">
+            <p className="font-medium text-[12px] leading-[18px]">
               {arrivalDate}
             </p>
-            <p className="text-[12px] font-[500] leading-[18px]">
+            <p className="font-medium text-[12px] leading-[18px]">
               {arrivalTime}
             </p>
           </div>
@@ -84,16 +86,14 @@ const OrderCard = ({ ticket }) => {
       {/* Details Section */}
       <div className="mt-4 border-gray-300 pt-2 pb-2 flex justify-between items-center w-[536px] h-aut gap-[8px]">
         <div className="text-sm">
-          <p className="text-[14px] font-[700] leading-[20px] text-[#151515]">
-            Booking Code:
+          <p className="font-bold text-[14px] leading-[20px] ">Booking Code:</p>
+          <p className="font-medium text-[14px] leading-[20px]">
+            {bookingCode}
           </p>
-          <p className="text-black font-medium">{bookingCode}</p>
         </div>
         <div className="text-sm">
-          <p className="text-[14px] font-[700] leading-[20px] text-[#151515]">
-            Class:
-          </p>
-          <p className="text-[12px] font-[500] leading-[18px]">{classType}</p>
+          <p className="font-bold text-[14px] leading-[20px] ">Class:</p>
+          <p className="font-medium text-[14px] leading-[20px]">{classType}</p>
         </div>
         <p className="text-[#7126B5] font-bold text-lg">{`IDR ${price.toLocaleString()}`}</p>
       </div>
