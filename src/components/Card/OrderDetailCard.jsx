@@ -39,82 +39,92 @@ const OrderDetailCard = ({ orderDetails }) => {
       </div>
 
       {/* Booking Code */}
-      <div className="mb-4">
-        <p className="text-sm text-gray-500">Booking Code:</p>
+      <div className="mb-4 flex  items-center gap-4">
+        <p className="text-[18px] leading-[26px]">Booking Code:</p>
         <p className="text-lg font-bold text-purple-700">{bookingCode}</p>
       </div>
 
       {/* Departure Details */}
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-4 pb-4">
         <div className="flex flex-col">
-          <p className="font-bold text-xl leading-[24px]">{departureTime}</p>
-          <p className="font-normal text-[14px] leading-[20px]">
+          <p className="font-bold text-[16px] leading-[24px]">
+            {departureTime}
+          </p>
+          <p className="font-normal text-[16px] leading-[24px]">
             {departureDate}
           </p>
           <p className="font-medium text-[14px] leading-[20px]">
             {departureLocation}
           </p>
         </div>
-        <p className="font-bold text-[12px] leading-[18px] text-[#6C3DAB] text-right">
+        <p className="font-bold text-[12px] leading-[18px] text-[#A06ECE] text-right">
           Keberangkatan
         </p>
       </div>
 
       {/* Flight Info */}
-      <div className="flex items-center gap-[8px] mt-[12px]">
+      <div className="flex items-center gap-[8px] mt-[12px] border-t border-gray-300">
         <img
           src="/src/assets/icons/Thumbnail.svg"
           alt="Airline Logo"
           className="w-6 h-6"
         />
-        <div className="border-t border-gray-300 pt-4 mb-6">
-          <p className="text-sm font-semibold">{`${airline} - ${classType}`}</p>
-          <p className="text-sm text-gray-500">{`Flight Code: ${flightCode}`}</p>
+        <div className="pt-4">
+          <p className="font-bold text-[14px] leading-[18px]">{`${airline} - ${classType}`}</p>
+          <p className="font-bold text-[14px] leading-[18px]">{`${flightCode}`}</p>
+          <div className="mb-4 mt-4">
+            <p className="font-bold text-[14px] leading-[18px]">Informasi:</p>
+            {passengers && passengers.length > 0 ? (
+              passengers.map((passenger, index) => (
+                <div key={index} className="mb-2">
+                  <p
+                    className="font-medium text-[14px] leading-[18px]"
+                    style={{ color: "#4B1979" }}
+                  >
+                    {`${passenger.type}: ${passenger.name}`}
+                  </p>
+                  <p className="text-[14px] leading-[18px] text-black">
+                    {`ID: ${passenger.id}`}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-gray-500">
+                Tidak ada informasi penumpang.
+              </p>
+            )}
+          </div>
         </div>
-      </div>
-
-      {/* Passenger Info */}
-      <div className="mb-6">
-        <p className="text-sm font-semibold text-yellow-600 mb-2">Informasi:</p>
-        {passengers && passengers.length > 0 ? (
-          passengers.map((passenger, index) => (
-            <p key={index} className="text-sm text-gray-600">
-              {`${passenger.type}: ${passenger.name} (ID: ${passenger.id})`}
-            </p>
-          ))
-        ) : (
-          <p className="text-sm text-gray-500">
-            Tidak ada informasi penumpang.
-          </p>
-        )}
       </div>
 
       {/* Arrival Details */}
-      <div className="flex justify-between">
-        <div className="flex flex-col">
-          <p className="font-bold text-xl leading-[24px]">{arrivalTime}</p>
-          <p className="font-normal text-[14px] leading-[20px]">
-            {arrivalDate}
-          </p>
-          <p className="font-medium text-[14px] leading-[20px]">
-            {arrivalLocation}
+      <div className="border-t border-gray-300">
+        <div className="flex justify-between mt-4 mb-4">
+          <div className="flex flex-col">
+            <p className="font-bold text-[16px] leading-[24px]">
+              {arrivalTime}
+            </p>
+            <p className="font-normal text-[16px] leading-[24px]">
+              {arrivalDate}
+            </p>
+            <p className="font-medium text-[14px] leading-[20px]">
+              {arrivalLocation}
+            </p>
+          </div>
+          <p className="font-bold text-[12px] leading-[18px] text-[#A06ECE] text-right">
+            Kedatangan
           </p>
         </div>
-        <p className="font-bold text-[12px] leading-[18px] text-[#6C3DAB] text-right">
-          Kedatangan
-        </p>
       </div>
 
       {/* Price Details */}
       <div className="border-t border-gray-300 pt-4 mb-6">
-        <p className="text-sm font-semibold text-gray-600 mb-2">
-          Rincian Harga:
-        </p>
+        <p className="font-bold text-[16px] leading-[24px]">Rincian Harga:</p>
         {priceDetails && priceDetails.length > 0 ? (
           priceDetails.map((priceDetail, index) => (
             <p
               key={index}
-              className="text-sm text-gray-600 flex justify-between"
+              className="font-normal text-[16px] leading-[24px] flex justify-between"
             >
               <span>{priceDetail.label}</span>
               <span>{priceDetail.value}</span>
@@ -126,15 +136,17 @@ const OrderDetailCard = ({ orderDetails }) => {
       </div>
 
       {/* Total Price */}
-      <div className="flex justify-between items-center">
-        <p className="text-lg font-bold">Total</p>
-        <p className="text-xl font-bold text-purple-700">{totalPrice}</p>
+      <div className=" border-t border-gray-300 mb-1">
+        <div className="flex justify-between items-center mt-4">
+          <p className="text-lg font-bold">Total</p>
+          <p className="text-xl font-bold text-purple-700">{totalPrice}</p>
+        </div>
       </div>
 
       {/* Button */}
-      <div className="mt-6">
+      <div className="mt-4 gap-2">
         <button
-          className={`w-full py-3 rounded-lg font-bold text-lg transition ${
+          className={`w-full h-[62px] py-3 rounded-[12px] font-bold text-lg transition ${
             buttonType === "unpaid"
               ? "bg-red-600 hover:bg-red-700 text-white"
               : "bg-purple-700 hover:bg-purple-800 text-white"

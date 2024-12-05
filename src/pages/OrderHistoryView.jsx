@@ -6,25 +6,41 @@ import SubHeader from "../components/Header/SubHeader";
 
 const OrderHistory = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isDetailView, setDetailView] = useState(false); // Hanya untuk mobile
+
+  const handleOrderCardClick = (ticket) => {
+    setSelectedOrder(ticket);
+    if (window.innerWidth < 768) setDetailView(true); // Ganti tampilan detail hanya di mobile
+  };
+
+  const handleBackToList = () => {
+    setDetailView(false); // Kembali ke daftar pada mobile
+  };
+
+  const formatCurrency = (value) => `IDR ${value.toLocaleString("id-ID")}`;
 
   const mockTickets = [
     {
       departureCity: "Jakarta",
+      departureLocation: "Soekarno-Hatta International Airport (CGK)",
       departureDate: "5 Maret 2023",
       departureTime: "19:10",
       arrivalCity: "Melbourne",
+      arrivalLocation: "Melbourne Airport (MEL)",
       arrivalDate: "5 Maret 2023",
       arrivalTime: "21:10",
       duration: "4h 0m",
       bookingCode: "6723y2GHK",
       classType: "Economy",
+      airline: "Garuda Indonesia",
+      flightCode: "GA721",
       price: 9850000,
       priceDetails: [
-        { label: "Harga Tiket", value: 9000000 },
-        { label: "Pajak", value: 500000 },
-        { label: "Asuransi", value: 350000 },
+        { label: "2 adults", value: formatCurrency(9000000) },
+        { label: "0 baby", value: formatCurrency(0) },
+        { label: "tax", value: formatCurrency(500000) },
       ],
-      totalPrice: "IDR 9,850,000",
+      totalPrice: formatCurrency(9850000),
       status: "Issued",
       passengers: [
         { type: "Penumpang 1", name: "Mr. Harry Potter", id: "1234567" },
@@ -33,21 +49,25 @@ const OrderHistory = () => {
     },
     {
       departureCity: "Jakarta",
+      departureLocation: "Soekarno-Hatta International Airport (CGK)",
       departureDate: "1 Maret 2023",
       departureTime: "07:00",
       arrivalCity: "Bali",
+      arrivalLocation: "Ngurah Rai International Airport (DPS)",
       arrivalDate: "1 Maret 2023",
       arrivalTime: "08:15",
       duration: "1h 15m",
       bookingCode: "67562320G",
       classType: "Business",
+      airline: "Lion Air",
+      flightCode: "JT320",
       price: 3250000,
       priceDetails: [
-        { label: "Harga Tiket", value: 2900000 },
-        { label: "Pajak", value: 300000 },
-        { label: "Asuransi", value: 50000 },
+        { label: "2 adults", value: formatCurrency(2900000) },
+        { label: "0 baby", value: formatCurrency(0) },
+        { label: "tax", value: formatCurrency(300000) },
       ],
-      totalPrice: "IDR 3,250,000",
+      totalPrice: formatCurrency(3250000),
       status: "Unpaid",
       passengers: [
         { type: "Penumpang 1", name: "Mr. Harry Potter", id: "1234567" },
@@ -56,21 +76,25 @@ const OrderHistory = () => {
     },
     {
       departureCity: "Jakarta",
+      departureLocation: "Soekarno-Hatta International Airport (CGK)",
       departureDate: "11 Februari 2023",
       departureTime: "07:00",
       arrivalCity: "Medan",
+      arrivalLocation: "Kualanamu International Airport (KNO)",
       arrivalDate: "11 Februari 2023",
       arrivalTime: "08:15",
       duration: "1h 15m",
       bookingCode: "601U95667G",
       classType: "Economy",
+      airline: "Citilink",
+      flightCode: "QG101",
       price: 2950000,
       priceDetails: [
-        { label: "Harga Tiket", value: 2600000 },
-        { label: "Pajak", value: 350000 },
-        { label: "Asuransi", value: 50000 },
+        { label: "2 adults", value: formatCurrency(2600000) },
+        { label: "0 baby", value: formatCurrency(0) },
+        { label: "tax", value: formatCurrency(350000) },
       ],
-      totalPrice: "IDR 2,950,000",
+      totalPrice: formatCurrency(2950000),
       status: "Cancelled",
       passengers: [
         { type: "Penumpang 1", name: "Mr. Harry Potter", id: "1234567" },
@@ -79,21 +103,25 @@ const OrderHistory = () => {
     },
     {
       departureCity: "Medan",
+      departureLocation: "Kualanamu International Airport (KNO)",
       departureDate: "8 Februari 2023",
       departureTime: "17:00",
       arrivalCity: "Palu",
+      arrivalLocation: "Mutiara SIS Al-Jufrie Airport (PLW)",
       arrivalDate: "8 Februari 2023",
       arrivalTime: "19:05",
       duration: "2h 05m",
       bookingCode: "356875O9UD",
       classType: "Business",
+      airline: "Sriwijaya Air",
+      flightCode: "SJ215",
       price: 4060000,
       priceDetails: [
-        { label: "Harga Tiket", value: 3800000 },
-        { label: "Pajak", value: 150000 },
-        { label: "Asuransi", value: 60000 },
+        { label: "2 adults", value: formatCurrency(3800000) },
+        { label: "0 baby", value: formatCurrency(0) },
+        { label: "tax", value: formatCurrency(150000) },
       ],
-      totalPrice: "IDR 4,060,000",
+      totalPrice: formatCurrency(4060000),
       status: "Issued",
       passengers: [
         { type: "Penumpang 1", name: "Mr. Harry Potter", id: "1234567" },
@@ -102,21 +130,25 @@ const OrderHistory = () => {
     },
     {
       departureCity: "Surabaya",
+      departureLocation: "Juanda International Airport (SUB)",
       departureDate: "10 Januari 2023",
       departureTime: "10:00",
       arrivalCity: "Makassar",
+      arrivalLocation: "Sultan Hasanuddin International Airport (UPG)",
       arrivalDate: "10 Januari 2023",
       arrivalTime: "12:15",
       duration: "2h 15m",
       bookingCode: "123456789",
       classType: "Economy",
+      airline: "AirAsia",
+      flightCode: "QZ501",
       price: 2100000,
       priceDetails: [
-        { label: "Harga Tiket", value: 1900000 },
-        { label: "Pajak", value: 150000 },
-        { label: "Asuransi", value: 50000 },
+        { label: "2 adults", value: formatCurrency(1900000) },
+        { label: "0 baby", value: formatCurrency(0) },
+        { label: "tax", value: formatCurrency(150000) },
       ],
-      totalPrice: "IDR 2,100,000",
+      totalPrice: formatCurrency(2100000),
       status: "Issued",
       passengers: [
         { type: "Penumpang 1", name: "Mr. Harry Potter", id: "1234567" },
@@ -134,44 +166,76 @@ const OrderHistory = () => {
     return acc;
   }, {});
 
-  const handleOrderCardClick = (ticket) => {
-    setSelectedOrder(ticket); // Atur pesanan yang dipilih
-  };
-
   return (
     <>
       <Navbar />
       <SubHeader />
-      <div className="container mx-auto mt-10 flex gap-8">
-        {/* List OrderCard */}
-        <div className="flex-1">
-          {Object.keys(groupedTickets).map((monthYear) => (
-            <div key={monthYear} className="mb-10">
-              <h2 className="text-xl font-bold mb-4">{monthYear}</h2>
-              <div className="flex flex-col gap-4">
-                {groupedTickets[monthYear].map((ticket, index) => (
-                  <div
-                    key={index}
-                    onClick={() => handleOrderCardClick(ticket)} // Tangkap klik
-                    className="cursor-pointer"
-                  >
-                    <OrderCard ticket={ticket} />
+      <div className="container mx-auto mt-10">
+        {/* Mobile View */}
+        <div className="md:hidden">
+          {!isDetailView ? (
+            <div className="flex flex-col gap-8">
+              {Object.keys(groupedTickets).map((monthYear) => (
+                <div key={monthYear} className="mb-10">
+                  <h2 className="text-xl font-bold mb-4">{monthYear}</h2>
+                  <div className="flex flex-col gap-4">
+                    {groupedTickets[monthYear].map((ticket, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleOrderCardClick(ticket)}
+                        className="cursor-pointer"
+                      >
+                        <OrderCard ticket={ticket} />
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            <div className="flex flex-col gap-4">
+              <button
+                onClick={handleBackToList}
+                className="mb-4 text-blue-500 underline text-start"
+              >
+                ← Kembali ke Daftar Pesanan
+              </button>
+              {selectedOrder && (
+                <OrderDetailCard orderDetails={selectedOrder} />
+              )}
+            </div>
+          )}
         </div>
 
-        {/* Detail Order */}
-        <div className="flex-1">
-          {selectedOrder ? (
-            <OrderDetailCard orderDetails={selectedOrder} />
-          ) : (
-            <p className="text-gray-500">
-              Pilih salah satu pesanan untuk melihat detailnya.
-            </p>
-          )}
+        {/* Desktop View */}
+        <div className="hidden md:flex gap-8">
+          <div className="flex-1">
+            {Object.keys(groupedTickets).map((monthYear) => (
+              <div key={monthYear} className="mb-10">
+                <h2 className="text-xl font-bold mb-4">{monthYear}</h2>
+                <div className="flex flex-col gap-4">
+                  {groupedTickets[monthYear].map((ticket, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleOrderCardClick(ticket)}
+                      className="cursor-pointer"
+                    >
+                      <OrderCard ticket={ticket} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex-1">
+            {selectedOrder ? (
+              <OrderDetailCard orderDetails={selectedOrder} />
+            ) : (
+              <p className="text-gray-500">
+                Pilih salah satu pesanan untuk melihat detailnya.
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </>
