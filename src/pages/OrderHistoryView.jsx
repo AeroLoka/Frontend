@@ -166,77 +166,98 @@ const OrderHistory = () => {
     return acc;
   }, {});
 
+  const isTicketsEmpty = Object.keys(groupedTickets).length === 0;
+
   return (
     <>
       <Navbar />
       <SubHeader />
-      <div className="container mx-auto mt-10">
-        {/* Mobile View */}
-        <div className="md:hidden">
-          {!isDetailView ? (
-            <div className="flex flex-col gap-8 justify-center items-center">
-              {Object.keys(groupedTickets).map((monthYear) => (
-                <div key={monthYear} className="mb-10">
-                  <h2 className="text-xl font-bold mb-4">{monthYear}</h2>
-                  <div className="flex flex-col gap-4">
-                    {groupedTickets[monthYear].map((ticket, index) => (
-                      <div
-                        key={index}
-                        onClick={() => handleOrderCardClick(ticket)}
-                        className="cursor-pointer"
-                      >
-                        <OrderCard ticket={ticket} />
+      <div className="container mx-auto mt-10 flex justify-center items-center">
+        {/* Jika Tidak Ada Pesanan */}
+        {isTicketsEmpty ? (
+          <div className="text-center mx-auto justify-center items-center">
+            <img
+              src="./images/Cartshopping.png"
+              alt="Tiket Habis"
+              className="w-62 h-62"
+            />
+            <p className="text-black text-lg font-medium mt-2">
+              Maaf, Tiket terjual habis!
+            </p>
+            <p className="text-[#7126B5] text-lg font-medium mt-2">
+              Anda belum melakukan pemesanan penerbangan.
+            </p>
+          </div>
+        ) : (
+          <div className="w-full">
+            {/* Mobile View */}
+            <div className="md:hidden">
+              {!isDetailView ? (
+                <div className="flex flex-col gap-8 justify-center items-center">
+                  {Object.keys(groupedTickets).map((monthYear) => (
+                    <div key={monthYear} className="mb-10">
+                      <h2 className="text-xl font-bold mb-4">{monthYear}</h2>
+                      <div className="flex flex-col gap-4">
+                        {groupedTickets[monthYear].map((ticket, index) => (
+                          <div
+                            key={index}
+                            onClick={() => handleOrderCardClick(ticket)}
+                            className="cursor-pointer"
+                          >
+                            <OrderCard ticket={ticket} />
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col gap-4">
-              <button
-                onClick={handleBackToList}
-                className="mb-4 text-blue-500 underline text-start"
-              >
-                ← Kembali ke Daftar Pesanan
-              </button>
-              {selectedOrder && (
-                <OrderDetailCard orderDetails={selectedOrder} />
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Desktop View */}
-        <div className="hidden md:flex gap-8">
-          <div className="flex-1">
-            {Object.keys(groupedTickets).map((monthYear) => (
-              <div key={monthYear} className="mb-10">
-                <h2 className="text-xl font-bold mb-4">{monthYear}</h2>
-                <div className="flex flex-col gap-4">
-                  {groupedTickets[monthYear].map((ticket, index) => (
-                    <div
-                      key={index}
-                      onClick={() => handleOrderCardClick(ticket)}
-                      className="cursor-pointer"
-                    >
-                      <OrderCard ticket={ticket} />
                     </div>
                   ))}
                 </div>
+              ) : (
+                <div className="flex flex-col gap-4">
+                  <button
+                    onClick={handleBackToList}
+                    className="mb-4 text-blue-500 underline text-start"
+                  >
+                    ← Kembali ke Daftar Pesanan
+                  </button>
+                  {selectedOrder && (
+                    <OrderDetailCard orderDetails={selectedOrder} />
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Desktop View */}
+            <div className="hidden md:flex gap-8">
+              <div className="flex-1">
+                {Object.keys(groupedTickets).map((monthYear) => (
+                  <div key={monthYear} className="mb-10">
+                    <h2 className="text-xl font-bold mb-4">{monthYear}</h2>
+                    <div className="flex flex-col gap-4">
+                      {groupedTickets[monthYear].map((ticket, index) => (
+                        <div
+                          key={index}
+                          onClick={() => handleOrderCardClick(ticket)}
+                          className="cursor-pointer"
+                        >
+                          <OrderCard ticket={ticket} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+              <div className="flex-1">
+                {selectedOrder ? (
+                  <OrderDetailCard orderDetails={selectedOrder} />
+                ) : (
+                  <p className="text-gray-500">
+                    Pilih salah satu pesanan untuk melihat detailnya.
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
-          <div className="flex-1">
-            {selectedOrder ? (
-              <OrderDetailCard orderDetails={selectedOrder} />
-            ) : (
-              <p className="text-gray-500">
-                Pilih salah satu pesanan untuk melihat detailnya.
-              </p>
-            )}
-          </div>
-        </div>
+        )}
       </div>
     </>
   );
