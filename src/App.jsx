@@ -18,6 +18,8 @@ import ProfileView from "./pages/ProfileView";
 import { store } from "./store";
 
 import ButtonChange from "./components/Button/ButtonChange";
+import VerifyEmailView from "./pages/auth/VerifyEmailView";
+import ResetPasswordView from "./pages/auth/ResetPasswordView";
 
 const router = createBrowserRouter([
     {
@@ -57,6 +59,14 @@ const router = createBrowserRouter([
     {
       path: "/login",
       element: <LoginView/>
+    },
+    {
+      path: "/forget-password",
+      element: <VerifyEmailView/>
+    },
+    {
+      path: "/reset-password",
+      element: <ResetPasswordView/>
     },
     {
       path: "/register",
