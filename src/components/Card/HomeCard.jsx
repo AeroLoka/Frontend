@@ -20,7 +20,7 @@ const HomeCard = () => {
               alt="Destination Image"
               className="w-full h-full object-cover"
             />
-            <div className="absolute top-0 right-0 w-[72px] h-[24px] text-[10px] rounded-tl-xl rounded-bl-xl bg-[#A06ECE] text-center text-white flex items-center justify-center">
+            <div className="absolute top-0 right-0 w-[50%] h-[25%] text-xs font-medium rounded-tl-xl rounded-bl-xl bg-[#A06ECE] text-center text-white flex items-center justify-center">
               Limited!
             </div>
           </div>
