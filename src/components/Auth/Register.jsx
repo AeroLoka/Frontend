@@ -5,6 +5,7 @@ import InputForm from "../form/InputForm";
 const Register = () => {
   const navigate = useNavigate();
   const methods = useForm();
+  const { handleSubmit } = methods;
 
   const onSubmit = (data) => {
     console.log(data);
@@ -13,11 +14,10 @@ const Register = () => {
   return (
     <div>
       <FormProvider {...methods}>
-        <form action="" onSubmit={methods.handleSubmit(onSubmit)}>
+        <form action="" onSubmit={handleSubmit(onSubmit)}>
           <InputForm
             name="nama"
             label="Nama"
-            type="text"
             placeholder="Nama Lengkap"
             validation={{
               required: "Nama wajib diisi",
@@ -27,7 +27,6 @@ const Register = () => {
           <InputForm
             name="email"
             label="Email"
-            type="email"
             placeholder="Contoh: johndee@gmail.com"
             validation={{
               required: "Email wajib diisi",
@@ -41,7 +40,6 @@ const Register = () => {
           <InputForm
             name="phone"
             label="Nomor Telepon"
-            type="text"
             placeholder="+62"
             validation={{
               required: "Nomor telepon wajib diisi",
@@ -55,7 +53,6 @@ const Register = () => {
           <InputForm
             name="password"
             label="Buat Password"
-            type="password"
             placeholder="Buat Password"
             validation={{
               required: "Password wajib diisi",

@@ -15,10 +15,9 @@ const Login = () => {
   return (
     <div className="">
       <FormProvider {...methods}>
-        <form action="" onSubmit={methods.handleSubmit(onSubmit)} className="">
+        <form action="" onSubmit={handleSubmit(onSubmit)} className="">
           <InputForm
             name="emailOrPhone"
-            type="text"
             label="Email/No Telepon"
             placeholder="Contoh: johndoe@gmail.com"
             validation={{
@@ -44,7 +43,6 @@ const Login = () => {
 
           <InputForm
             name="password"
-            type="password"
             placeholder="Masukkan password"
             validation={{
               required: "Password wajib diisi",
