@@ -10,11 +10,16 @@ import PaymentStatusPage from "./pages/PaymentStatusPage";
 
 import LoginView from "./pages/auth/LoginView";
 import RegisterView from "./pages/auth/RegisterView";
+import ProfileView from "./pages/ProfileView";
 
 //loader
 
 //storage
 import { store } from "./store";
+
+import ButtonChange from "./components/Button/ButtonChange";
+import VerifyEmailView from "./pages/auth/VerifyEmailView";
+import ResetPasswordView from "./pages/auth/ResetPasswordView";
 
 const router = createBrowserRouter([
     {
@@ -26,8 +31,16 @@ const router = createBrowserRouter([
                 element: <HomeView />,
             },
             {
+              path: "profile",
+              element: <ProfileView/>
+            },
+            {
               path: "/detail-ticket",
               element: <DetailTicket />,
+            },
+            { 
+              path: "/search", 
+              element: <ButtonChange /> 
             },
             {
               path: '/order-page',
@@ -46,6 +59,14 @@ const router = createBrowserRouter([
     {
       path: "/login",
       element: <LoginView/>
+    },
+    {
+      path: "/forget-password",
+      element: <VerifyEmailView/>
+    },
+    {
+      path: "/reset-password",
+      element: <ResetPasswordView/>
     },
     {
       path: "/register",
