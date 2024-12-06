@@ -14,7 +14,7 @@ const Register = () => {
     <div className="flex flex-col items-center justify-center">
       <div>
         <div>
-          <h1 className="text-xl font-bold mb-4">Daftar</h1>
+          <h1 className="text-2xl font-bold mb-4">Daftar</h1>
         </div>
         <div>
           <FormProvider {...methods}>

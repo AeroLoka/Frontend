@@ -14,54 +14,60 @@ const Login = () => {
     <div className="flex flex-col items-center justify-center">
       <div>
         <div>
-          <h1 className="text-xl font-bold mb-4">Masuk</h1>
+          <h1 className="text-2xl font-bold mb-4">Masuk</h1>
         </div>
         <div>
           <FormProvider {...methods}>
-            <form action="" onSubmit={methods.handleSubmit(onSubmit)}>
-              <InputForm
-                name="emailOrPhone"
-                type="text"
-                label="Email/No Telepon"
-                placeholder="Contoh: johndoe@gmail.com"
-                validation={{
-                  required: "Email atau nomot telepon wajib diisi",
-                  pattern: {
-                    value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                    message: "Format email tidak valid",
-                  },
-                }}
-              />
-
-              <div className="flex justify-between items-center mb-1">
-                <label htmlFor="password" className="text-sm">
-                  Password
-                </label>
-                <span className="text-[#7126B5] font-medium text-sm">
-                  <a href="#">Lupa Kata Sandi</a>
-                </span>
-              </div>
-
-              <InputForm
-                name="password"
-                type="password"
-                placeholder="Masukkan password"
-                validation={{
-                  required: "Password wajib diisi",
-                  pattern: {
-                    value: 0,
-                    message: "Password minimal 6 karakter",
-                  },
-                }}
-              />
-
-              <button
-                type="submit"
-                className="w-[453px] h-[48px] pl-3 bg-[#7126B5] text-white rounded-[16px] mb-[48px]"
+            <div>
+              <form
+                action=""
+                onSubmit={methods.handleSubmit(onSubmit)}
+                className=""
               >
-                Masuk
-              </button>
-            </form>
+                <InputForm
+                  name="emailOrPhone"
+                  type="text"
+                  label="Email/No Telepon"
+                  placeholder="Contoh: johndoe@gmail.com"
+                  validation={{
+                    required: "Email atau nomot telepon wajib diisi",
+                    pattern: {
+                      value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                      message: "Format email tidak valid",
+                    },
+                  }}
+                />
+
+                <div className="flex justify-between items-center mb-1">
+                  <label htmlFor="password" className="text-sm">
+                    Password
+                  </label>
+                  <span className="text-[#7126B5] font-medium text-sm">
+                    <a href="#">Lupa Kata Sandi</a>
+                  </span>
+                </div>
+
+                <InputForm
+                  name="password"
+                  type="password"
+                  placeholder="Masukkan password"
+                  validation={{
+                    required: "Password wajib diisi",
+                    pattern: {
+                      value: 0,
+                      message: "Password minimal 6 karakter",
+                    },
+                  }}
+                />
+
+                <button
+                  type="submit"
+                  className="w-[453px] h-[48px] pl-3 bg-[#7126B5] text-white rounded-[16px] mb-[48px]"
+                >
+                  Masuk
+                </button>
+              </form>
+            </div>
           </FormProvider>
 
           <div className="text-center">
