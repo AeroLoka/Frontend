@@ -21,6 +21,7 @@ const ResetPassword = () => {
                         validation={{
                             required: "Password is required",
                         }}
+                        className="placeholder:text-xs placeholder:lg:text-md"
                     />
                     <InputForm
                         name="confirm_password"
@@ -30,6 +31,7 @@ const ResetPassword = () => {
                         validation={{
                             required: "Password is required",
                         }}
+                        className="placeholder:text-xs placeholder:lg:text-md"
                     />
                     <button
                         type="submit"

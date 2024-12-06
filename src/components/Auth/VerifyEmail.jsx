@@ -28,6 +28,7 @@ const VerifyEmail = () => {
                                 message: "Invalid email address",
                             },
                         }}
+                        className="placeholder:text-xs placeholder:lg:text-md"
                     />
                     <button type="submit" className="w-full bg-[#7126B5] text-white py-3 px-4 rounded-lg hover:bg-[#531d85] transition-colors">
                         Kirim
