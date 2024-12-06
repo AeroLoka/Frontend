@@ -35,8 +35,8 @@ const Login = () => {
             <label htmlFor="password" className="text-sm">
               Password
             </label>
-            <span className="text-[#7126B5] font-medium text-sm">
-              <a href="#" onClick={() => navigate("/reset-password")}>
+            <span className="text-[#7126B5] font-medium text-xs lg:text-sm">
+              <a href="#" onClick={() => navigate("/forget-password")}>
                 Lupa Kata Sandi
               </a>
             </span>
@@ -49,7 +49,7 @@ const Login = () => {
             validation={{
               required: "Password wajib diisi",
               pattern: {
-                value: 0,
+                value: /^.{6,}$/,
                 message: "Password minimal 6 karakter",
               },
             }}
