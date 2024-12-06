@@ -24,7 +24,7 @@ const AuthLayout = (props) => {
                     <img
                         src={logo}
                         alt="logo aeroloka.png"
-                        className="w-[50vw]"
+                        className="w-[40vw]"
                     />
                 </div>
                 <h2 className="font-bold text-xl mb-4">{title}</h2>
