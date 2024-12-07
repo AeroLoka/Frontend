@@ -34,7 +34,7 @@ const InputForm = ({ type = "text", name, label, validation, placeholder, classN
                 name={name}
                 type={type}
                 placeholder={placeholder}
-                value={value}
+                defaultValue={value}
                 className={`p-2 border rounded-md ${
                     error ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500 mb-4'
                 } ${className}`}
