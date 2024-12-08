@@ -37,7 +37,7 @@ const Login = () => {
             label="Email/No Telepon"
             placeholder="Contoh: johndoe@gmail.com"
             validation={{
-              required: "Email atau nomot telepon wajib diisi",
+              required: "Email atau nomor telepon wajib diisi",
               pattern: {
                 value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                 message: "Format email tidak valid",
@@ -60,6 +60,7 @@ const Login = () => {
           <InputForm
             name="password"
             placeholder="Masukkan password"
+            type="password"
             validation={{
               required: "Password wajib diisi",
               pattern: {
