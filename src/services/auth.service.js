@@ -27,13 +27,36 @@ const forgetPassword = async (data) => {
     }
 };
 
-const resetPassword = async(token, data)=> {
+const resetPassword = async (token, data) => {
     try {
-        const response = await axiosInstance.post(`/reset-password?token=${token}`, data);
+        const response = await axiosInstance.post(
+            `/reset-password?token=${token}`,
+            data
+        );
         return response.data;
     } catch (error) {
         throw error.response?.data || error.message;
     }
-}
+};
 
-export { login, register, forgetPassword, resetPassword };
+const verifyOtp = async (data) => {
+    try {
+        console.log("verify OTP:", data);
+        const response = await axiosInstance.post(`/verify-otp`, data);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error.message;
+    }
+};
+
+const resendOtp = async (data) => {
+    try {
+        console.log("resend OTP:", data);
+        const response = await axiosInstance.post("/resend-otp", data);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error.message;
+    }
+};
+
+export { login, forgetPassword, resetPassword, register, verifyOtp, resendOtp };
