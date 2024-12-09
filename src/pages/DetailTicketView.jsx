@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Navbar from "../components/Navbar/Navbar";
+import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 import HeaderTicket from "../components/Header/HeaderTicket";
 import NavigationDates from "../components/Navbar/NavigationDates";
 import FilterButton from "../components/Filter/FilterButton";
@@ -12,6 +14,7 @@ const DetailTicket = () => {
   const [filteredTickets, setFilteredTickets] = useState([]);
   const [activeFilter, setActiveFilter] = useState("Termurah");
   const [activeDate, setActiveDate] = useState(null);
+  const { user } = useSelector((state) => state.userState);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -247,7 +250,8 @@ const DetailTicket = () => {
 
   return (
     <>
-      <Navbar />
+      {user ? <LoggedInNavbar /> : <Navbar />}
+
       <div className="pt-[100px] gap-2">
         <div className="w-full h-[231px] bg-white shadow-md ">
           <HeaderTicket />

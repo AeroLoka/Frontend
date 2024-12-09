@@ -23,60 +23,60 @@ import ResetPasswordView from "./pages/auth/ResetPasswordView";
 import OTPView from "./pages/auth/OTPView";
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <PublicLayout />,
-        children: [
-            {
-                index: true,
-                element: <HomeView />,
-            },
-            {
-              path: "profile",
-              element: <ProfileView/>
-            },
-            {
-              path: "/detail-ticket",
-              element: <DetailTicket />,
-            },
-            { 
-              path: "/search", 
-              element: <ButtonChange /> 
-            },
-            {
-              path: '/order-page',
-              element: <OrderPage />,
-            },
-            {
-              path: '/payment',
-              element: <PaymentView/>
-            },
-            {
-              path: `/payment-status`,
-              element: <PaymentStatusPage />,
-            },
-        ],
-    },
-    {
-      path: "/login",
-      element: <LoginView/>
-    },
-    {
-      path: "/forget-password",
-      element: <VerifyEmailView/>
-    },
-    {
-      path: "/reset-password",
-      element: <ResetPasswordView/>
-    },
-    {
-      path: "/register",
-      element: <RegisterView/>
-    },
-    {
-      path: "/activation/otp",
-      element: <OTPView/>
-    }
+  {
+    path: "/",
+    element: <PublicLayout />,
+    children: [
+      {
+        index: true,
+        element: <HomeView />,
+      },
+      {
+        path: "profile",
+        element: <ProfileView />,
+      },
+      {
+        path: "/detail-ticket",
+        element: <DetailTicket />,
+      },
+      {
+        path: "/search",
+        element: <ButtonChange />,
+      },
+      {
+        path: "/order-page",
+        element: <OrderPage />,
+      },
+      {
+        path: "/payment",
+        element: <PaymentView />,
+      },
+      {
+        path: `/payment-status`,
+        element: <PaymentStatusPage />,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    element: <LoginView />,
+  },
+  {
+    path: "/forget-password",
+    element: <VerifyEmailView />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPasswordView />,
+  },
+  {
+    path: "/register",
+    element: <RegisterView />,
+  },
+  {
+    path: "/activation/otp",
+    element: <OTPView />,
+  },
 ]);
 
 function App() {
