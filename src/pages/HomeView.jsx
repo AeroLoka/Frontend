@@ -31,7 +31,7 @@ const HomeView = () => {
 
       <section className="container relative mx-auto pt-72">
         <div>
-          <h2 className="text-xl font-bold px-40 mb-4">
+          <h2 className="text-xl font-bold mb-4 px-10 lg:px-40">
             Destinasi Favorit
           </h2>
           <SearchDestination />

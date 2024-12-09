@@ -21,41 +21,43 @@ const SearchDestination = () => {
   };
 
   return (
-    <div className="px-40 flex gap-x-4 mb-5">
-      <div
-        className={`w-[126px] h-[48px] rounded-xl flex items-center justify-center ${getButtonClasses(
-          "semua"
-        )}`}
-      >
-        <a
-          href="#"
-          onClick={() => handleButtonClick("semua")}
-          className="flex items-center gap-2 text-sm font-medium"
+    <div className="px-8 flex gap-x-4 lg:px-40">
+      <div className="flex gap-x-4 overflow-x-auto py-2">
+        <div
+          className={`min-w-[126px] h-[48px] rounded-xl flex items-center justify-center ${getButtonClasses(
+            "semua"
+          )}`}
         >
-          <img src={getIcon("semua")} alt="" className="w-5 h-5" />
-          Semua
-        </a>
-      </div>
-
-      {["asia", "amerika", "australia", "eropa", "afrika"].map(
-        (destination) => (
-          <div
-            key={destination}
-            className={`px-5 rounded-xl flex items-center justify-center cursor-pointer ${getButtonClasses(
-              destination
-            )}`}
+          <a
+            href="#"
+            onClick={() => handleButtonClick("semua")}
+            className="flex items-center gap-2 text-sm font-medium"
           >
-            <a
-              href="#"
-              onClick={() => handleButtonClick(destination)}
-              className="flex items-center gap-2 text-sm font-medium"
+            <img src={getIcon("semua")} alt="" className="w-5 h-5" />
+            Semua
+          </a>
+        </div>
+
+        {["asia", "amerika", "australia", "eropa", "afrika"].map(
+          (destination) => (
+            <div
+              key={destination}
+              className={`min-w-[126px] h-[48px] px-4 rounded-xl flex items-center justify-center cursor-pointer ${getButtonClasses(
+                destination
+              )}`}
             >
-              <img src={getIcon(destination)} alt="" className="w-5 h-5" />
-              {destination.charAt(0).toUpperCase() + destination.slice(1)}
-            </a>
-          </div>
-        )
-      )}
+              <a
+                href="#"
+                onClick={() => handleButtonClick(destination)}
+                className="flex items-center gap-2 text-sm font-medium"
+              >
+                <img src={getIcon(destination)} alt="" className="w-5 h-5" />
+                {destination.charAt(0).toUpperCase() + destination.slice(1)}
+              </a>
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
 };

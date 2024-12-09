@@ -5,7 +5,7 @@ import destination1 from "../../assets/images/destination.png";
 const HomeCard = () => {
   return (
     <>
-      <div className="grid grid-cols-5 px-40 gap-4">
+      <div className="grid grid-cols-2 p-8 gap-4 lg:grid-cols-5 lg:px-40">
         <motion.div
           whileHover={{
             scale: 1.05,
@@ -25,8 +25,8 @@ const HomeCard = () => {
             </div>
           </div>
           <div className="flex flex-col gap-0.5">
-            <p className="text-md font-semibold">Jakarta - Bangkok</p>
-            <p className="text- text-[#7126B5] font-bold">AirAsia</p>
+            <p className="text-sm font-semibold lg:text-md">Jakarta - Bangkok</p>
+            <p className="text-sm text-[#7126B5] font-bold lg:text-md">AirAsia</p>
             <p className="text-xs font-medium">20 - 30 Maret 2024</p>
             <p className="text-xs font-medium">
               Mulai dari
