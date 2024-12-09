@@ -2,22 +2,41 @@ import React, { useState } from "react";
 import OrderCard from "../components/Card/OrderCard";
 import OrderDetailCard from "../components/Card/OrderDetailCard";
 import Navbar from "../components/Navbar/Navbar";
-import SubHeader from "../components/Header/SubHeader";
+import HeaderOrder from "../components/Header/HeaderOrder";
 
 const OrderHistory = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [isDetailView, setDetailView] = useState(false); // Hanya untuk mobile
+  const [isDetailView, setDetailView] = useState(false);
+  const [selectedFlights, setSelectedFlights] = useState([]);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [filteredDate, setFilteredDate] = useState(null);
+  const [searchLocation, setSearchLocation] = useState("");
 
   const handleOrderCardClick = (ticket) => {
     setSelectedOrder(ticket);
-    if (window.innerWidth < 768) setDetailView(true); // Ganti tampilan detail hanya di mobile
+    if (window.innerWidth < 768) setDetailView(true);
   };
 
   const handleBackToList = () => {
-    setDetailView(false); // Kembali ke daftar pada mobile
+    setDetailView(false);
+  };
+  const handleLocationSearch = (location) => {
+    setSearchLocation(location.toLowerCase());
+  };
+  const handleDateFilter = (date) => {
+    setFilteredDate(date);
+    console.log("Tanggal yang dipilih:", date);
   };
 
   const formatCurrency = (value) => `IDR ${value.toLocaleString("id-ID")}`;
+
+  const handleAddFlight = (flight) => {
+    if (!flight.departureDate) {
+      console.error("Tiket tidak valid: departureDate tidak ditemukan.");
+      return;
+    }
+    setSelectedFlights((prev) => [...prev, flight]);
+  };
 
   const mockTickets = [
     {
@@ -157,8 +176,19 @@ const OrderHistory = () => {
     },
   ];
 
-  // Mengelompokkan data berdasarkan bulan dan tahun
-  const groupedTickets = mockTickets.reduce((acc, ticket) => {
+  const filteredTickets = mockTickets.filter((ticket) => {
+    const isDateMatched = selectedDate
+      ? ticket.departureDate === selectedDate
+      : true;
+    const isLocationMatched = searchLocation
+      ? ticket.departureCity.toLowerCase().includes(searchLocation) ||
+        ticket.arrivalCity.toLowerCase().includes(searchLocation)
+      : true;
+    return isDateMatched && isLocationMatched;
+  });
+
+  const groupedTickets = filteredTickets.reduce((acc, ticket) => {
+    if (!ticket.departureDate) return acc;
     const [day, month, year] = ticket.departureDate.split(" ");
     const key = `${month} ${year}`;
     if (!acc[key]) acc[key] = [];
@@ -171,9 +201,11 @@ const OrderHistory = () => {
   return (
     <>
       <Navbar />
-      <SubHeader />
+      <HeaderOrder
+        onFilterDate={handleDateFilter}
+        onSearchLocation={handleLocationSearch}
+      />
       <div className="container mx-auto mt-10 flex justify-center items-center">
-        {/* Jika Tidak Ada Pesanan */}
         {isTicketsEmpty ? (
           <div className="text-center mx-auto justify-center items-center">
             <img
