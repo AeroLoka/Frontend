@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 import { FaArrowLeft } from "react-icons/fa";
-
+import Navbar from "../components/Navbar/Navbar";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 
 const NotFound = () => {
