@@ -187,5 +187,4 @@ const OTPView = () => {
         </div>
     );
 };
-
 export default OTPView;
