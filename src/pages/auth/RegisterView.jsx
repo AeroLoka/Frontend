@@ -1,9 +1,15 @@
-import React from 'react'
+import React from "react";
+import Register from "../../components/Auth/Register";
+import AuthLayout from "../../components/Auth/AuthLayout";
 
 const RegisterView = () => {
   return (
-    <div>RegisterView</div>
-  )
-}
+    <>
+      <AuthLayout title="Daftar">
+        <Register />
+      </AuthLayout>
+    </>
+  );
+};
 
-export default RegisterView
+export default RegisterView;
