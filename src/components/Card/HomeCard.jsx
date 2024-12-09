@@ -5,7 +5,7 @@ import destination1 from "../../assets/images/destination.png";
 const HomeCard = () => {
   return (
     <>
-      <div className="grid grid-cols-2 p-8 gap-4 lg:grid-cols-5 lg:px-40">
+      <div className="grid grid-cols-2 px-8 pt-2 gap-4 lg:grid-cols-5 lg:px-40">
         <motion.div
           whileHover={{
             scale: 1.05,
