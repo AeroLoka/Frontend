@@ -36,7 +36,7 @@ const Navbar = () => {
 
           <div className="hidden lg:block">
             <a
-              href="#"
+              href="/login"
               className="flex items-center justify-center w-[105px] h-[48px] bg-[#7126B5] text-white rounded-[12px] text-sm font-medium hover:bg-purple-900"
             >
               <img src={loginIcon} alt="Login Icon" className="mr-2 h-5 w-5" />
@@ -75,7 +75,7 @@ const Navbar = () => {
           </div>
           <div>
             <a
-              href="#"
+              href="/login"
               className="flex items-center justify-center w-full h-[48px] bg-[#7126B5] text-white rounded-[12px] text-sm font-medium hover:bg-purple-800"
             >
               <img src={loginIcon} alt="Login Icon" />
