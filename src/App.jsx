@@ -7,7 +7,7 @@ import DetailTicket from "./pages/DetailTicketView";
 import OrderPage from "./pages/OrderPageView";
 import PaymentView from "./pages/PaymentView";
 import PaymentStatusPage from "./pages/PaymentStatusPage";
-
+import NotificationView from "./pages/NotificationView";
 import LoginView from "./pages/auth/LoginView";
 import RegisterView from "./pages/auth/RegisterView";
 import ProfileView from "./pages/ProfileView";
@@ -54,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: `/payment-status`,
         element: <PaymentStatusPage />,
+      },
+      {
+        path: `/notification`,
+        element: <NotificationView />,
       },
     ],
   },
