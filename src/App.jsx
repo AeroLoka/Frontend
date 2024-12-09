@@ -56,7 +56,7 @@ const router = createBrowserRouter([
         element: <PaymentStatusPage />,
       },
       {
-        path: `/notification`,
+        path: `/notifications`,
         element: <NotificationView />,
       },
     ],
