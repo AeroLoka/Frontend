@@ -1,13 +1,24 @@
 import React from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import InputForm from "../form/InputForm";
+import { forgetPassword } from "../../services/auth.service";
+import { toast } from "react-toastify";
 
 const VerifyEmail = () => {
     const methods = useForm();
     const { handleSubmit } = methods;
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async(data) => {
+        try {
+            const emailData = {
+                email: data.email,
+            }
+
+            const response = await forgetPassword(emailData);
+            toast.success(response.message)
+        } catch (error) {
+            toast.error(error.message || 'Email failed')
+        }
     };
     return (
         <>
