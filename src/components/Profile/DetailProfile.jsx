@@ -1,13 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import InputForm from "../form/InputForm";
+import { useSelector } from "react-redux";
+import { getUserById, updateUser } from "../../services/profile.service";
+import { toast } from "react-toastify"; // Make sure to import toast
 
 const DetailProfile = () => {
+    const { id } = useSelector((state) => state.userState.user);
     const methods = useForm();
-    const { handleSubmit } = methods;
+    const { handleSubmit, setValue } = methods;
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const [profile, setProfile] = useState({});
+
+    const profileData = async () => {
+        try {
+            if (id) {
+                const response = await getUserById(id);
+                setProfile(response.data);
+                setValue('name', response.data.name);
+                setValue('email', response.data.email);
+                setValue('phoneNumber', response.data.phoneNumber);
+            }
+        } catch (error) {
+            toast.error(error.response?.data || error.message);
+        }
+    };
+
+    useEffect(() => {
+        profileData();
+    }, [id]);
+
+    const onSubmit = async (data) => {
+        try {
+            console.log('User ID:', id);
+            const response = await updateUser(id, data);
+            toast.success(response.message);
+        } catch (error) {
+            toast.error(error.response?.data || error.message);
+        }
     };
     return (
         <>
@@ -27,12 +57,12 @@ const DetailProfile = () => {
                                     validation={{
                                         required: "First name is required",
                                     }}
-                                    value="John Doe"
+                                    value={profile.name}
                                 />
                             </div>
                             <div>
                                 <InputForm
-                                    name="phone"
+                                    name="phoneNumber"
                                     label="Phone Number"
                                     placeholder="Enter your phone number"
                                     validation={{
@@ -42,7 +72,7 @@ const DetailProfile = () => {
                                             message: "Invalid phone number",
                                         },
                                     }}
-                                    value="081234567890"
+                                    value={profile.phoneNumber}
                                 />
                             </div>
                             <div>
@@ -57,7 +87,7 @@ const DetailProfile = () => {
                                             message: "Invalid email address",
                                         },
                                     }}
-                                    value="user@example.com"
+                                    value={profile.email}
                                 />
                             </div>
                         </div>

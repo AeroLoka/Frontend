@@ -1,15 +1,31 @@
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import InputForm from "../form/InputForm";
+import { login } from "../../services/auth.service";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../features/userSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const methods = useForm();
   const { handleSubmit } = methods;
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const loginData = {
+        identifier: data.identifier,
+        password: data.password
+      }
+      const response = await login(loginData);
+      dispatch(loginUser(response));
+      toast.success(`Selamat datang ${response.data.name}`);
+      navigate('/');
+    } catch (error) {
+      toast.error(error.message || 'Login Failed')
+    }
   };
 
   return (
@@ -17,11 +33,11 @@ const Login = () => {
       <FormProvider {...methods}>
         <form action="" onSubmit={handleSubmit(onSubmit)} className="">
           <InputForm
-            name="emailOrPhone"
+            name="identifier"
             label="Email/No Telepon"
             placeholder="Contoh: johndoe@gmail.com"
             validation={{
-              required: "Email atau nomot telepon wajib diisi",
+              required: "Email atau nomor telepon wajib diisi",
               pattern: {
                 value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                 message: "Format email tidak valid",
@@ -44,6 +60,7 @@ const Login = () => {
           <InputForm
             name="password"
             placeholder="Masukkan password"
+            type="password"
             validation={{
               required: "Password wajib diisi",
               pattern: {

@@ -2,8 +2,23 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import { verifyOtp, resendOtp } from "../../services/auth.service";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { clearOtpData } from "../../features/otpSlice";
 
 const OTPView = () => {
+
+    const dispatch = useDispatch();
+    const {email, otpToken} = useSelector((state)=> state.otpState)
+
+    useEffect(() => {
+        if (!email || !otpToken) {
+            navigate('/register');
+            console.log( email, otpToken );
+        }
+    }, []);
+
     const [timer, setTimer] = useState(60);
     const [canResend, setCanResend] = useState(false);
     const navigate = useNavigate();
@@ -65,10 +80,13 @@ const OTPView = () => {
         const otpValue = data.otp.join("");
         console.log("OTP submitted:", otpValue);
         try {
-            // await verifyOTP(otpValue);
+            const response = await verifyOtp(otpToken, {otp: otpValue});
+            toast.success(response.message);
+            dispatch(clearOtpData());
             navigate("/login");
         } catch (error) {
-            console.error("OTP verification failed:", error);
+            console.error(error);
+            toast.error(error.message);
         }
     };
 
@@ -78,11 +96,12 @@ const OTPView = () => {
 
     const handleResend = async () => {
         try {
-            // await resendOTP();
+            const response = await resendOtp({ email });
+            toast.success(response.message);
             setTimer(60);
             setCanResend(false);
         } catch (error) {
-            console.error("Failed to resend OTP:", error);
+            toast.error(error.message);
         }
     };
 
@@ -168,5 +187,4 @@ const OTPView = () => {
         </div>
     );
 };
-
 export default OTPView;

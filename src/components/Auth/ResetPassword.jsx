@@ -1,13 +1,30 @@
 import React from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import InputForm from "../form/InputForm";
+import { toast } from "react-toastify";
+import { resetPassword } from "../../services/auth.service";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const ResetPassword = () => {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const token = searchParams.get("token");
+
     const methods = useForm();
     const { handleSubmit } = methods;
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+        try {
+            const resetData = {
+                password: data.password,
+                confirm_password: data.confirm_password,
+            };
+            const response = await resetPassword( token, resetData);
+            toast.success(response.message);
+            navigate("/login");
+        } catch (error) {
+            toast.error(error.message || "Reset password failed");
+        }
     };
     return (
         <div className="">
