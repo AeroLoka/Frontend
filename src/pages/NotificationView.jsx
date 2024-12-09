@@ -1,63 +1,51 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import React, { useState } from "react";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
-import Stepper from "../components/Stepper/Stepper";
-
+import SubHeader from "../components/Header/SubHeader";
+import Notification from "../components/Notification/Notification";
 const PaymentStatusPage = () => {
-  const navigate = useNavigate();
-
-  // dummy
+  // dummy data
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      type: "Promosi",
+      title: "Dapatkan Potongan 50% Tiket!",
+      detail: "Syarat dan Ketentuan berlaku!",
+      date: "2024-12-09T14:00:00Z",
+    },
+    {
+      id: 2,
+      type: "Notifikasi",
+      title:
+        "Terdapat perubahan pada jadwal penerbangan kode booking 45GT6. Cek jadwal perjalanan Anda disini!",
+      detail: "",
+      date: "2024-12-08T10:00:00Z",
+    },
+  ]);
 
   return (
     <>
       <LoggedInNavbar />
-      <Stepper />
-      <div className="mt-[90px] flex flex-col text-center items-center">
-        <img
-          src="images/cart_shopping_list.png"
-          className="w-[204px] mb-5"
-          alt="Payment Status"
-        />
-        <div className="mb-12">
-          {isPaymentSuccess ? (
-            <>
-              <p className="text-[#7126B5] text-[14px] font-[500]">Selamat!</p>
-              <p className="text-[14px] font-[500]">
-                Transaksi Pembayaran Tiket Sukses!
-              </p>
-            </>
-          ) : (
-            <>
-              <p className="text-[#FF0000] text-[14px] font-[500]">Maaf!</p>
-              <p className="text-[14px] font-[500]">
-                Transaksi Pembayaran Tiket Gagal.
-              </p>
-            </>
-          )}
+      <SubHeader label="Notifikasi"></SubHeader>
+      {notifications.length === 0 ? (
+        <div className="mt-[90px] flex flex-col text-center items-center">
+          <img
+            src="images/cart_shopping_list.png"
+            className="w-[204px] mb-5"
+            alt="Payment Status"
+          />
+          <h2>Belum ada notif nih.</h2>
         </div>
-        {isPaymentSuccess ? (
-          <>
-            <button className="w-[347px] py-2 bg-[#7126B5] text-white text-base font-[500] rounded-xl hover:bg-[#5c109c] mb-3">
-              Terbitkan Tiket
-            </button>
+      ) : (
+        <div className="mt-[90px] flex flex-col  items-center">
+          {notifications.map((notification, index) => (
+            <div key={notification.id} className="notification-container w-5/6">
+              <Notification notification={notification} />
 
-            <button
-              className="w-[347px] py-2 bg-[#D0B7E6] text-white text-base font-[500] rounded-xl hover:bg-[#9e83b5] mb-3"
-              onClick={() => navigate("/")}
-            >
-              Cari Penerbangan Lain
-            </button>
-          </>
-        ) : (
-          <button
-            className="w-[347px] py-2 bg-[#D0B7E6] text-white text-base font-[500] rounded-xl hover:bg-[#9e83b5] mb-3"
-            onClick={() => navigate("/")}
-          >
-            Cari Penerbangan Lain
-          </button>
-        )}
-      </div>
+              {index < notifications.length - 1 && <hr className="my-4" />}
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 };
