@@ -39,10 +39,10 @@ const resetPassword = async (token, data) => {
     }
 };
 
-const verifyOtp = async (data) => {
+const verifyOtp = async (token, data) => {
     try {
-        console.log("verify OTP:", data);
-        const response = await axiosInstance.post(`/verify-otp`, data);
+        console.log("verify OTP:", data, token);
+        const response = await axiosInstance.post(`/verify-otp?token=${token}`, data);
         return response.data;
     } catch (error) {
         throw error.response?.data || error.message;

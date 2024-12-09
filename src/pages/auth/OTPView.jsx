@@ -19,7 +19,7 @@ const OTPView = () => {
         }
     }, []);
 
-    const [timer, setTimer] = useState(5);
+    const [timer, setTimer] = useState(60);
     const [canResend, setCanResend] = useState(false);
     const navigate = useNavigate();
 
@@ -80,7 +80,7 @@ const OTPView = () => {
         const otpValue = data.otp.join("");
         console.log("OTP submitted:", otpValue);
         try {
-            const response = await verifyOtp({otp: otpValue, token: otpToken});
+            const response = await verifyOtp(otpToken, {otp: otpValue});
             toast.success(response.message);
             dispatch(clearOtpData());
             navigate("/login");
