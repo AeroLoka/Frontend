@@ -210,10 +210,10 @@ const SearchFlightTest = () => {
                       aria-checked={isReturnEnabled}
                     >
                       <div
-                        className={`w-[24px] h-[24px] bg-white rounded-full shadow-xl transition-all duration-300 ease-in-out transform ${
+                        className={`w-[20px] h-[20px] bg-white rounded-full shadow-xl transition-all duration-300 ease-in-out transform ${
                           isReturnEnabled
-                            ? "translate-x-[16px]"
-                            : "translate-x-0"
+                            ? "translate-x-[16px] translate-y-0.5"
+                            : "translate-x-[4px] translate-y-0.5"
                         }`}
                       ></div>
                     </div>
