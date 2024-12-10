@@ -23,7 +23,6 @@ import VerifyEmailView from "./pages/auth/VerifyEmailView";
 import ResetPasswordView from "./pages/auth/ResetPasswordView";
 import OTPView from "./pages/auth/OTPView";
 import NotFound from "./pages/NotFound";
-import OrderHistory from "./pages/OrderHistoryView";
 
 const router = createBrowserRouter([
   {

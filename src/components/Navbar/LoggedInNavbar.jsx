@@ -20,7 +20,9 @@ const LoggedInNavbar = () => {
       <nav className="w-full h-[84px] bg-white shadow-md fixed top-0 left-0 right-0 z-50">
         <div className="container mx-auto h-full flex items-center justify-between px-4">
           <div className="flex items-center">
-            <img src={logo} alt="Logo" className="h-[53px]" />
+            <a href="/">
+              <img src={logo} alt="Logo" className="h-[53px]" />
+            </a>
           </div>
 
           <div className="flex-1 mx-8 hidden lg:block">
@@ -40,7 +42,7 @@ const LoggedInNavbar = () => {
 
           <div className="hidden lg:flex gap-6 ">
             <NavLink
-              to="/list"
+              to="/order-history"
               className={({ isActive }) =>
                 isActive ? "text-blue-500" : "text-gray-500"
               }
@@ -50,7 +52,7 @@ const LoggedInNavbar = () => {
             </NavLink>
 
             <NavLink
-              to="/notification"
+              to="/notifications"
               className={({ isActive }) =>
                 isActive ? "text-blue-500" : "text-gray-500"
               }
@@ -101,7 +103,7 @@ const LoggedInNavbar = () => {
           </div>
           <div>
             <NavLink
-              to="/list"
+              to="/order-history"
               className={({ isActive }) =>
                 isActive ? "text-blue-500" : "text-gray-500"
               }

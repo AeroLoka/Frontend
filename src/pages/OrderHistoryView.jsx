@@ -3,6 +3,7 @@ import OrderCard from "../components/Card/OrderCard";
 import OrderDetailCard from "../components/Card/OrderDetailCard";
 import Navbar from "../components/Navbar/Navbar";
 import HeaderOrder from "../components/Header/HeaderOrder";
+import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 
 const OrderHistory = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -200,7 +201,7 @@ const OrderHistory = () => {
 
   return (
     <>
-      <Navbar />
+      <LoggedInNavbar />
       <HeaderOrder
         onFilterDate={handleDateFilter}
         onSearchLocation={handleLocationSearch}
