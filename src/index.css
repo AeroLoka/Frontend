@@ -4,8 +4,14 @@
 @tailwind utilities;
 
 body {
-    margin: 0;
-    font-family: "Poppins", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* Add your global styles here */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
 }
