@@ -18,6 +18,7 @@ import ProfileView from "./pages/ProfileView";
 import { store } from "./store";
 
 import ButtonChange from "./components/Button/ButtonChange";
+import OrderHistory from "./pages/OrderHistoryView";
 import VerifyEmailView from "./pages/auth/VerifyEmailView";
 import ResetPasswordView from "./pages/auth/ResetPasswordView";
 import OTPView from "./pages/auth/OTPView";
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
         element: <PaymentStatusPage />,
       },
       {
+        path: `/order-history`,
+        element: <OrderHistory />,
+      },
+      {
         path: `/notifications`,
         element: <NotificationView />,
       },
@@ -70,14 +75,6 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginView />,
-  },
-  {
-    path: "/forget-password",
-    element: <VerifyEmailView />,
-  },
-  {
-    path: "/reset-password",
-    element: <ResetPasswordView />,
   },
   {
     path: "/register",
