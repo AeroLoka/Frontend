@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 import SubHeader from "../components/Header/SubHeader";
 import Notification from "../components/Notification/Notification";
-const PaymentStatusPage = () => {
+const NotificationView = () => {
   // dummy data
   const [notifications, setNotifications] = useState([
     {
@@ -111,4 +111,4 @@ const PaymentStatusPage = () => {
   );
 };
 
-export default PaymentStatusPage;
+export default NotificationView;

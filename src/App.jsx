@@ -21,6 +21,7 @@ import ButtonChange from "./components/Button/ButtonChange";
 import VerifyEmailView from "./pages/auth/VerifyEmailView";
 import ResetPasswordView from "./pages/auth/ResetPasswordView";
 import OTPView from "./pages/auth/OTPView";
+import NotFound from "./pages/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -56,7 +57,7 @@ const router = createBrowserRouter([
         element: <PaymentStatusPage />,
       },
       {
-        path: `/notification`,
+        path: `/notifications`,
         element: <NotificationView />,
       },
     ],
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
   {
     path: "/activation/otp",
     element: <OTPView />,
+  },
+  {
+    path: "/*",
+    element: <NotFound />,
   },
 ]);
 
