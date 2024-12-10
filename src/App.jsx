@@ -19,6 +19,9 @@ import { store } from "./store";
 
 import ButtonChange from "./components/Button/ButtonChange";
 import OrderHistory from "./pages/OrderHistoryView";
+import VerifyEmailView from "./pages/auth/VerifyEmailView";
+import ResetPasswordView from "./pages/auth/ResetPasswordView";
+import OTPView from "./pages/auth/OTPView";
 import NotFound from "./pages/NotFound";
 
 const router = createBrowserRouter([
@@ -53,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: `/payment-status`,
         element: <PaymentStatusPage />,
+      },
+      {
+        path: `/order-history`,
+        element: <OrderHistory />,
       },
       {
         path: `/notifications`,
