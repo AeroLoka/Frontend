@@ -3,22 +3,22 @@ import { getAllFlights } from "../../services/home.service.js";
 import { motion } from "framer-motion";
 import destination1 from "../../assets/images/destination.png";
 
-const HomeCard = () => {
-  const [flights, setFlights] = useState([]);
+const HomeCard = ({ flights }) => {
+  // const [flights, setFlights] = useState([]);
 
-  useEffect(() => {
-    const fetchFlights = async () => {
-      try {
-        const response = await getAllFlights({ limit: 5, page: 1 });
-        setFlights(response.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFlights();
-  }, []);
+  // useEffect(() => {
+  //   const fetchFlights = async () => {
+  //     try {
+  //       const response = await getAllFlights({ limit: 5, page: 1 });
+  //       setFlights(response.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchFlights();
+  // }, []);
 
   return (
     <>
