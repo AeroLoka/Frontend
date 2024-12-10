@@ -22,7 +22,7 @@ const HomeCard = ({ flights }) => {
 
   return (
     <>
-      <div className="grid grid-cols-2 px-8 pt-2 gap-4 lg:grid-cols-5 lg:px-40">
+      <div className="grid grid-cols-2 px-8 pt-2 gap-4 lg:grid-cols-5 lg:px-20">
         {flights.map((flight) =>
           flight.originCity && flight.destinationCity && flight.airlines ? (
             <motion.div
@@ -35,7 +35,7 @@ const HomeCard = ({ flights }) => {
                 boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.20)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="relative flex flex-col items-center justify-center px-2 py-5 bg-white rounded shadow-lg p-3"
+              className="relative flex flex-col items-center justify-center px-2 py-5 bg-white rounded-lg shadow-lg p-3"
             >
               <div className="relative mb-3 w-full">
                 <img

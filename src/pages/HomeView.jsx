@@ -8,6 +8,7 @@ import HomeCard from "../components/Card/HomeCard";
 import SearchDestination from "../components/Button/SearchButton";
 import DiscountBanner from "../components/Banner/Banner";
 import SearchFlight from "../components/Flight/SearchFlight";
+import SearchFlightTest from "../components/Flight/SearchFlightTest";
 import Pagination from "../components/Pagination/Pagination";
 
 const HomeView = () => {
@@ -188,13 +189,13 @@ const HomeView = () => {
           <DiscountBanner />
         </div>
         <div className="">
-          <SearchFlight />
+          <SearchFlightTest />
         </div>
       </section>
 
-      <section className="container relative mx-auto pt-72">
+      <section className="container mx-auto">
         <div>
-          <h2 className="text-xl font-bold mb-4 px-10 lg:px-40">
+          <h2 className="text-xl font-bold mb-4 px-8 pt-96 mt-36 lg:px-20 lg:pt-24">
             Destinasi Favorit
           </h2>
           <SearchDestination />
