@@ -7,7 +7,7 @@ import DetailTicket from "./pages/DetailTicketView";
 import OrderPage from "./pages/OrderPageView";
 import PaymentView from "./pages/PaymentView";
 import PaymentStatusPage from "./pages/PaymentStatusPage";
-
+import NotificationView from "./pages/NotificationView";
 import LoginView from "./pages/auth/LoginView";
 import RegisterView from "./pages/auth/RegisterView";
 import ProfileView from "./pages/ProfileView";
@@ -19,6 +19,7 @@ import { store } from "./store";
 
 import ButtonChange from "./components/Button/ButtonChange";
 import OrderHistory from "./pages/OrderHistoryView";
+import NotFound from "./pages/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
         element: <PaymentStatusPage />,
       },
       {
+        path: `/notifications`,
+        element: <NotificationView />,
+      },
+      {
         path: `/order-history`,
         element: <OrderHistory />,
       },
@@ -66,6 +71,14 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterView />,
+  },
+  {
+    path: "/activation/otp",
+    element: <OTPView />,
+  },
+  {
+    path: "/*",
+    element: <NotFound />,
   },
 ]);
 
