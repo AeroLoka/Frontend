@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/"
 import FlightModal from "../Modals/FlightModal";
 import PassengerModal from "../Modals/PassengerModal";
 import SeatClassModal from "../Modals/SeatClassModal";
@@ -35,15 +37,10 @@ const SearchFlight = () => {
     if (type === "from") {
       setFrom(location);
       setIsFlightFromModalOpen(false);
-      console.log(location);
     } else if (type === "to") {
       setTo(location);
       setIsFlightToModalOpen(false);
-      console.log(to);
     }
-    console.log("luar");
-
-    setIsFlightModalOpen(false);
   };
 
   const [departureDate, setDepartureDate] = useState("");
@@ -68,9 +65,9 @@ const SearchFlight = () => {
   };
 
   const [seatClass, setSeatClass] = useState("");
+
   const handleSeatClassChange = (selectedClass) => {
     setSeatClass(selectedClass);
-    console.log("Selected Seat Class:", selectedClass);
   };
 
   const handleSearch = (e) => {
@@ -123,7 +120,7 @@ const SearchFlight = () => {
             Pilih Jadwal Penerbangan spesial di
             <span className="text-[#7126B5]"> Tiketku!</span>
           </h2>
-          <form action="">
+          <form action="" onSubmit={handleSearch}>
             <div className="grid grid-cols-1 gap-4 w-full items-center mb-5 lg:grid-cols-[1fr_auto_1fr]">
               <div className="flex items-center">
                 <img
@@ -180,25 +177,40 @@ const SearchFlight = () => {
                     <label htmlFor="" className="text-base mb-1 text-[#8A8A8A]">
                       Departure
                     </label>
-                    <input
+                    {/* <input
                       id="departureDate"
                       type="date"
                       value={departureDate}
                       onChange={(e) => setDepartureDate(e.target.value)}
                       className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
+                    /> */}
+                    <DatePicker
+                      selected={departureDate}
+                      onChange={(date) => setDepartureDate(date)}
+                      dateFormat="dd MMMM yyyy"
+                      placeholderText="Pilih tanggal"
+                      className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5]"
                     />
                   </div>
                   <div className="flex flex-col">
                     <label htmlFor="" className="text-base mb-1 text-[#8A8A8A]">
                       Return
                     </label>
-                    <input
+                    {/* <input
                       id="returnDate"
                       type="date"
                       value={returnDate}
                       onChange={(e) => setReturnDate(e.target.value)}
                       disabled={!isReturnEnabled}
                       className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
+                    /> */}
+                    <DatePicker
+                      selected={returnDate}
+                      onChange={(date) => setReturnDate(date)}
+                      dateFormat="dd MMMM yyyy"
+                      placeholderText="Pilih tanggal"
+                      disabled={!isReturnEnabled}
+                      className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5]"
                     />
                   </div>
                   <div className="flex items-center justify-center ml-2">
