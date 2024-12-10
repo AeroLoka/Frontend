@@ -8,7 +8,6 @@ import HomeCard from "../components/Card/HomeCard";
 import SearchDestination from "../components/Button/SearchButton";
 import DiscountBanner from "../components/Banner/Banner";
 import SearchFlight from "../components/Flight/SearchFlight";
-import SearchFlightTest from "../components/Flight/SearchFlightTest";
 import Pagination from "../components/Pagination/Pagination";
 
 const HomeView = () => {
@@ -189,7 +188,7 @@ const HomeView = () => {
           <DiscountBanner />
         </div>
         <div className="">
-          <SearchFlightTest />
+          <SearchFlight />
         </div>
       </section>
 

@@ -117,14 +117,14 @@ const SearchFlight = () => {
         onSeatClassChange={handleSeatClassChange}
       />
 
-      <div className="absolute top-[55%] left-1/2 transform -translate-x-1/2 -translate-y-[75px] z-10">
-        <div className="relative w-[340px] lg:w-[968px] h-[298px] mx-auto bg-white rounded-xl shadow-xl border border-gray-300">
-          <h2 className="text-xl font-bold p-6">
+      <div className="absolute top-64 right-1 left-1 z-10 lg:top-80 lg:mt-3">
+        <div className="p-4 mx-8 bg-white rounded-xl shadow-xl border border-gray-300 md:mx-56">
+          <h2 className="text-xl font-bold py-3 lg:px-1">
             Pilih Jadwal Penerbangan spesial di
             <span className="text-[#7126B5]"> Tiketku!</span>
           </h2>
-          <form action="" onSubmit={handleSearch}>
-            <div className="grid grid-cols-1 px-5 gap-4 w-full items-center lg:grid-cols-[1fr_auto_1fr]">
+          <form action="">
+            <div className="grid grid-cols-1 gap-4 w-full items-center mb-5 lg:grid-cols-[1fr_auto_1fr]">
               <div className="flex items-center">
                 <img
                   src="/icons/fi_flight-takeoff.svg"
@@ -141,7 +141,6 @@ const SearchFlight = () => {
                   className="w-full border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
                 />
               </div>
-
               <div className="flex justify-center">
                 <button className="" onClick={handleSwitch}>
                   <img src="/icons/fi_return.svg" alt="" />
@@ -166,13 +165,17 @@ const SearchFlight = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 p-5 gap-16 w-full">
-              <div className="grid grid-cols-4">
-                <div className="flex items-center">
-                  <div className="flex items-center mr-8">
-                    <img src="/icons/fi_date.svg" alt="" className="mr-2 w-5" />
-                    <p className="block mr-5 text-sm text-[#8A8A8A]">Date</p>
-                  </div>
+            <div className="grid grid-cols-1 w-full mb-5 lg:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr]">
+                <div className="flex items-center mr-6 mb-3">
+                  <img
+                    src="/icons/fi_date.svg"
+                    alt=""
+                    className="mr-2 ml-1 w-5"
+                  />
+                  <p className="block text-sm text-[#8A8A8A]">Date</p>
+                </div>
+                <div className="grid grid-cols-3 lg:grid-cols-[1fr_1fr_auto]">
                   <div className="flex flex-col mr-5">
                     <label htmlFor="" className="text-base mb-1 text-[#8A8A8A]">
                       Departure
@@ -198,7 +201,7 @@ const SearchFlight = () => {
                       className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
                     />
                   </div>
-                  <div className="flex items-center justify-center ml-4">
+                  <div className="flex items-center justify-center ml-2">
                     <div
                       className={`w-[40px] h-[24px] bg-[#4B1979] rounded-full cursor-pointer transition-all duration-300 ease-in-out shadow-xl ${
                         isReturnEnabled ? "bg-[#4B1979]" : "bg-gray-300"
@@ -207,10 +210,10 @@ const SearchFlight = () => {
                       aria-checked={isReturnEnabled}
                     >
                       <div
-                        className={`w-[24px] h-[24px] bg-white rounded-full shadow-xl transition-all duration-300 ease-in-out transform ${
+                        className={`w-[20px] h-[20px] bg-white rounded-full shadow-xl transition-all duration-300 ease-in-out transform ${
                           isReturnEnabled
-                            ? "translate-x-[16px]"
-                            : "translate-x-0"
+                            ? "translate-x-[16px] translate-y-0.5"
+                            : "translate-x-[4px] translate-y-0.5"
                         }`}
                       ></div>
                     </div>
@@ -218,16 +221,16 @@ const SearchFlight = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-3">
-                <div className="flex items-center">
-                  <div className="flex items-center mr-8">
-                    <img
-                      src="/icons/fi_airlane-seat.svg"
-                      alt=""
-                      className="mr-2"
-                    />
-                    <p className="block mr-5 text-sm text-[#8A8A8A]">To</p>
-                  </div>
+              <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr]">
+                <div className="flex items-center mr-6 mb-3">
+                  <img
+                    src="/icons/fi_airlane-seat.svg"
+                    alt=""
+                    className="mr-2 w-5 lg:ml-6"
+                  />
+                  <p className="block text-sm text-[#8A8A8A]">To</p>
+                </div>
+                <div className="grid grid-cols-2">
                   <div className="flex flex-col mr-5">
                     <label
                       htmlFor="passengerCount"
@@ -241,7 +244,7 @@ const SearchFlight = () => {
                       value={`${totalPassengers} Penumpang`}
                       onClick={() => openModal("passenger")}
                       readOnly
-                      className="w-[167px] text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
+                      className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
                     />
                   </div>
                   <div className="flex flex-col">
@@ -257,7 +260,7 @@ const SearchFlight = () => {
                       value={seatClass.label}
                       onClick={() => openModal("seatclass")}
                       readOnly
-                      className="w-[167px] text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
+                      className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
                     />
                   </div>
                 </div>
@@ -266,7 +269,7 @@ const SearchFlight = () => {
 
             <button
               type="submit"
-              className="absolute bottom-0 w-full h-[48px] rounded-bl-xl rounded-br-xl text-[16px] font-bold text-center text-white bg-[#7126B5] hover:bg-purple-900"
+              className="w-full h-[48px] rounded-xl text-[16px] font-bold text-center text-white bg-[#7126B5] hover:bg-purple-900"
             >
               Cari Penerbangan
             </button>
