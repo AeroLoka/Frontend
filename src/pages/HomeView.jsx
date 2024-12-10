@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 // import FormSkeleton from "../components/skeletons/FormSkeleton";
 import { getAllFlights } from "../services/home.service";
 import Navbar from "../components/Navbar/Navbar";
+import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 import HomeCard from "../components/Card/HomeCard";
 import SearchDestination from "../components/Button/SearchButton";
 import DiscountBanner from "../components/Banner/Banner";
@@ -9,6 +11,8 @@ import SearchFlight from "../components/Flight/SearchFlight";
 import Pagination from "../components/Pagination/Pagination";
 
 const HomeView = () => {
+  const { user } = useSelector((state) => state.userState);
+
   const limit = 5;
   const [flights, setFlights] = useState([]);
   const [page, setPage] = useState(1);
@@ -177,7 +181,7 @@ const HomeView = () => {
 
   return (
     <>
-      <Navbar />
+      {user ? <LoggedInNavbar /> : <Navbar />}
 
       <section>
         <div className="relative">
