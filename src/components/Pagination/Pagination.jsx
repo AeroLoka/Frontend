@@ -9,13 +9,19 @@ const Pagination = ({ currPage, totalPages, onPageChange }) => {
 
   const next = () => {
     if (currPage < totalPages) {
-      onPageChange(page + 1);
+      onPageChange(currPage + 1);
     }
   };
 
   return (
     <div className="flex items-center justify-center gap-1 py-1 mt-6">
-      <button onClick={prev} disabled={currPage === 1} className="mx-3">
+      <button
+        onClick={prev}
+        disabled={currPage === 1}
+        className={`mx-3 ${
+          currPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+      >
         <FaAngleLeft />
       </button>
       {Array.from({ length: totalPages }, (_, index) => (
@@ -33,7 +39,13 @@ const Pagination = ({ currPage, totalPages, onPageChange }) => {
           </button>
         </div>
       ))}
-      <button onClick={next} disabled={currPage === 1} className="mx-3">
+      <button
+        onClick={next}
+        disabled={currPage === totalPages}
+        className={`mx-3 ${
+          currPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+      >
         <FaAngleRight />
       </button>
     </div>
