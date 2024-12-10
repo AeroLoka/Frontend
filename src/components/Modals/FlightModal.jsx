@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import searchButton from "../../assets/icons/fi_search.svg";
 
 const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
@@ -9,6 +9,21 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      const handleClickOutside = (e) => {
+        if (modalRef.current && !modalRef.current.contains(e.target)) {
+          onClose();
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [isOpen, onClose]);
 
   const filteredLocations = locations.filter((location) =>
     location.toLowerCase().includes(searchTerm.toLowerCase())
@@ -45,7 +60,10 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
 
   return (
     <div className="fixed inset-0 z-20 bg-black bg-opacity-70 flex justify-center items-center">
-      <div className="w-[700px] h-[300px] bg-white p-6 rounded-lg shadow-xl">
+      <div
+        ref={modalRef}
+        className="w-[90%] h-[350px] bg-white p-6 rounded-lg shadow-xl lg:w-[50%]"
+      >
         <div className="relative w-full flex mb-4">
           <button>
             <img
@@ -62,7 +80,7 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
             onKeyDown={(e) => {
               if (e.key === "Enter") handleSearch();
             }}
-            className="w-full h-[40px] py-5 pl-12 mr-5 rounded-lg border border-[#D0D0D0] focus:outline-none focus:border-[#7126B5]"
+            className="w-full h-[40px] py-5 pl-12 mr-5 cursor-pointer rounded-lg border border-[#D0D0D0] focus:outline-none focus:border-[#7126B5]"
           />
           <button onClick={onClose} className="text-gray-600 text-lg font-bold">
             <img src="/icons/fi_close.svg" alt="" />
@@ -74,19 +92,22 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
             <h2 className="text-lg font-semibold mb-4">Pencarian terkini</h2>
             <p
               onClick={() => setLocations([])}
-              className="text-red-500 font-medium"
+              className="text-red-500 font-medium cursor-pointer"
             >
               Hapus
             </p>
           </div>
 
-          <ul className="space-y-2 h-[130px] overflow-y-auto">
+          <ul className="space-y-1 h-[180px] overflow-y-auto">
             {filteredLocations.length > 0 ? (
               filteredLocations.map((location, index) => (
                 <li
                   key={index}
-                  onClick={() => handleSearch(location)}
-                  className="w-full flex justify-between items-center cursor-pointer pb-3 pr-2 border-b-2 border-[#D0D0D0] focus:outline-none hover:border-[#7126B5]"
+                  onClick={() => {
+                    onSelectFlight(location);
+                    onClose();
+                  }}
+                  className="w-full flex justify-between items-center cursor-pointer p-3 border-1 rounded-lg focus:outline-none hover:bg-[#E2D4F0]"
                 >
                   <span>{location}</span>
                   <button
