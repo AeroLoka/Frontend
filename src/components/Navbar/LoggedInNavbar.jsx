@@ -50,7 +50,7 @@ const LoggedInNavbar = () => {
             </NavLink>
 
             <NavLink
-              to="/notifications"
+              to="/notification"
               className={({ isActive }) =>
                 isActive ? "text-blue-500" : "text-gray-500"
               }
