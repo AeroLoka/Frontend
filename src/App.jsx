@@ -76,6 +76,14 @@ const router = createBrowserRouter([
     element: <LoginView />,
   },
   {
+    path: "/forget-password",
+    element: <VerifyEmailView />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPasswordView />,
+  },
+  {
     path: "/register",
     element: <RegisterView />,
   },
