@@ -65,25 +65,24 @@ const HomeCard = ({ flights }) => {
               </div>
 
               <div className="flex flex-col gap-0.5 text-left w-full md:gap-1.5">
-                <p className="text-xl font-semibold flex flex-wrap items-center md:text-sm">
+                <p className="text-base font-semibold flex flex-wrap items-center md:text-sm">
                   <MdLocationOn className="mr-1 text-xl text-[#7126B5] md:text-lg" />
                   {flight.originCity.name}{" "}
                   <FaArrowRight className="mx-1 text-[#7126B5]" />{" "}
                   {flight.destinationCity.name}
                 </p>
-                <p className="text-xl text-[#7126B5] font-bold flex items-center md:text-sm">
+                <p className="text-case text-[#7126B5] font-bold flex items-center md:text-sm">
                   <FaPlaneDeparture className="mr-2 text-lg md:text-sm" />
                   {flight.airlines.name}
                 </p>
-                <p className="text-base font-medium flex items-center md:text-xs">
-                  <FaCalendarAlt className="mr-2 text-lg text-[#7126B5] md:text-sm" />
+                <p className="text-xs font-medium flex items-center">
+                  <FaCalendarAlt className="mr-2 text-sm text-[#7126B5]" />
                   {formatDateRange(flight.departure, flight.return)}
                 </p>
-                <p className="text-base font-medium flex items-center md:text-xs">
-                  <FaDollarSign className="mr-2 text-lg text-[#7126B5] md:text-sm" />
+                <p className="text-xs font-medium flex items-center md:text-xs">
+                  <FaDollarSign className="mr-2 text-sm text-[#7126B5]" />
                   Mulai dari{" "}
                   <span className="text-red-500 font-bold">
-                    {" "}
                     IDR {flight.price.toLocaleString()}
                   </span>
                 </p>
