@@ -14,7 +14,7 @@ const Pagination = ({ currPage, totalPages, onPageChange }) => {
   };
 
   return (
-    <div className="flex items-center justify-center gap-1 py-1 mt-6">
+    <div className="flex items-center justify-center gap-1 mt-10">
       <button
         onClick={prev}
         disabled={currPage === 1}
