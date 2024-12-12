@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/"
+import "react-datepicker/dist/";
 import FlightModal from "../Modals/FlightModal";
 import PassengerModal from "../Modals/PassengerModal";
 import SeatClassModal from "../Modals/SeatClassModal";
@@ -61,7 +61,7 @@ const SearchFlight = () => {
 
   const handlePassengerChange = (updatedPassengers) => {
     setPassengers(updatedPassengers);
-    closeModal();
+    setIsPassengerModalOpen(false);
   };
 
   const [seatClass, setSeatClass] = useState("");
@@ -131,11 +131,11 @@ const SearchFlight = () => {
                 <p className="block mr-5 text-sm text-[#8A8A8A]">From</p>
                 <input
                   id="fromFlight"
-                  type="text"
+                  placeholder="Cari kota asal"
                   value={from}
                   onClick={() => openModal("from")}
                   onChange={(e) => setFrom(e.target.value)}
-                  className="w-full border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
+                  className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base"
                 />
               </div>
               <div className="flex justify-center">
@@ -153,17 +153,17 @@ const SearchFlight = () => {
                 <p className="block mr-5 text-sm text-[#8A8A8A]">To</p>
                 <input
                   id="toFlight"
-                  type="text"
+                  placeholder="Cari kota tujuan"
                   value={to}
                   onClick={() => openModal("to")}
                   onChange={(e) => setTo(e.target.value)}
-                  className="w-full border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
+                  className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 w-full mb-5 lg:grid-cols-2 gap-4">
-              <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr]">
+              <div className="grid grid-cols-1 md:grid-cols-[auto_1fr]">
                 <div className="flex items-center mr-6 mb-3">
                   <img
                     src="/icons/fi_date.svg"
@@ -172,9 +172,12 @@ const SearchFlight = () => {
                   />
                   <p className="block text-sm text-[#8A8A8A]">Date</p>
                 </div>
-                <div className="grid grid-cols-3 lg:grid-cols-[1fr_1fr_auto]">
+                <div className="grid grid-cols-2">
                   <div className="flex flex-col mr-5">
-                    <label htmlFor="" className="text-base mb-1 text-[#8A8A8A]">
+                    <label
+                      htmlFor=""
+                      className="text-sm mb-1 text-[#8A8A8A] lg:text-base"
+                    >
                       Departure
                     </label>
                     {/* <input
@@ -189,11 +192,14 @@ const SearchFlight = () => {
                       onChange={(date) => setDepartureDate(date)}
                       dateFormat="dd MMMM yyyy"
                       placeholderText="Pilih tanggal"
-                      className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5]"
+                      className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
                     />
                   </div>
                   <div className="flex flex-col">
-                    <label htmlFor="" className="text-base mb-1 text-[#8A8A8A]">
+                    <label
+                      htmlFor=""
+                      className="text-sm mb-1 text-[#8A8A8A] lg:text-base"
+                    >
                       Return
                     </label>
                     {/* <input
@@ -210,10 +216,14 @@ const SearchFlight = () => {
                       dateFormat="dd MMMM yyyy"
                       placeholderText="Pilih tanggal"
                       disabled={!isReturnEnabled}
-                      className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5]"
+                      className={`w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base ${
+                        isReturnEnabled
+                          ? "placeholder:text-[#7126B5]"
+                          : "placeholder:text-gray-400"
+                      }`}
                     />
                   </div>
-                  <div className="flex items-center justify-center ml-2">
+                  <div className="absolute top-[48%] right-14 flex items-center justify-center ml-2 md:right-[50%]">
                     <div
                       className={`w-[40px] h-[24px] bg-[#4B1979] rounded-full cursor-pointer transition-all duration-300 ease-in-out shadow-xl ${
                         isReturnEnabled ? "bg-[#4B1979]" : "bg-gray-300"
@@ -246,33 +256,38 @@ const SearchFlight = () => {
                   <div className="flex flex-col mr-5">
                     <label
                       htmlFor="passengerCount"
-                      className="text-base mb-1 text-[#8A8A8A]"
+                      className="text-sm mb-1 text-[#8A8A8A] lg:text-base"
                     >
                       Passengers
                     </label>
                     <input
                       id="passengerCount"
-                      type="text"
-                      value={`${totalPassengers} Penumpang`}
+                      value={
+                        totalPassengers > 0
+                          ? `${totalPassengers} Penumpang`
+                          : "0 Penumpang"
+                      }
                       onClick={() => openModal("passenger")}
                       readOnly
-                      className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
+                      className={`w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base ${
+                        totalPassengers > 0 ? "text-black" : "text-gray-400"
+                      }`}
                     />
                   </div>
                   <div className="flex flex-col">
                     <label
                       htmlFor="seatClass"
-                      className="text-base mb-1 text-[#8A8A8A]"
+                      className="text-sm mb-1 text-[#8A8A8A] lg:text-base"
                     >
                       Seat Class
                     </label>
                     <input
                       id="seatClass"
-                      type="text"
                       value={seatClass.label}
                       onClick={() => openModal("seatclass")}
+                      placeholder="Pilih seat class"
                       readOnly
-                      className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
+                      className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base"
                     />
                   </div>
                 </div>

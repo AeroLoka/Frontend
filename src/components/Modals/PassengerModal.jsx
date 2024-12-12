@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
 const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
@@ -20,18 +20,20 @@ const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
     },
   ];
 
+  const [tempPassengers, setTempPassengers] = useState(passengers);
+
   const handleIncrement = (type) => {
-    onPassengerChange({
-      ...passengers,
-      [type]: passengers[type] + 1,
+    setTempPassengers({
+      ...tempPassengers,
+      [type]: tempPassengers[type] + 1,
     });
   };
 
   const handleDecrement = (type) => {
-    if (passengers[type] > 0) {
-      onPassengerChange({
-        ...passengers,
-        [type]: passengers[type] - 1,
+    if (tempPassengers[type] > 0) {
+      setTempPassengers({
+        ...tempPassengers,
+        [type]: tempPassengers[type] - 1,
       });
     }
   };
@@ -53,6 +55,11 @@ const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
+
+  const handleSave = () => {
+    onPassengerChange(tempPassengers);
+    onClose();
+  }
 
   return (
     <div className="fixed inset-0 z-20 bg-black bg-opacity-70 flex justify-center items-center">
@@ -82,12 +89,12 @@ const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
                 </button>
                 <span
                   className={`w-14 h-10 text-center flex items-center justify-center rounded-md border ${
-                    passengers[type] > 0
+                    tempPassengers[type] > 0
                       ? "border-[#7126B5] text-[#7126B5] border-2 font-semibold"
                       : "border-[#D0D0D0] text-[#D0D0D0]"
                   }`}
                 >
-                  {passengers[type]}
+                  {tempPassengers[type]}
                 </span>
                 <button
                   onClick={() => handleIncrement(type)}
@@ -101,7 +108,7 @@ const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
         </div>
         <div className="mt-6 flex justify-end">
           <button
-            onClick={(console.log(passengers), onClose)}
+            onClick={(console.log(tempPassengers), handleSave)}
             className="w-[150px] p-3 py-2 bg-[#4B1979] text-white rounded-lg"
           >
             Simpan
