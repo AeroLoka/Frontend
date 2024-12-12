@@ -105,7 +105,7 @@ const OTPView = () => {
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto justify-center grid items-center h-[95vh]">
+    <div className="w-full max-w-2xl mx-auto justify-center grid items-center h-[95vh]">
       <div className="bg-white rounded-lg p-8">
         <div className="flex space-x-4">
           <button className="-mt-6" onClick={handleBack}>
@@ -115,7 +115,7 @@ const OTPView = () => {
         </div>
         <div className="mb-6">
           <p className="text-gray-600 mb-4">
-            Masukkan 6 digit kode yang dikirimkan ke <b>user@example.com</b>
+            Masukkan 6 digit kode yang dikirimkan ke <b>{email}</b>
           </p>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 ">
             <div className="flex gap-2 justify-between mb-6 max-w-sm mx-auto">
