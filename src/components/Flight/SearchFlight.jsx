@@ -3,12 +3,15 @@ import Datepicker from "react-tailwindcss-datepicker";
 import FlightModal from "../Modals/FlightModal";
 import PassengerModal from "../Modals/PassengerModal";
 import SeatClassModal from "../Modals/SeatClassModal";
+import { Controller, useForm } from "react-hook-form";
+import { p } from "framer-motion/client";
 
 const SearchFlight = () => {
   const [isFlightFromModalOpen, setIsFlightFromModalOpen] = useState(false);
   const [isFlightToModalOpen, setIsFlightToModalOpen] = useState(false);
   const [isPassengerModalOpen, setIsPassengerModalOpen] = useState(false);
   const [isSeatClassModalOpen, setIsSeatClassModalOpen] = useState(false);
+  // const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
@@ -16,6 +19,14 @@ const SearchFlight = () => {
   const [returnDate, setReturnDate] = useState("");
   const [isReturnEnabled, setIsReturnEnabled] = useState(true);
   const [seatClass, setSeatClass] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    control,
+  } = useForm();
 
   const [passengers, setPassengers] = useState({
     Dewasa: 0,
@@ -62,28 +73,38 @@ const SearchFlight = () => {
   const handlePassengerChange = (updatedPassengers) => {
     setPassengers(updatedPassengers);
     setIsPassengerModalOpen(false);
+    setValue("passengers", updatedPassengers);
   };
 
   const handleSeatClassChange = (selectedClass) => {
     setSeatClass(selectedClass);
     setIsSeatClassModalOpen(false);
+    setValue("seatClass", selectedClass);
   };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const searchFlight = {
-      from,
-      to,
-      departureDate,
-      returnDate: isReturnEnabled ? returnDate : null,
-      passengers,
-      seatClass,
-    };
-    console.log("Data untuk search ticket: ", searchFlight);
+  // const handleDatePickerOpen = (datepickerType) => {
+  //   setIsDatePickerOpen(datepickerType);
+  // };
+
+  // const handleDatePickerClose = () => {
+  //   setIsDatePickerOpen(false);
+  // };
+
+  //
+
+  const handleSearch = (data) => {
+    console.log("Data untuk search ticket: ", data);
   };
 
   return (
     <div>
+      {/* {isDatePickerOpen && (
+        <div
+          className="fixed inset-0 bg-black opacity-50 z-40"
+          onClick={handleDatepickerClose}
+        ></div>
+      )} */}
+
       <FlightModal
         isOpen={isFlightFromModalOpen}
         onClose={() => setIsFlightFromModalOpen(false)}
@@ -119,7 +140,7 @@ const SearchFlight = () => {
             Pilih Jadwal Penerbangan spesial di
             <span className="text-[#7126B5]"> Tiketku!</span>
           </h2>
-          <form action="" onSubmit={handleSearch}>
+          <form action="" onSubmit={handleSubmit(handleSearch)}>
             <div className="grid grid-cols-1 gap-4 w-full items-center mb-5 lg:grid-cols-[1fr_auto_1fr]">
               <div className="flex items-center">
                 <img
@@ -128,14 +149,22 @@ const SearchFlight = () => {
                   className="mr-2"
                 />
                 <p className="block mr-5 text-sm text-[#8A8A8A]">From</p>
-                <input
-                  id="fromFlight"
-                  placeholder="Cari kota asal"
-                  value={from}
-                  onClick={() => openModal("from")}
-                  onChange={(e) => setFrom(e.target.value)}
-                  className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base"
-                />
+                <div className="flex flex-col w-full">
+                  <input
+                    id="fromFlight"
+                    placeholder="Cari kota asal"
+                    value={from}
+                    onClick={() => openModal("from")}
+                    onChange={(e) => setFrom(e.target.value)}
+                    className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base"
+                    {...register("from", { required: "Kota asal wajib diisi" })}
+                  />
+                  {errors.from && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.from?.message}
+                    </p>
+                  )}
+                </div>
               </div>
               <div className="flex justify-center">
                 <button className="" onClick={handleSwitch}>
@@ -150,14 +179,22 @@ const SearchFlight = () => {
                   className="mr-2"
                 />
                 <p className="block mr-5 text-sm text-[#8A8A8A]">To</p>
-                <input
-                  id="toFlight"
-                  placeholder="Cari kota tujuan"
-                  value={to}
-                  onClick={() => openModal("to")}
-                  onChange={(e) => setTo(e.target.value)}
-                  className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base"
-                />
+                <div className="flex flex-col w-full">
+                  <input
+                    id="toFlight"
+                    placeholder="Cari kota tujuan"
+                    value={to}
+                    onClick={() => openModal("to")}
+                    onChange={(e) => setTo(e.target.value)}
+                    className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base"
+                    {...register("to", { required: "Kota tujuan wajib diisi" })}
+                  />
+                  {errors.from && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.from?.message}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -176,45 +213,77 @@ const SearchFlight = () => {
                     <label className="text-sm mb-1 text-[#8A8A8A] lg:text-base">
                       Departure
                     </label>
-                    <Datepicker
-                      primaryColor={"purple"}
-                      showShortcuts={true}
-                      asSingle={true}
-                      value={departureDate}
-                      onChange={(date) => {
-                        setDepartureDate(date);
-                        if (isReturnEnabled && !returnDate) {
-                          setReturnDate(date);
-                        }
-                      }}
-                      displayFormat="DD MMMM YYYY"
-                      placeholder="Pilih tanggal"
-                      inputClassName="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
+                    <Controller
+                      control={control}
+                      name="departureDate"
+                      rules={{ required: "Tanggal berangkat wajib diisi" }}
+                      render={({ field }) => (
+                        <Datepicker
+                          {...field}
+                          primaryColor={"purple"}
+                          showShortcuts={true}
+                          asSingle={true}
+                          value={departureDate}
+                          onChange={(date) => {
+                            setDepartureDate(date);
+                            if (isReturnEnabled && !returnDate) {
+                              setReturnDate(date);
+                            }
+                          }}
+                          displayFormat="DD MMMM YYYY"
+                          placeholder="Pilih tanggal"
+                          inputClassName="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
+                          // onClick={() => handleDatePickerOpen("departure")}
+                        />
+                      )}
                     />
+                    {errors.departureDate && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.departureDate?.message}
+                      </p>
+                    )}
                   </div>
                   <div className="flex flex-col mr-3">
                     <label className="text-sm mb-1 text-[#8A8A8A] lg:text-base">
                       Return
                     </label>
-                    <Datepicker
-                      primaryColor={"purple"}
-                      showShortcuts={true}
-                      asSingle={true}
-                      value={returnDate}
-                      onChange={(date) => {
-                        if (isReturnEnabled) {
-                          setReturnDate(date);
-                        }
+                    <Controller
+                      control={control}
+                      name="returnDate"
+                      rules={{
+                        required: isReturnEnabled
+                          ? "Tanggal pulang wajib diisi"
+                          : false,
                       }}
-                      displayFormat="DD MMMM YYYY"
-                      placeholder="Pilih tanggal"
-                      disabled={!isReturnEnabled}
-                      inputClassName={`w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base ${
-                        isReturnEnabled
-                          ? "placeholder:text-[#7126B5]"
-                          : "placeholder:text-gray-400"
-                      }`}
+                      render={({ field }) => (
+                        <Datepicker
+                          {...field}
+                          primaryColor={"purple"}
+                          showShortcuts={true}
+                          asSingle={true}
+                          value={returnDate}
+                          onChange={(date) => {
+                            if (isReturnEnabled) {
+                              setReturnDate(date);
+                            }
+                          }}
+                          displayFormat="DD MMMM YYYY"
+                          placeholder="Pilih tanggal"
+                          disabled={!isReturnEnabled}
+                          inputClassName={`w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base ${
+                            isReturnEnabled
+                              ? "placeholder:text-[#7126B5]"
+                              : "placeholder:text-gray-400"
+                          }`}
+                          // onClick={() => handleDatePickerOpen("return")}
+                        />
+                      )}
                     />
+                    {errors.returnDate && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.returnDate?.message}
+                      </p>
+                    )}
                   </div>
                   <div className="absolute top-[48%] right-14 flex items-center justify-center ml-2 md:right-[50%] lg:top-[46%]">
                     <div
@@ -241,7 +310,7 @@ const SearchFlight = () => {
                   <img
                     src="/icons/fi_airlane-seat.svg"
                     alt="Airlane Seat Icon"
-                    className="mr-2 w-5 lg:ml-6"
+                    className="mr-2 w-7 lg:ml-6"
                   />
                   <p className="block text-sm text-[#8A8A8A]">To</p>
                 </div>
@@ -250,32 +319,61 @@ const SearchFlight = () => {
                     <label className="text-sm mb-1 text-[#8A8A8A] lg:text-base">
                       Passengers
                     </label>
-                    <input
-                      id="passengerCount"
-                      value={
-                        totalPassengers > 0
-                          ? `${totalPassengers} Penumpang`
-                          : "0 Penumpang"
-                      }
-                      onClick={() => openModal("passenger")}
-                      readOnly
-                      className={`w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base ${
-                        totalPassengers > 0 ? "text-black" : "text-gray-400"
-                      }`}
+                    <Controller
+                      control={control}
+                      name="passengers"
+                      rules={{
+                        validate: (value) =>
+                          totalPassengers > 0 || "Harap input jumlah penumpang",
+                      }}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          id="passengerCount"
+                          value={
+                            totalPassengers > 0
+                              ? `${totalPassengers} Penumpang`
+                              : "0 Penumpang"
+                          }
+                          onClick={() => openModal("passenger")}
+                          readOnly
+                          className={`w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base ${
+                            totalPassengers > 0 ? "text-black" : "text-gray-400"
+                          }`}
+                        />
+                      )}
                     />
+                    {errors.passengers && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.passengers?.message}
+                      </p>
+                    )}
                   </div>
                   <div className="flex flex-col">
                     <label className="text-sm mb-1 text-[#8A8A8A] lg:text-base">
                       Seat Class
                     </label>
-                    <input
-                      id="seatClass"
-                      value={seatClass.label}
-                      onClick={() => openModal("seatclass")}
-                      placeholder="Pilih seat class"
-                      readOnly
-                      className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base"
+                    <Controller
+                      control={control}
+                      name="seatClass"
+                      rules={{ required: "Harap pilih seat class" }}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          id="seatClass"
+                          value={seatClass?.label || ""}
+                          onClick={() => openModal("seatclass")}
+                          placeholder="Pilih seat class"
+                          readOnly
+                          className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base"
+                        />
+                      )}
                     />
+                    {errors.seatClass && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.seatClass?.message}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
