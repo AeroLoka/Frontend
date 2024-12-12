@@ -113,7 +113,7 @@ const SearchFlight = () => {
         onSeatClassChange={handleSeatClassChange}
       />
 
-      <div className="absolute top-64 right-1 left-1 z-10 lg:top-80 lg:mt-3">
+      <div className="absolute top-56 right-1 left-1 z-10 lg:top-80 lg:mt-3">
         <div className="p-4 mx-8 bg-white rounded-xl shadow-xl border border-gray-300 md:mx-56">
           <h2 className="text-xl font-bold py-3 lg:px-1">
             Pilih Jadwal Penerbangan spesial di
@@ -163,7 +163,7 @@ const SearchFlight = () => {
 
             <div className="grid grid-cols-1 w-full mb-5 lg:grid-cols-2 gap-4">
               <div className="grid grid-cols-1 md:grid-cols-[auto_1fr]">
-                <div className="flex items-center mr-6 mb-3">
+                <div className="flex items-center mr-6 mb-3 mt-3 md:mt-0">
                   <img
                     src="/icons/fi_date.svg"
                     alt="Date Icon"
@@ -172,7 +172,7 @@ const SearchFlight = () => {
                   <p className="block text-sm text-[#8A8A8A]">Date</p>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="flex flex-col mr-5">
+                  <div className="flex flex-col mr-3">
                     <label className="text-sm mb-1 text-[#8A8A8A] lg:text-base">
                       Departure
                     </label>
@@ -192,7 +192,7 @@ const SearchFlight = () => {
                       inputClassName="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
                     />
                   </div>
-                  <div className="flex flex-col">
+                  <div className="flex flex-col mr-3">
                     <label className="text-sm mb-1 text-[#8A8A8A] lg:text-base">
                       Return
                     </label>
@@ -237,7 +237,7 @@ const SearchFlight = () => {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr]">
-                <div className="flex items-center mr-6 mb-3">
+                <div className="flex items-center mr-6 mb-3 mt-3 md:mt-0">
                   <img
                     src="/icons/fi_airlane-seat.svg"
                     alt="Airlane Seat Icon"
@@ -246,7 +246,7 @@ const SearchFlight = () => {
                   <p className="block text-sm text-[#8A8A8A]">To</p>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="flex flex-col mr-5">
+                  <div className="flex flex-col mr-3">
                     <label className="text-sm mb-1 text-[#8A8A8A] lg:text-base">
                       Passengers
                     </label>
