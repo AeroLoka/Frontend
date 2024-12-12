@@ -40,7 +40,7 @@ const DetailSection = ({
       <div>
         <div className="flex items-center gap-[8px] mt-[12px]">
           <img
-            src="/src/assets/icons/Thumbnail.svg"
+            src="/icons/Thumbnail.svg"
             alt="Airline Logo"
             className="w-6 h-6"
           />
