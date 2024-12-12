@@ -107,7 +107,7 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
                     onSelectFlight(location);
                     onClose();
                   }}
-                  className="w-full flex justify-between items-center cursor-pointer p-3 border-1 rounded-lg focus:outline-none hover:bg-[#E2D4F0]"
+                  className="w-full flex justify-between items-center cursor-pointer p-3 border border-[#E2D4F0] rounded-lg focus:outline-none hover:bg-[#E2D4F0]"
                 >
                   <span>{location}</span>
                   <button
