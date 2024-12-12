@@ -216,7 +216,7 @@ const SearchFlight = () => {
                       }`}
                     />
                   </div>
-                  <div className="absolute top-[48%] right-14 flex items-center justify-center ml-2 md:right-[50%]">
+                  <div className="absolute top-[48%] right-14 flex items-center justify-center ml-2 md:right-[50%] lg:top-[46%]">
                     <div
                       className={`w-[40px] h-[24px] bg-[#4B1979] rounded-full cursor-pointer transition-all duration-300 ease-in-out shadow-xl ${
                         isReturnEnabled ? "bg-[#4B1979]" : "bg-gray-300"
