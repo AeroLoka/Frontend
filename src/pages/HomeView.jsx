@@ -194,7 +194,7 @@ const HomeView = () => {
 
       <section className="container mx-auto">
         <div>
-          <h2 className="text-xl font-bold mb-4 px-8 pt-96 mt-36 md:pt-72 lg:px-20 lg:pt-24">
+          <h2 className="text-xl font-bold mb-4 px-8 pt-96 mt-40 md:pt-72 lg:px-20 lg:pt-24">
             Destinasi Favorit
           </h2>
           <SearchDestination />
