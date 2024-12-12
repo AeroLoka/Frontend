@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
 const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
+  const [tempPassengers, setTempPassengers] = useState(passengers);
+  const modalRef = useRef(null);
+
   const passengerDetails = [
     {
       type: "Dewasa",
@@ -20,8 +23,6 @@ const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
     },
   ];
 
-  const [tempPassengers, setTempPassengers] = useState(passengers);
-
   const handleIncrement = (type) => {
     setTempPassengers({
       ...tempPassengers,
@@ -38,7 +39,10 @@ const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
     }
   };
 
-  const modalRef = useRef(null);
+  const handleSave = () => {
+    onPassengerChange(tempPassengers);
+    onClose();
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -47,7 +51,6 @@ const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
           onClose();
         }
       };
-
       document.addEventListener("mousedown", handleClickOutside);
       return () =>
         document.removeEventListener("mousedown", handleClickOutside);
@@ -55,11 +58,6 @@ const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
-
-  const handleSave = () => {
-    onPassengerChange(tempPassengers);
-    onClose();
-  }
 
   return (
     <div className="fixed inset-0 z-20 bg-black bg-opacity-70 flex justify-center items-center">

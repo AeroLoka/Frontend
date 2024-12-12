@@ -1,29 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import searchButton from "../../assets/icons/fi_search.svg";
 
 const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const modalRef = useRef(null);
+
   const [locations, setLocations] = useState([
     "Jakarta",
     "Bandung",
     "Surabaya",
   ]);
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const modalRef = useRef(null);
-
-  useEffect(() => {
-    if (isOpen) {
-      const handleClickOutside = (e) => {
-        if (modalRef.current && !modalRef.current.contains(e.target)) {
-          onClose();
-        }
-      };
-
-      document.addEventListener("mousedown", handleClickOutside);
-      return () =>
-        document.removeEventListener("mousedown", handleClickOutside);
-    }
-  }, [isOpen, onClose]);
 
   const filteredLocations = locations.filter((location) =>
     location.toLowerCase().includes(searchTerm.toLowerCase())
@@ -31,20 +16,15 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
 
   const handleSearch = () => {
     if (!searchTerm) return;
-
     const existingIndex = locations.findIndex(
       (location) => location.toLowerCase() === searchTerm.toLowerCase()
     );
-
     let updatedLocations = [...locations];
-
     if (existingIndex !== -1) {
       updatedLocations.splice(existingIndex, 1);
     }
-
     updatedLocations = [searchTerm, ...updatedLocations];
     setLocations(updatedLocations);
-
     onSelectFlight(searchTerm);
     setSearchTerm("");
     onClose();
@@ -55,6 +35,19 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
     newLocations.splice(index, 1);
     setLocations(newLocations);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      const handleClickOutside = (e) => {
+        if (modalRef.current && !modalRef.current.contains(e.target)) {
+          onClose();
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -67,7 +60,7 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
         <div className="relative w-full flex mb-4">
           <button>
             <img
-              src={searchButton}
+              src="/icons/fi_search.svg"
               alt="Search Butoon"
               className="absolute left-3 top-1/2 transform -translate-y-1/2"
             />

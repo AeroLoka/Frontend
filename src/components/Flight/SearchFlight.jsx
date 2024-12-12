@@ -7,9 +7,22 @@ import SeatClassModal from "../Modals/SeatClassModal";
 const SearchFlight = () => {
   const [isFlightFromModalOpen, setIsFlightFromModalOpen] = useState(false);
   const [isFlightToModalOpen, setIsFlightToModalOpen] = useState(false);
-
   const [isPassengerModalOpen, setIsPassengerModalOpen] = useState(false);
   const [isSeatClassModalOpen, setIsSeatClassModalOpen] = useState(false);
+
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [departureDate, setDepartureDate] = useState("");
+  const [returnDate, setReturnDate] = useState("");
+  const [isReturnEnabled, setIsReturnEnabled] = useState(true);
+  const [seatClass, setSeatClass] = useState("");
+
+  const [passengers, setPassengers] = useState({
+    Dewasa: 0,
+    Anak: 0,
+    Bayi: 0,
+  });
+  const totalPassengers = passengers.Dewasa + passengers.Anak + passengers.Bayi;
 
   const openModal = (modal) => {
     if (modal === "from") {
@@ -22,9 +35,6 @@ const SearchFlight = () => {
       setIsSeatClassModalOpen(true);
     }
   };
-
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
 
   const handleSwitch = (e) => {
     e.preventDefault();
@@ -42,10 +52,6 @@ const SearchFlight = () => {
     }
   };
 
-  const [departureDate, setDepartureDate] = useState("");
-  const [returnDate, setReturnDate] = useState("");
-  const [isReturnEnabled, setIsReturnEnabled] = useState(true);
-
   const handleToggle = () => {
     setIsReturnEnabled((prev) => !prev);
     if (!isReturnEnabled) {
@@ -53,20 +59,10 @@ const SearchFlight = () => {
     }
   };
 
-  const [passengers, setPassengers] = useState({
-    Dewasa: 0,
-    Anak: 0,
-    Bayi: 0,
-  });
-
-  const totalPassengers = passengers.Dewasa + passengers.Anak + passengers.Bayi;
-
   const handlePassengerChange = (updatedPassengers) => {
     setPassengers(updatedPassengers);
     setIsPassengerModalOpen(false);
   };
-
-  const [seatClass, setSeatClass] = useState("");
 
   const handleSeatClassChange = (selectedClass) => {
     setSeatClass(selectedClass);

@@ -6,6 +6,9 @@ const SeatClassModal = ({
   initialSeatClass,
   onSeatClassChange,
 }) => {
+  const [selectSeatClass, setSelectSeatClass] = useState(initialSeatClass);
+  const modalRef = useRef(null);
+
   const seatClasses = [
     { label: "Economy", price: 4950000 },
     { label: "Premium Economy", price: 7550000 },
@@ -13,13 +16,16 @@ const SeatClassModal = ({
     { label: "First Class", price: 87620000 },
   ];
 
-  const [selectSeatClass, setSelectSeatClass] = useState(initialSeatClass);
-
   const handleSeatClass = (seatClass) => {
     setSelectSeatClass(seatClass);
   };
 
-  const modalRef = useRef(null);
+  const handleSave = () => {
+    if (selectSeatClass) {
+      onSeatClassChange(selectSeatClass);
+    }
+    onClose();
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -28,7 +34,6 @@ const SeatClassModal = ({
           onClose();
         }
       };
-
       document.addEventListener("mousedown", handleClickOutside);
       return () =>
         document.removeEventListener("mousedown", handleClickOutside);
@@ -36,13 +41,6 @@ const SeatClassModal = ({
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
-
-  const handleSave = () => {
-    if (selectSeatClass) {
-      onSeatClassChange(selectSeatClass);
-    }
-    onClose();
-  };
 
   return (
     <div className="fixed inset-0 z-20 bg-black bg-opacity-70 flex justify-center items-center">
