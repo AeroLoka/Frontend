@@ -62,13 +62,13 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
     <div className="fixed inset-0 z-20 bg-black bg-opacity-70 flex justify-center items-center">
       <div
         ref={modalRef}
-        className="w-[90%] h-[350px] bg-white p-6 rounded-lg shadow-xl lg:w-[50%]"
+        className="w-[90%] min-h-[350px] bg-white p-6 rounded-lg shadow-xl lg:w-[50%]"
       >
         <div className="relative w-full flex mb-4">
           <button>
             <img
               src={searchButton}
-              alt=""
+              alt="Search Butoon"
               className="absolute left-3 top-1/2 transform -translate-y-1/2"
             />
           </button>
@@ -83,7 +83,7 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
             className="w-full h-[40px] py-5 pl-12 mr-5 cursor-pointer rounded-lg border border-[#D0D0D0] focus:outline-none focus:border-[#7126B5]"
           />
           <button onClick={onClose} className="text-gray-600 text-lg font-bold">
-            <img src="/icons/fi_close.svg" alt="" />
+            <img src="/icons/fi_close.svg" alt="Close Button" />
           </button>
         </div>
 
@@ -115,9 +115,12 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
                       e.stopPropagation();
                       removeLocation(index);
                     }}
-                    className=""
                   >
-                    <img src="/icons/fi_close.svg" alt="" className="w-3 h-3" />
+                    <img
+                      src="/icons/fi_close.svg"
+                      alt="Close Button"
+                      className="w-3 h-3"
+                    />
                   </button>
                 </li>
               ))
