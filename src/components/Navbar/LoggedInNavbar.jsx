@@ -124,7 +124,7 @@ const LoggedInNavbar = () => {
               }
               aria-label="Open Notification"
             >
-              <img src="/icons/fi_bell.svg" alt="bell icon" className="w-6 h-6" />
+              <img src="/icons/fi_bell.svg" alt="bell icon" className="my-1.5 w-6 h-6" />
             </NavLink>
 
             <NavLink
@@ -134,7 +134,7 @@ const LoggedInNavbar = () => {
               }
               aria-label="Open User"
             >
-              <img src="/icons/fi_list.svg" alt="user icon" className="w-6 h-6" />
+              <img src="/icons/fi_user.svg" alt="user icon" className="w-6 h-6" />
             </NavLink>
           </div>
         </div>
