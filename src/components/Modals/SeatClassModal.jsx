@@ -1,6 +1,11 @@
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-const SeatClassModal = ({ isOpen, onClose, onSeatClassChange }) => {
+const SeatClassModal = ({
+  isOpen,
+  onClose,
+  initialSeatClass,
+  onSeatClassChange,
+}) => {
   const seatClasses = [
     { label: "Economy", price: 4950000 },
     { label: "Premium Economy", price: 7550000 },
@@ -8,22 +13,45 @@ const SeatClassModal = ({ isOpen, onClose, onSeatClassChange }) => {
     { label: "First Class", price: 87620000 },
   ];
 
-  const [selectSeatClass, setSelectSeatClass] = useState(null);
+  const [selectSeatClass, setSelectSeatClass] = useState(initialSeatClass);
 
   const handleSeatClass = (seatClass) => {
     setSelectSeatClass(seatClass);
-    if (onSeatClassChange) {
-      onSeatClassChange(seatClass);
-    }
   };
+
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      const handleClickOutside = (e) => {
+        if (modalRef.current && !modalRef.current.contains(e.target)) {
+          onClose();
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
+  const handleSave = () => {
+    if (selectSeatClass) {
+      onSeatClassChange(selectSeatClass);
+    }
+    onClose();
+  };
+
   return (
     <div className="fixed inset-0 z-20 bg-black bg-opacity-70 flex justify-center items-center">
-      <div className="w-[400px] h-[400px] bg-white p-6 rounded-lg shadow-xl">
+      <div
+        ref={modalRef}
+        className="w-[90%] min-h-[400px] bg-white p-6 rounded-lg shadow-xl lg:w-[30%]"
+      >
         <button className="w-full pb-5 flex justify-end">
-          <img onClick={onClose} src="/icons/fi_close.svg" alt="" />
+          <img onClick={onClose} src="/icons/fi_close.svg" alt="Close Button" />
         </button>
         <div className="flex flex-col items-center justify-center">
           {seatClasses.map((seatClass) => {
@@ -44,7 +72,7 @@ const SeatClassModal = ({ isOpen, onClose, onSeatClassChange }) => {
                   </div>
                   <div className="flex justify-between">
                     {selectSeatClass?.label === seatClass.label && (
-                      <img src="/icons/fi_check.svg" alt="" />
+                      <img src="/icons/fi_check.svg" alt="Checklist Icon" />
                     )}
                   </div>
                 </div>
@@ -54,7 +82,7 @@ const SeatClassModal = ({ isOpen, onClose, onSeatClassChange }) => {
         </div>
         <div className="mt-6 flex justify-end">
           <button
-            onClick={onClose}
+            onClick={handleSave}
             className="w-[150px] p-3 py-2 bg-[#4B1979] text-white rounded-lg"
           >
             Simpan

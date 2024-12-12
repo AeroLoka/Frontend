@@ -68,6 +68,7 @@ const SearchFlight = () => {
 
   const handleSeatClassChange = (selectedClass) => {
     setSeatClass(selectedClass);
+    setIsSeatClassModalOpen(false);
   };
 
   const handleSearch = (e) => {
