@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/";
+import Datepicker from "react-tailwindcss-datepicker";
 import FlightModal from "../Modals/FlightModal";
 import PassengerModal from "../Modals/PassengerModal";
 import SeatClassModal from "../Modals/SeatClassModal";
@@ -48,7 +47,10 @@ const SearchFlight = () => {
   const [isReturnEnabled, setIsReturnEnabled] = useState(true);
 
   const handleToggle = () => {
-    setIsReturnEnabled((prevState) => !prevState);
+    setIsReturnEnabled((prev) => !prev);
+    if (!isReturnEnabled) {
+      setReturnDate(null);
+    }
   };
 
   const [passengers, setPassengers] = useState({
@@ -126,7 +128,7 @@ const SearchFlight = () => {
               <div className="flex items-center">
                 <img
                   src="/icons/fi_flight-takeoff.svg"
-                  alt=""
+                  alt="Take Off Icon"
                   className="mr-2"
                 />
                 <p className="block mr-5 text-sm text-[#8A8A8A]">From</p>
@@ -141,14 +143,14 @@ const SearchFlight = () => {
               </div>
               <div className="flex justify-center">
                 <button className="" onClick={handleSwitch}>
-                  <img src="/icons/fi_return.svg" alt="" />
+                  <img src="/icons/fi_return.svg" alt="Return Icon" />
                 </button>
               </div>
 
               <div className="flex items-center">
                 <img
                   src="/icons/fi_flight-takeoff.svg"
-                  alt=""
+                  alt="Take Off Icon"
                   className="mr-2"
                 />
                 <p className="block mr-5 text-sm text-[#8A8A8A]">To</p>
@@ -168,56 +170,50 @@ const SearchFlight = () => {
                 <div className="flex items-center mr-6 mb-3">
                   <img
                     src="/icons/fi_date.svg"
-                    alt=""
+                    alt="Date Icon"
                     className="mr-2 ml-1 w-5"
                   />
                   <p className="block text-sm text-[#8A8A8A]">Date</p>
                 </div>
                 <div className="grid grid-cols-2">
                   <div className="flex flex-col mr-5">
-                    <label
-                      htmlFor=""
-                      className="text-sm mb-1 text-[#8A8A8A] lg:text-base"
-                    >
+                    <label className="text-sm mb-1 text-[#8A8A8A] lg:text-base">
                       Departure
                     </label>
-                    {/* <input
-                      id="departureDate"
-                      type="date"
+                    <Datepicker
+                      primaryColor={"purple"}
+                      showShortcuts={true}
+                      asSingle={true}
                       value={departureDate}
-                      onChange={(e) => setDepartureDate(e.target.value)}
-                      className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
-                    /> */}
-                    <DatePicker
-                      selected={departureDate}
-                      onChange={(date) => setDepartureDate(date)}
-                      dateFormat="dd MMMM yyyy"
-                      placeholderText="Pilih tanggal"
-                      className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
+                      onChange={(date) => {
+                        setDepartureDate(date);
+                        if (isReturnEnabled && !returnDate) {
+                          setReturnDate(date);
+                        }
+                      }}
+                      displayFormat="DD MMMM YYYY"
+                      placeholder="Pilih tanggal"
+                      inputClassName="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
                     />
                   </div>
                   <div className="flex flex-col">
-                    <label
-                      htmlFor=""
-                      className="text-sm mb-1 text-[#8A8A8A] lg:text-base"
-                    >
+                    <label className="text-sm mb-1 text-[#8A8A8A] lg:text-base">
                       Return
                     </label>
-                    {/* <input
-                      id="returnDate"
-                      type="date"
+                    <Datepicker
+                      primaryColor={"purple"}
+                      showShortcuts={true}
+                      asSingle={true}
                       value={returnDate}
-                      onChange={(e) => setReturnDate(e.target.value)}
+                      onChange={(date) => {
+                        if (isReturnEnabled) {
+                          setReturnDate(date);
+                        }
+                      }}
+                      displayFormat="DD MMMM YYYY"
+                      placeholder="Pilih tanggal"
                       disabled={!isReturnEnabled}
-                      className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2"
-                    /> */}
-                    <DatePicker
-                      selected={returnDate}
-                      onChange={(date) => setReturnDate(date)}
-                      dateFormat="dd MMMM yyyy"
-                      placeholderText="Pilih tanggal"
-                      disabled={!isReturnEnabled}
-                      className={`w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base ${
+                      inputClassName={`w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base ${
                         isReturnEnabled
                           ? "placeholder:text-[#7126B5]"
                           : "placeholder:text-gray-400"
@@ -248,17 +244,14 @@ const SearchFlight = () => {
                 <div className="flex items-center mr-6 mb-3">
                   <img
                     src="/icons/fi_airlane-seat.svg"
-                    alt=""
+                    alt="Airlane Seat Icon"
                     className="mr-2 w-5 lg:ml-6"
                   />
                   <p className="block text-sm text-[#8A8A8A]">To</p>
                 </div>
                 <div className="grid grid-cols-2">
                   <div className="flex flex-col mr-5">
-                    <label
-                      htmlFor="passengerCount"
-                      className="text-sm mb-1 text-[#8A8A8A] lg:text-base"
-                    >
+                    <label className="text-sm mb-1 text-[#8A8A8A] lg:text-base">
                       Passengers
                     </label>
                     <input
@@ -276,10 +269,7 @@ const SearchFlight = () => {
                     />
                   </div>
                   <div className="flex flex-col">
-                    <label
-                      htmlFor="seatClass"
-                      className="text-sm mb-1 text-[#8A8A8A] lg:text-base"
-                    >
+                    <label className="text-sm mb-1 text-[#8A8A8A] lg:text-base">
                       Seat Class
                     </label>
                     <input
