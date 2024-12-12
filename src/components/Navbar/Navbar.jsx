@@ -1,8 +1,4 @@
 import React, { useState } from "react";
-import logo from "../../assets/images/logo.png";
-import searchIcon from "../../assets/icons/fi_search.svg";
-import loginIcon from "../../assets/icons/fi_log-in.svg";
-import menuIcon from "../../assets/icons/fi_menu.svg";
 
 const Navbar = () => {
   const [isToggleMenuOpen, setToggleMenuOpen] = useState(false);
@@ -17,7 +13,7 @@ const Navbar = () => {
         <div className="container mx-auto h-full flex items-center justify-between px-4">
           <div className="flex items-center">
             <a href="/">
-              <img src={logo} alt="Logo" className="h-[53px]" />
+              <img src="/images/logo.png" alt="Logo" className="h-[53px]" />
             </a>
           </div>
 
@@ -29,7 +25,7 @@ const Navbar = () => {
                 className="w-full h-[48px] bg-[#EEEEEE] pl-4 pr-14 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"
               />
               <img
-                src={searchIcon}
+                src="/icons/fi_search.svg"
                 alt="Search Icon"
                 className="absolute top-1/2 right-4 transform -translate-y-1/2 w-5 h-5 cursor-pointer"
               />
@@ -41,7 +37,7 @@ const Navbar = () => {
               href="/login"
               className="flex items-center justify-center w-[105px] h-[48px] bg-[#7126B5] text-white rounded-[12px] text-sm font-medium hover:bg-purple-900"
             >
-              <img src={loginIcon} alt="Login Icon" className="mr-2 h-5 w-5" />
+              <img src="/icons/fi_log-in.svg" alt="Login Icon" className="mr-2 h-5 w-5" />
               Masuk
             </a>
           </div>
@@ -49,7 +45,7 @@ const Navbar = () => {
           <div className="lg:hidden">
             <button onClick={toggleMobileMenu}>
               <img
-                src={menuIcon}
+                src="/icons/fi_menu.svg"
                 alt="Hamburger Menu Icon"
                 className="h-[30px]"
               />
@@ -70,7 +66,7 @@ const Navbar = () => {
               class="w-full h-[48px] bg-[#EEEEEE] pl-4 pr-14 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"
             />
             <img
-              src={searchIcon}
+              src="/icons/fi_search.svg"
               alt="Search Icon"
               className="absolute top-1/2 right-4 transform -translate-y-1/2 w-5 h-5 cursor-pointer"
             />
@@ -80,7 +76,7 @@ const Navbar = () => {
               href="/login"
               className="flex items-center justify-center w-full h-[48px] bg-[#7126B5] text-white rounded-[12px] text-sm font-medium hover:bg-purple-800"
             >
-              <img src={loginIcon} alt="Login Icon" />
+              <img src="/icons/fi_log-in.svg" alt="Login Icon" />
               Masuk
             </a>
           </div>

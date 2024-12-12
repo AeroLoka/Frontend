@@ -1,12 +1,5 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
-import searchIcon from "../../assets/icons/fi_search.svg";
-import loginIcon from "../../assets/icons/fi_log-in.svg";
-import menuIcon from "../../assets/icons/fi_menu.svg";
-import listIcon from "../../assets/icons/fi_list.svg";
-import bellIcon from "../../assets/icons/fi_bell.svg";
-import userIcon from "../../assets/icons/fi_user.svg";
 
 const LoggedInNavbar = () => {
   const [isToggleMenuOpen, setToggleMenuOpen] = useState(false);
@@ -21,7 +14,7 @@ const LoggedInNavbar = () => {
         <div className="container mx-auto h-full flex items-center justify-between px-4">
           <div className="flex items-center">
             <a href="/">
-              <img src={logo} alt="Logo" className="h-[53px]" />
+              <img src="/images/logo.png" alt="Logo" className="h-[53px]" />
             </a>
           </div>
 
@@ -33,7 +26,7 @@ const LoggedInNavbar = () => {
                 className="w-full h-[48px] bg-[#EEEEEE] pl-4 pr-14 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"
               />
               <img
-                src={searchIcon}
+                src="/icons/fi_search.svg"
                 alt="Search Icon"
                 className="absolute top-1/2 right-4 transform -translate-y-1/2 w-5 h-5 cursor-pointer"
               />
@@ -48,7 +41,11 @@ const LoggedInNavbar = () => {
               }
               aria-label="Open List"
             >
-              <img src={listIcon} alt="list icon" className="w-6 h-6" />
+              <img
+                src="/icons/fi_list.svg"
+                alt="list icon"
+                className="w-6 h-6"
+              />
             </NavLink>
 
             <NavLink
@@ -58,7 +55,11 @@ const LoggedInNavbar = () => {
               }
               aria-label="Open Notification"
             >
-              <img src={bellIcon} alt="bell icon" className="w-6 h-6" />
+              <img
+                src="/icons/fi_bell.svg"
+                alt="bell icon"
+                className="w-6 h-6"
+              />
             </NavLink>
 
             <NavLink
@@ -68,14 +69,18 @@ const LoggedInNavbar = () => {
               }
               aria-label="Open User"
             >
-              <img src={userIcon} alt="user icon" className="w-6 h-6" />
+              <img
+                src="/icons/fi_user.svg"
+                alt="user icon"
+                className="w-6 h-6"
+              />
             </NavLink>
           </div>
 
           <div className="lg:hidden">
             <button onClick={toggleMobileMenu}>
               <img
-                src={menuIcon}
+                src="/icons/fi_menu.svg"
                 alt="Hamburger Menu Icon"
                 className="h-[30px]"
               />
@@ -96,7 +101,7 @@ const LoggedInNavbar = () => {
               className="w-full h-[48px] bg-[#EEEEEE] pl-4 pr-14 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"
             />
             <img
-              src={searchIcon}
+              src="/icons/fi_search.svg"
               alt="Search Icon"
               className="absolute top-1/2 right-4 transform -translate-y-1/2 w-5 h-5 cursor-pointer"
             />
