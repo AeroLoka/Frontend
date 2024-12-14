@@ -106,7 +106,7 @@ const LoggedInNavbar = () => {
               className="absolute top-1/2 right-4 transform -translate-y-1/2 w-5 h-5 cursor-pointer"
             />
           </div>
-          <div>
+          <div className="flex gap-8">
             <NavLink
               to="/order-history"
               className={({ isActive }) =>
