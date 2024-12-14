@@ -21,211 +21,187 @@ const DetailTicket = () => {
       const mockTickets = [
         {
           id: 1,
-          airline: "Jet Air",
-          classType: "Economy",
-          departureTime: "07:00",
-          departureDate: "02/03/2023",
-          departureLocation: "Soekarno Hatta - Terminal 1A Domestik",
-          departureCity: "JKT",
-          duration: "4h 0m",
-          flightType: "Direct",
-          arrivalTime: "11:00",
-          arrivalDate: "02/03/2023",
-          arrivalLocation: "Melbourne International Airport",
-          arrivalCity: "MLB",
-          airlineDetail: "Jet Air - Economy - JT-203",
-          price: "IDR 4.950.000",
+          airlinesId: 1,
+          airportId: 1,
+          departure: new Date("2025-01-04T07:30:00Z"),
+          return: new Date("2025-01-04T12:00:00Z"),
+          price: 1000000.0,
+          capacity: 180,
+          class: "Economy",
+          information: "Direct flight",
+          duration: 120,
+          originCityId: 1,
+          destinationCityId: 2,
+          airports: [
+            {
+              name: "Soekarno-Hatta International Airport",
+              cityId: 1,
+              terminal: "T3",
+              continent: "Asia",
+            },
+          ],
+          cities: [{ shortname: "CGK", fullname: "Jakarta" }],
+          airlines: [{ name: "Garuda Indonesia" }],
         },
         {
           id: 2,
-          airline: "SkyFly",
-          classType: "Business",
-          departureTime: "09:00",
-          departureDate: "03/03/2023",
-          departureLocation: "Soekarno Hatta - Terminal 2 Internasional",
-          departureCity: "JKT",
-          duration: "5h 0m",
-          flightType: "Direct",
-          arrivalTime: "14:00",
-          arrivalDate: "03/03/2023",
-          arrivalLocation: "Melbourne International Airport",
-          arrivalCity: "MLB",
-          airlineDetail: "SkyFly - Business - SF-305",
-          price: "IDR 7.250.000",
+          airlinesId: 2,
+          airportId: 1,
+          departure: new Date("2023-03-03T09:00:00Z"),
+          return: new Date("2023-03-03T14:00:00Z"),
+          price: 7250000.0,
+          capacity: 180,
+          class: "Business",
+          information: "Direct flight",
+          duration: 300,
+          originCityId: 1,
+          destinationCityId: 3,
+          airports: [
+            {
+              name: "Soekarno-Hatta International Airport",
+              cityId: 1,
+              terminal: "T2",
+              continent: "Asia",
+            },
+          ],
+          cities: [
+            { shortname: "JKT", fullname: "Jakarta" },
+            { shortname: "MLB", fullname: "Melbourne" },
+          ],
+          airlines: [{ name: "SkyFly" }],
         },
         {
           id: 3,
-          airline: "BlueSky",
-          classType: "Economy",
-          departureTime: "13:00",
-          departureDate: "04/03/2023",
-          departureLocation: "Soekarno Hatta - Terminal 1C Domestik",
-          departureCity: "JKT",
-          duration: "6h 30m",
-          flightType: "1 Stop",
-          arrivalTime: "19:30",
-          arrivalDate: "04/03/2023",
-          arrivalLocation: "Sydney Kingsford Smith Airport",
-          arrivalCity: "SYD",
-          airlineDetail: "BlueSky - Economy - BS-402",
-          price: "IDR 5.600.000",
+          airlinesId: 3,
+          airportId: 1,
+          departure: new Date("2023-03-04T13:00:00Z"),
+          return: new Date("2023-03-04T19:30:00Z"),
+          price: 5600000.0,
+          capacity: 180,
+          class: "Economy",
+          information: "1 Stop",
+          duration: 390,
+          originCityId: 1,
+          destinationCityId: 4,
+          airports: [
+            {
+              name: "Soekarno-Hatta International Airport",
+              cityId: 1,
+              terminal: "T1C",
+              continent: "Asia",
+            },
+          ],
+          cities: [
+            { shortname: "JKT", fullname: "Jakarta" },
+            { shortname: "SYD", fullname: "Sydney" },
+          ],
+          airlines: [{ name: "BlueSky" }],
         },
         {
           id: 4,
-          airline: "FlyHigh",
-          classType: "First Class",
-          departureTime: "22:00",
-          departureDate: "05/03/2023",
-          departureLocation: "Soekarno Hatta - Terminal 3 Internasional",
-          departureCity: "JKT",
-          duration: "7h 15m",
-          flightType: "Direct",
-          arrivalTime: "05:15",
-          arrivalDate: "06/03/2023",
-          arrivalLocation: "Melbourne International Airport",
-          arrivalCity: "MLB",
-          airlineDetail: "FlyHigh - First Class - FH-708",
-          price: "IDR 12.800.000",
+          airlinesId: 4,
+          airportId: 1,
+          departure: new Date("2023-03-05T22:00:00Z"),
+          return: new Date("2023-03-06T05:15:00Z"),
+          price: 12800000.0,
+          capacity: 180,
+          class: "First Class",
+          information: "Direct flight",
+          duration: 435,
+          originCityId: 1,
+          destinationCityId: 3,
+          airports: [
+            {
+              name: "Soekarno-Hatta International Airport",
+              cityId: 1,
+              terminal: "T3",
+              continent: "Asia",
+            },
+          ],
+          cities: [
+            { shortname: "JKT", fullname: "Jakarta" },
+            { shortname: "MLB", fullname: "Melbourne" },
+          ],
+          airlines: [{ name: "FlyHigh" }],
         },
         {
           id: 5,
-          airline: "StarWings",
-          classType: "Premium Economy",
-          departureTime: "18:00",
-          departureDate: "07/03/2023",
-          departureLocation: "Soekarno Hatta - Terminal 2 Domestik",
-          departureCity: "JKT",
-          duration: "8h 0m",
-          flightType: "1 Stop",
-          arrivalTime: "02:00",
-          arrivalDate: "08/03/2023",
-          arrivalLocation: "Brisbane Airport",
-          arrivalCity: "BNE",
-          airlineDetail: "StarWings - Premium Economy - SW-509",
-          price: "IDR 6.800.000",
+          airlinesId: 5,
+          airportId: 1,
+          departure: new Date("2023-03-07T18:00:00Z"),
+          return: new Date("2023-03-08T02:00:00Z"),
+          price: 6800000.0,
+          capacity: 180,
+          class: "Premium Economy",
+          information: "1 Stop",
+          duration: 480,
+          originCityId: 1,
+          destinationCityId: 5,
+          airports: [
+            {
+              name: "Soekarno-Hatta International Airport",
+              cityId: 1,
+              terminal: "T2",
+              continent: "Asia",
+            },
+          ],
+          cities: [
+            { shortname: "JKT", fullname: "Jakarta" },
+            { shortname: "BNE", fullname: "Brisbane" },
+          ],
+          airlines: [{ name: "StarWings" }],
         },
-        {
-          id: 6,
-          airline: "AirLuxe",
-          classType: "Business",
-          departureTime: "15:00",
-          departureDate: "07/03/2023",
-          departureLocation: "Soekarno Hatta - Terminal 3 Internasional",
-          departureCity: "JKT",
-          duration: "7h 45m",
-          flightType: "Direct",
-          arrivalTime: "22:45",
-          arrivalDate: "07/03/2023",
-          arrivalLocation: "Perth Airport",
-          arrivalCity: "PER",
-          airlineDetail: "AirLuxe - Business - AL-712",
-          price: "IDR 9.200.000",
-        },
-        {
-          id: 7,
-          airline: "SwiftAir",
-          classType: "Economy",
-          departureTime: "06:00",
-          departureDate: "08/03/2023",
-          departureLocation: "Soekarno Hatta - Terminal 2 Domestik",
-          departureCity: "JKT",
-          duration: "9h 0m",
-          flightType: "1 Stop",
-          arrivalTime: "15:00",
-          arrivalDate: "08/03/2023",
-          arrivalLocation: "Singapore Changi Airport",
-          arrivalCity: "SIN",
-          airlineDetail: "SwiftAir - Economy - SA-201",
-          price: "IDR 4.000.000",
-        },
-        {
-          id: 8,
-          airline: "Jetstream",
-          classType: "First Class",
-          departureTime: "20:00",
-          departureDate: "08/03/2023",
-          departureLocation: "Soekarno Hatta - Terminal 1B Domestik",
-          departureCity: "JKT",
-          duration: "6h 45m",
-          flightType: "Direct",
-          arrivalTime: "02:45",
-          arrivalDate: "09/03/2023",
-          arrivalLocation: "Tokyo Haneda Airport",
-          arrivalCity: "HND",
-          airlineDetail: "Jetstream - First Class - JS-102",
-          price: "IDR 11.500.000",
-        },
-        {
-          id: 9,
-          airline: "CloudAir",
-          classType: "Economy",
-          departureTime: "10:00",
-          departureDate: "09/03/2023",
-          departureLocation: "Soekarno Hatta - Terminal 2 Internasional",
-          departureCity: "JKT",
-          duration: "8h 0m",
-          flightType: "1 Stop",
-          arrivalTime: "18:00",
-          arrivalDate: "09/03/2023",
-          arrivalLocation: "Seoul Incheon Airport",
-          arrivalCity: "ICN",
-          airlineDetail: "CloudAir - Economy - CA-509",
-          price: "IDR 5.800.000",
-        },
-        {
-          id: 10,
-          airline: "FlyAsia",
-          classType: "Business",
-          departureTime: "14:00",
-          departureDate: "09/03/2023",
-          departureLocation: "Soekarno Hatta - Terminal 1A Internasional",
-          departureCity: "JKT",
-          duration: "4h 30m",
-          flightType: "Direct",
-          arrivalTime: "18:30",
-          arrivalDate: "09/03/2023",
-          arrivalLocation: "Kuala Lumpur International Airport",
-          arrivalCity: "KUL",
-          airlineDetail: "FlyAsia - Business - FA-707",
-          price: "IDR 7.300.000",
-        },
+        // Repeat for other tickets with the same structure
       ];
 
-      // Tetapkan data tiket ke state
       setTickets(mockTickets);
       setFilteredTickets(mockTickets);
       setLoading(false);
     }, 2000);
 
     return () => clearTimeout(timer);
+
+    // const fetchTickets = async () => {
+    //   try {
+    //     const response = await fetch("/api/flights/");
+    //     const data = await response.json();
+
+    //     if (Array.isArray(data.tickets)) {
+    //       setTickets(data.tickets);
+    //       setFilteredTickets(data.tickets);
+    //     } else {
+    //       console.error("Unexpected data format from API");
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching flight data:", error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+
+    // fetchTickets();
   }, []);
 
   const applyFilter = () => {
     const filterFunctions = {
-      "Harga - Termurah": (a, b) =>
-        parseInt(a.price.replace(/\D/g, "")) -
-        parseInt(b.price.replace(/\D/g, "")),
-      "Durasi - Terpendek": (a, b) => {
-        const durationToMinutes = (d) =>
-          parseInt(d.split("h")[0]) * 60 +
-          parseInt(d.split("h")[1]?.split("m")[0] || 0);
-        return durationToMinutes(a.duration) - durationToMinutes(b.duration);
-      },
+      "Harga - Termurah": (a, b) => a.price - b.price,
+      "Durasi - Terpendek": (a, b) => a.duration - b.duration,
       "Keberangkatan - Paling Awal": (a, b) =>
-        a.departureTime.localeCompare(b.departureTime),
+        new Date(a.departure) - new Date(b.departure),
       "Keberangkatan - Paling Akhir": (a, b) =>
-        b.departureTime.localeCompare(a.departureTime),
+        new Date(b.departure) - new Date(a.departure),
       "Kedatangan - Paling Awal": (a, b) =>
-        a.arrivalTime.localeCompare(b.arrivalTime),
+        new Date(a.return) - new Date(b.return),
       "Kedatangan - Paling Akhir": (a, b) =>
-        b.arrivalTime.localeCompare(a.arrivalTime),
+        new Date(b.return) - new Date(a.return),
     };
 
     let updatedTickets = [...tickets];
 
     if (activeDate) {
       updatedTickets = updatedTickets.filter(
-        (ticket) => ticket.departureDate === activeDate
+        (ticket) =>
+          new Date(ticket.departure).toISOString().split("T")[0] === activeDate
       );
     }
 

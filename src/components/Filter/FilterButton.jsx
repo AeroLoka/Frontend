@@ -15,7 +15,7 @@ const FilterButton = ({ onFilterChange, selectedFilter }) => {
 
   const applyFilter = () => {
     onFilterChange(temporaryFilter);
-    setIsModalOpen(false); // Tutup modal
+    setIsModalOpen(false);
   };
 
   return (

@@ -1,14 +1,21 @@
 import React from "react";
 
 const DetailSection = ({
-  departureTime,
-  departureDate,
-  departureLocation,
-  airlineDetail,
-  arrivalTime,
-  arrivalDate,
-  arrivalLocation,
+  departure,
+  returnTime,
+  departureCity,
+  departureAirport,
+  airline,
+  destinationCity,
+  destinationAirport,
 }) => {
+  const formatTime = (date) =>
+    new Date(date).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  const formatDate = (date) => new Date(date).toLocaleDateString();
+
   return (
     <div
       className="flex flex-col bg-white p-[10px] gap-[12px] overflow-hidden"
@@ -22,12 +29,14 @@ const DetailSection = ({
       {/* Departure Section */}
       <div className="flex justify-between">
         <div className="flex flex-col">
-          <p className="font-bold text-xl leading-[24px]">{departureTime}</p>
+          <p className="font-bold text-xl leading-[24px]">
+            {formatTime(departure)}
+          </p>
           <p className="font-normal text-[14px] leading-[20px]">
-            {departureDate}
+            {formatDate(departure)}
           </p>
           <p className="font-medium text-[14px] leading-[20px]">
-            {departureLocation}
+            {departureCity} ({departureAirport})
           </p>
         </div>
         <p className="font-bold text-[12px] leading-[18px] text-[#6C3DAB] text-right">
@@ -45,9 +54,7 @@ const DetailSection = ({
             className="w-6 h-6"
           />
           <div>
-            <p className="font-bold text-[14px] leading-[20px]">
-              {airlineDetail}
-            </p>
+            <p className="font-bold text-[14px] leading-[20px]">{airline}</p>
             <br />
             <p className="font-bold text-[14px] leading-[20px]">Informasi:</p>
             <ul className="font-normal text-[14px] leading-[20px]">
@@ -63,12 +70,14 @@ const DetailSection = ({
       {/* Arrival Section */}
       <div className="flex justify-between">
         <div className="flex flex-col">
-          <p className="font-bold text-xl leading-[24px]">{arrivalTime}</p>
+          <p className="font-bold text-xl leading-[24px]">
+            {formatTime(returnTime)}
+          </p>
           <p className="font-normal text-[14px] leading-[20px]">
-            {arrivalDate}
+            {formatDate(returnTime)}
           </p>
           <p className="font-medium text-[14px] leading-[20px]">
-            {arrivalLocation}
+            {destinationCity} ({destinationAirport})
           </p>
         </div>
         <p className="font-bold text-[12px] leading-[18px] text-[#6C3DAB] text-right">
