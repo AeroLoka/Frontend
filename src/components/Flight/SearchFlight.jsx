@@ -4,7 +4,6 @@ import FlightModal from "../Modals/FlightModal";
 import PassengerModal from "../Modals/PassengerModal";
 import SeatClassModal from "../Modals/SeatClassModal";
 import { Controller, useForm } from "react-hook-form";
-import { p } from "framer-motion/client";
 
 const SearchFlight = () => {
   const [isFlightFromModalOpen, setIsFlightFromModalOpen] = useState(false);
@@ -381,7 +380,7 @@ const SearchFlight = () => {
 
             <button
               type="submit"
-              className="w-full h-[48px] rounded-xl text-[16px] font-bold text-center text-white bg-[#7126B5] hover:bg-purple-900"
+              className="w-full h-[48px] rounded-xl text-sm font-bold text-center text-white bg-[#7126B5] hover:bg-purple-900 md:text-lg"
             >
               Cari Penerbangan
             </button>

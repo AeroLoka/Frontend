@@ -35,7 +35,7 @@ const HomeCard = ({ flights }) => {
                 boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.20)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="relative flex flex-col items-start justify-center p-3 bg-white rounded-lg shadow-lg"
+              className="relative flex flex-col mb-1 items-start justify-center p-3 bg-white rounded-lg shadow-lg"
             >
               <div className="relative mb-3 w-full h-auto rounded-lg">
                 <img
