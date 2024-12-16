@@ -1,22 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
 import FlightModal from "../Modals/FlightModal";
 import PassengerModal from "../Modals/PassengerModal";
 import SeatClassModal from "../Modals/SeatClassModal";
 import { Controller, useForm } from "react-hook-form";
 
-const SearchFlight = () => {
+const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
   const [isFlightFromModalOpen, setIsFlightFromModalOpen] = useState(false);
   const [isFlightToModalOpen, setIsFlightToModalOpen] = useState(false);
   const [isPassengerModalOpen, setIsPassengerModalOpen] = useState(false);
   const [isSeatClassModalOpen, setIsSeatClassModalOpen] = useState(false);
-  // const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [departureDate, setDepartureDate] = useState("");
-  const [returnDate, setReturnDate] = useState("");
-  const [isReturnEnabled, setIsReturnEnabled] = useState(true);
+  const [departureDate, setDepartureDate] = useState(null);
+  const [returnDate, setReturnDate] = useState(null);
+  const [isReturnEnabled, setIsReturnEnabled] = useState(false);
   const [seatClass, setSeatClass] = useState("");
 
   const {
@@ -81,29 +80,39 @@ const SearchFlight = () => {
     setValue("seatClass", selectedClass);
   };
 
-  // const handleDatePickerOpen = (datepickerType) => {
-  //   setIsDatePickerOpen(datepickerType);
-  // };
-
-  // const handleDatePickerClose = () => {
-  //   setIsDatePickerOpen(false);
-  // };
-
-  //
-
   const handleSearch = (data) => {
     console.log("Data untuk search ticket: ", data);
   };
 
+  const formatDate = (date) => {
+    if (!date) return "";
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return new Date(date).toLocaleDateString("id-ID", options);
+  };
+
+  useEffect(() => {
+    if (selectedFlight) {
+      const depDate = new Date(selectedFlight.departure);
+      const retDate = selectedFlight.return
+        ? new Date(selectedFlight.return)
+        : null;
+
+      setFrom(selectedFlight.originCity.fullnmae);
+      setTo(selectedFlight.destinationCity.fullnmae);
+      setDepartureDate(depDate);
+      setReturnDate(retDate);
+      setIsReturnEnabled(!!selectedFlight.return);
+
+      setValue("from", selectedFlight.originCity.fullname);
+      setValue("to", selectedFlight.destinationCity.fullname);
+      setValue("departureDate", depDate);
+      setValue("returnDate", retDate);
+      console.log(selectedFlight);
+    }
+  }, [selectedFlight, setValue]);
+
   return (
     <div>
-      {/* {isDatePickerOpen && (
-        <div
-          className="fixed inset-0 bg-black opacity-50 z-40"
-          onClick={handleDatepickerClose}
-        ></div>
-      )} */}
-
       <FlightModal
         isOpen={isFlightFromModalOpen}
         onClose={() => setIsFlightFromModalOpen(false)}
@@ -188,9 +197,9 @@ const SearchFlight = () => {
                     className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base"
                     {...register("to", { required: "Kota tujuan wajib diisi" })}
                   />
-                  {errors.from && (
+                  {errors.to && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.from?.message}
+                      {errors.to?.message}
                     </p>
                   )}
                 </div>
@@ -217,23 +226,33 @@ const SearchFlight = () => {
                       name="departureDate"
                       rules={{ required: "Tanggal berangkat wajib diisi" }}
                       render={({ field }) => (
-                        <Datepicker
-                          {...field}
-                          primaryColor={"purple"}
-                          showShortcuts={true}
-                          asSingle={true}
-                          value={departureDate}
-                          onChange={(date) => {
-                            setDepartureDate(date);
-                            if (isReturnEnabled && !returnDate) {
-                              setReturnDate(date);
-                            }
-                          }}
-                          displayFormat="DD MMMM YYYY"
-                          placeholder="Pilih tanggal"
-                          inputClassName="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
-                          // onClick={() => handleDatePickerOpen("departure")}
-                        />
+                        <div>
+                          {isDatepickerVisible ? (
+                            <Datepicker
+                              {...field}
+                              primaryColor={"purple"}
+                              showShortcuts={true}
+                              asSingle={true}
+                              value={departureDate}
+                              onChange={(date) => {
+                                setDepartureDate(date);
+                                field.onChange(date);
+                              }}
+                              displayFormat="DD MMMM YYYY"
+                              placeholder={departureDate ? "" : "Pilih tanggal"}
+                              inputClassName="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
+                            />
+                          ) : (
+                            <input
+                              {...field}
+                              readOnly
+                              value={
+                                departureDate ? formatDate(departureDate) : ""
+                              }
+                              className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
+                            />
+                          )}
+                        </div>
                       )}
                     />
                     {errors.departureDate && (
@@ -252,30 +271,41 @@ const SearchFlight = () => {
                       rules={{
                         required: isReturnEnabled
                           ? "Tanggal pulang wajib diisi"
-                          : false,
+                          : true,
                       }}
                       render={({ field }) => (
-                        <Datepicker
-                          {...field}
-                          primaryColor={"purple"}
-                          showShortcuts={true}
-                          asSingle={true}
-                          value={returnDate}
-                          onChange={(date) => {
-                            if (isReturnEnabled) {
-                              setReturnDate(date);
-                            }
-                          }}
-                          displayFormat="DD MMMM YYYY"
-                          placeholder="Pilih tanggal"
-                          disabled={!isReturnEnabled}
-                          inputClassName={`w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base ${
-                            isReturnEnabled
-                              ? "placeholder:text-[#7126B5]"
-                              : "placeholder:text-gray-400"
-                          }`}
-                          // onClick={() => handleDatePickerOpen("return")}
-                        />
+                        <div>
+                          {isDatepickerVisible ? (
+                            <Datepicker
+                              {...field}
+                              primaryColor={"purple"}
+                              showShortcuts={true}
+                              asSingle={true}
+                              value={returnDate}
+                              onChange={(date) => {
+                                if (isReturnEnabled) {
+                                  setReturnDate(date);
+                                  field.onChange(date);
+                                }
+                              }}
+                              displayFormat="DD MMMM YYYY"
+                              placeholder={departureDate ? "" : "Pilih tanggal"}
+                              disabled={!isReturnEnabled}
+                              inputClassName={`w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base ${
+                                isReturnEnabled
+                                  ? "placeholder:text-[#7126B5]"
+                                  : "placeholder:text-gray-400"
+                              }`}
+                            />
+                          ) : (
+                            <input
+                              {...field}
+                              readOnly
+                              value={returnDate ? formatDate(returnDate) : ""}
+                              className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
+                            />
+                          )}
+                        </div>
                       )}
                     />
                     {errors.returnDate && (

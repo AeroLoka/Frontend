@@ -18,7 +18,7 @@ const formatDateRange = (startDate, endDate) => {
   }`;
 };
 
-const HomeCard = ({ flights }) => {
+const HomeCard = ({ flights, onSelectFlight }) => {
   if (!flights || flights.length === 0) {
     return <p className="text-gray-400 my-5">No Flights Available</p>;
   }
@@ -35,7 +35,8 @@ const HomeCard = ({ flights }) => {
                 boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.20)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="relative flex flex-col mb-1 items-start justify-center p-3 bg-white rounded-lg shadow-lg"
+              className="relative flex flex-col mb-1 items-start justify-center p-3 bg-white rounded-lg shadow-lg cursor-pointer"
+              onClick={() => onSelectFlight(flight)}
             >
               <div className="relative mb-3 w-full h-auto rounded-lg">
                 <img

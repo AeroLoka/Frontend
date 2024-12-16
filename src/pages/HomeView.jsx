@@ -21,6 +21,8 @@ const HomeView = () => {
   const [loading, setLoading] = useState(true);
   const [continent, setContinent] = useState("semua");
   const [noDataFound, setNoDataFound] = useState(false);
+  const [selectedFlight, setSelectedFlight] = useState(null);
+  const [isDatepickerVisible, setIsDatepickerVisible] = useState(true);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -70,6 +72,11 @@ const HomeView = () => {
     fetchFlights();
   }, [page]);
 
+  const handleSelectFlight = (flight) => {
+    setSelectedFlight(flight);
+    setIsDatepickerVisible(false);
+  };
+
   return (
     <>
       {user ? <LoggedInNavbar /> : <Navbar />}
@@ -79,7 +86,10 @@ const HomeView = () => {
           <DiscountBanner />
         </div>
         <div className="">
-          <SearchFlight />
+          <SearchFlight
+            selectedFlight={selectedFlight}
+            isDatepickerVisible={isDatepickerVisible}
+          />
         </div>
       </section>
 
@@ -102,7 +112,10 @@ const HomeView = () => {
                   ))}
                 </div>
               ) : (
-                <HomeCard flights={flights} />
+                <HomeCard
+                  flights={flights}
+                  onSelectFlight={handleSelectFlight}
+                />
               )}
             </>
           )}
