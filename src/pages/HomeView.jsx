@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-// import SkeletonCard from "../components/skeletons/SkeletonCard";
+import SkeletonCard from "../components/skeletons/SkeletonCard";
 import { getAllFlights } from "../services/home.service";
 import Navbar from "../components/Navbar/Navbar";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
@@ -37,7 +37,7 @@ const HomeView = () => {
   useEffect(() => {
     setFlights([]);
     setPage(1);
-    // setLoading(true);
+    setLoading(true);
     fetchFlights();
   }, [continent]);
 
@@ -53,16 +53,20 @@ const HomeView = () => {
       }
     } catch (error) {
       toast.error(error.response?.data || error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handlePageChange = (newPage) => {
-    setPage(newPage);
-    fetchFlights();
-    // setLoading(true);
+    if (newPage !== page) {
+      setPage(newPage);
+      setLoading(true);
+    }
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchFlights();
   }, [page]);
 
@@ -90,7 +94,17 @@ const HomeView = () => {
               Tidak ada penerbangan ditemukan untuk benua {continent}.
             </p>
           ) : (
-            <HomeCard flights={flights} />
+            <>
+              {loading ? (
+                <div className="grid grid-cols-1 px-8 pt-2 gap-3 md:grid-cols-3 md:px-0 lg:grid-cols-5">
+                  {Array.from({ length: limit }).map((_, index) => (
+                    <SkeletonCard key={index} />
+                  ))}
+                </div>
+              ) : (
+                <HomeCard flights={flights} />
+              )}
+            </>
           )}
 
           <Pagination
@@ -100,8 +114,6 @@ const HomeView = () => {
           />
         </div>
       </section>
-
-      {/* <SkeletonCard /> */}
     </>
   );
 };
