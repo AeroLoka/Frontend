@@ -5,9 +5,10 @@ import userReducer from "./features/userSlice";
 import otpReducer from "./features/otpSlice";
 
 export const store = configureStore({
-    reducer:{
-        bookingState: bookingReducer,
-        userState: userReducer,
-        otpState: otpReducer
-    }
-})
+  reducer: {
+    bookingState: bookingReducer,
+    userState: userReducer,
+    otpState: otpReducer,
+    user: userReducer,
+  },
+});
