@@ -44,7 +44,7 @@ const HomeView = () => {
   const fetchFlights = async () => {
     try {
       const response = await getAllFlights({ page, limit, continent });
-      if (response.data.length === 0) {
+      if (response.data.length === 0 && page === 1) {
         setNoDataFound(true);
       } else {
         setFlights(response.data);
@@ -107,11 +107,13 @@ const HomeView = () => {
             </>
           )}
 
-          <Pagination
-            currPage={page}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+          {flights.length > 0 && totalPages > 1 && !noDataFound && (
+            <Pagination
+              currPage={page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       </section>
     </>
