@@ -1,7 +1,8 @@
+import { current } from "@reduxjs/toolkit";
 import React, { useEffect, useRef, useState } from "react";
 
-const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+const FlightModal = ({ isOpen, onClose, onSelectFlight, currentLocation }) => {
+  const [searchTerm, setSearchTerm] = useState(currentLocation || "");
   const modalRef = useRef(null);
 
   const [locations, setLocations] = useState([
@@ -26,7 +27,6 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
     updatedLocations = [searchTerm, ...updatedLocations];
     setLocations(updatedLocations);
     onSelectFlight(searchTerm);
-    setSearchTerm("");
     onClose();
   };
 
@@ -35,6 +35,18 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
     newLocations.splice(index, 1);
     setLocations(newLocations);
   };
+
+  const handleLocationSelect = (location) => {
+    setSearchTerm(location);
+    onSelectFlight(location);
+    onClose();
+  };
+
+  useEffect(() => {
+    if(isOpen) {
+      setSearchTerm(currentLocation || "");
+    }
+  }, [isOpen, currentLocation]);
 
   useEffect(() => {
     if (isOpen) {
@@ -97,8 +109,7 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight }) => {
                 <li
                   key={index}
                   onClick={() => {
-                    onSelectFlight(location);
-                    onClose();
+                    handleLocationSelect(location)
                   }}
                   className="w-full flex justify-between items-center cursor-pointer p-3 border border-[#E2D4F0] rounded-lg focus:outline-none hover:bg-[#E2D4F0]"
                 >

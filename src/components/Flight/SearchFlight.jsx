@@ -60,9 +60,11 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
   const handleSelectLocation = (location, type) => {
     if (type === "from") {
       setFrom(location);
+      setValue("from", location);
       setIsFlightFromModalOpen(false);
     } else if (type === "to") {
       setTo(location);
+      setValue("to", location);
       setIsFlightToModalOpen(false);
     }
   };
