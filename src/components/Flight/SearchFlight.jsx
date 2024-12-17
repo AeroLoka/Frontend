@@ -16,6 +16,7 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
   const [isFlightToModalOpen, setIsFlightToModalOpen] = useState(false);
   const [isPassengerModalOpen, setIsPassengerModalOpen] = useState(false);
   const [isSeatClassModalOpen, setIsSeatClassModalOpen] = useState(false);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
@@ -279,7 +280,9 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
                               {...field}
                               readOnly
                               value={
-                                departureDate ? formatDate(departureDate, true) : ""
+                                departureDate
+                                  ? formatDate(departureDate, true)
+                                  : ""
                               }
                               className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
                             />
@@ -333,7 +336,9 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
                             <input
                               {...field}
                               readOnly
-                              value={returnDate ? formatDate(returnDate, true) : ""}
+                              value={
+                                returnDate ? formatDate(returnDate, true) : ""
+                              }
                               className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
                             />
                           )}
@@ -444,7 +449,9 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
 
             <button
               type="submit"
-              className="w-full h-[48px] rounded-xl text-sm font-bold text-center text-white bg-[#7126B5] hover:bg-purple-900 md:text-lg"
+              className={`w-full h-[48px] rounded-xl text-sm font-bold text-center text-white 
+                ${isButtonClicked ? "bg-[#7126B5]" : "bg-[#A06ECE]"} 
+                hover:bg-[#7126B5] hover:shadow-lg md:text-lg transition-colors duration-300`}
             >
               Cari Penerbangan
             </button>

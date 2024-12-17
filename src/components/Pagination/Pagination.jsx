@@ -1,6 +1,10 @@
+import React, { useState } from "react";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
 
 const Pagination = ({ currPage, totalPages, onPageChange }) => {
+  const [hoveredButton, setHoveredButton] = useState(null);
+  const [timeoutId, setTimeoutId] = useState(null);
+
   const prev = () => {
     if (currPage > 1) {
       onPageChange(currPage - 1);
@@ -11,6 +15,18 @@ const Pagination = ({ currPage, totalPages, onPageChange }) => {
     if (currPage < totalPages) {
       onPageChange(currPage + 1);
     }
+  };
+
+  const handleMouseEnter = (page) => {
+    const id = setTimeout(() => {
+      setHoveredButton(page);
+    }, 3000);
+    setTimeoutId(id);
+  };
+
+  const handleMouseLeave = () => {
+    clearTimeout(timeoutId);
+    setHoveredButton(null);
   };
 
   return (
@@ -29,11 +45,17 @@ const Pagination = ({ currPage, totalPages, onPageChange }) => {
           <button
             key={index + 1}
             onClick={() => onPageChange(index + 1)}
+            onMouseEnter={() => handleMouseEnter(index + 1)}
+            onMouseLeave={handleMouseLeave}
             className={`px-3 py-1 text-sm font-medium rounded-md ${
               currPage === index + 1
                 ? "bg-[#7126B5] text-white"
-                : "bg-[#E2D4F0] text-[#7126B5] hover:bg-[#7126B5] hover:text-white"
-            }`}
+                : `bg-[#E2D4F0] text-[#7126B5] ${
+                    hoveredButton === index + 1
+                      ? "bg-[#7126B5] text-white"
+                      : "hover:bg-[#7126B5] hover:text-white"
+                  }`
+            } transition-all duration-300 ease-in-out`}
           >
             {index + 1}
           </button>

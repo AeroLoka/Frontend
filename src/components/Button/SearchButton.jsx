@@ -52,8 +52,8 @@ const SearchDestination = ({ onContinentChange }) => {
               className={`min-w-[126px] h-[48px] px-4 rounded-xl flex items-center justify-center cursor-pointer ${
                 activeButton === continent
                   ? "bg-[#7126B5] text-white hover:bg-purple-900"
-                  : "bg-[#E2D4F0] text-black hover:bg-[#C594F6] hover:shadow-xl"
-              }`}
+                  : "bg-[#E2D4F0] text-black hover:bg-[#7126B5] hover:text-white hover:shadow-xl"
+              } transition-all duration-300 ease-in-out`}
               onClick={() => handleButtonClick(continent)}
             >
               <a
@@ -63,7 +63,7 @@ const SearchDestination = ({ onContinentChange }) => {
                 <FiSearch
                   className={`w-5 h-5 ${
                     activeButton === continent ? "text-white" : "text-black"
-                  }`}
+                  }hover:text-white`}
                 />
                 {continentMap[continent]}
               </a>
