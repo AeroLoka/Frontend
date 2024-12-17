@@ -4,8 +4,14 @@ import FlightModal from "../Modals/FlightModal";
 import PassengerModal from "../Modals/PassengerModal";
 import SeatClassModal from "../Modals/SeatClassModal";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { getFlights } from "../../services/home.service";
+import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
+  const navigate = useNavigate();
+
   const [isFlightFromModalOpen, setIsFlightFromModalOpen] = useState(false);
   const [isFlightToModalOpen, setIsFlightToModalOpen] = useState(false);
   const [isPassengerModalOpen, setIsPassengerModalOpen] = useState(false);
@@ -75,19 +81,18 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
   };
 
   const handleSeatClassChange = (selectedClass) => {
-    setSeatClass(selectedClass);
+    setSeatClass(selectedClass.label);
     setIsSeatClassModalOpen(false);
-    setValue("seatClass", selectedClass);
+    setValue("seatClass", selectedClass.label);
   };
 
   const handleSearch = (data) => {
-    console.log("Data untuk search ticket: ", data);
+    searchFlights(data);
   };
 
   const formatDate = (date) => {
     if (!date) return "";
-    const options = { day: "numeric", month: "long", year: "numeric" };
-    return new Date(date).toLocaleDateString("id-ID", options);
+    return moment(date).format("YYYY-MM-DD");
   };
 
   useEffect(() => {
@@ -107,9 +112,30 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
       setValue("to", selectedFlight.destinationCity.fullname);
       setValue("departureDate", depDate);
       setValue("returnDate", retDate);
-      console.log(selectedFlight);
     }
   }, [selectedFlight, setValue]);
+
+  const searchFlights = async (data) => {
+    try {
+      const isoDepartureDate = departureDate ? formatDate(departureDate) : null;
+      const isoReturnDate = returnDate ? formatDate(returnDate) : null;
+
+      const response = await getFlights({
+        from: data.from,
+        to: data.to,
+        departureDateStart: isoDepartureDate,
+        returnDateStart: isoReturnDate,
+        adultPassengers: passengers.Dewasa,
+        childPassengers: passengers.Anak,
+        infantPassengers: passengers.Bayi,
+        seatClass: seatClass,
+      });
+      toast.success("Penerbangan ditemukan!");
+      navigate("/detail-ticket", { state: { flightData: response.data } });
+    } catch (error) {
+      toast.error(error.resposnse?.data || error.message);
+    }
+  };
 
   return (
     <div>
@@ -237,6 +263,17 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
                               onChange={(date) => {
                                 setDepartureDate(date);
                                 field.onChange(date);
+
+                                // if (date) {
+                                //   const formattedDate = new Date(date)
+                                //     .toISOString()
+                                //     .split("T")[0];
+                                //   setDepartureDate(formattedDate);
+                                //   field.onChange(formattedDate);
+                                // } else {
+                                //   setDepartureDate(null);
+                                //   field.onChange(null);
+                                // }
                               }}
                               displayFormat="DD MMMM YYYY"
                               placeholder={departureDate ? "" : "Pilih tanggal"}
@@ -286,6 +323,17 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
                                 if (isReturnEnabled) {
                                   setReturnDate(date);
                                   field.onChange(date);
+
+                                  // if (date) {
+                                  //   const formattedDate = new Date(date)
+                                  //     .toISOString()
+                                  //     .split("T")[0];
+                                  //   setReturnDate(formattedDate);
+                                  //   field.onChange(formattedDate);
+                                  // } else {
+                                  //   setReturnDate(null);
+                                  //   field.onChange(null);
+                                  // }
                                 }
                               }}
                               displayFormat="DD MMMM YYYY"
@@ -353,7 +401,9 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
                       name="passengers"
                       rules={{
                         validate: (value) =>
-                          totalPassengers > 0 || "Harap input jumlah penumpang",
+                          totalPassengers > 0
+                            ? true
+                            : "Harap input jumlah penumpang",
                       }}
                       render={({ field }) => (
                         <input
@@ -390,7 +440,7 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
                         <input
                           {...field}
                           id="seatClass"
-                          value={seatClass?.label || ""}
+                          value={seatClass || ""}
                           onClick={() => openModal("seatclass")}
                           placeholder="Pilih seat class"
                           readOnly

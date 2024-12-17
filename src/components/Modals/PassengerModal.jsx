@@ -106,7 +106,7 @@ const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
         </div>
         <div className="mt-6 flex justify-end">
           <button
-            onClick={(console.log(tempPassengers), handleSave)}
+            onClick={handleSave}
             className="w-[150px] p-3 py-2 bg-[#4B1979] text-white rounded-lg"
           >
             Simpan

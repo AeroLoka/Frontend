@@ -9,4 +9,13 @@ const getAllFlights = async (data) => {
     }
 };
 
-export { getAllFlights }
+const getFlights = async (data) => {
+    try {
+        const response = await axiosInstance.get("/search-flights", { params: data });
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error.message;
+    }
+}
+
+export { getAllFlights, getFlights }
