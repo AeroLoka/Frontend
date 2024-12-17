@@ -8,9 +8,11 @@ import { toast } from "react-toastify";
 import { getFlights } from "../../services/home.service";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.userState);
 
   const [isFlightFromModalOpen, setIsFlightFromModalOpen] = useState(false);
   const [isFlightToModalOpen, setIsFlightToModalOpen] = useState(false);
@@ -89,8 +91,20 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
     setValue("seatClass", selectedClass.label);
   };
 
-  const handleSearch = (data) => {
-    searchFlights(data);
+  const handleSearch = async (data) => {
+    if (!user) {
+      toast.error("Anda harus login atau register terlebih dahulu!");
+      return;
+    }
+    setIsButtonClicked(true);
+
+    try {
+      await searchFlights(data);
+    } catch (error) {
+      toast.error("Penerbangan tidak ditemukan!");
+    } finally {
+      setIsButtonClicked(false);
+    }
   };
 
   const formatDate = (date, forDisplay = false) => {
