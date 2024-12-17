@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar/Navbar";
 import HeaderOrder from "../components/Header/HeaderOrder";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 import { useSelector } from "react-redux";
+import { getUserByEmail } from "../services/user.services";
 
 const OrderHistory = () => {
   const user = useSelector((state) => state.user.user);
@@ -19,43 +20,25 @@ const OrderHistory = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  console.log("User from Redux:", user);
+  const { email } = useSelector((state) => state.userState.user);
 
-  const fetchBookings = async () => {
-    if (!userId) {
-      setError("Silakan login untuk melihat riwayat pemesanan Anda.");
-      return;
-    }
-    setIsLoading(true);
-    setError(null);
-
+  const fetchHistoryBooking = async () => {
     try {
-      console.log("Fetching bookings with userId:", userId);
-      const data = await getAllBookingsByUserId(
-        userId,
-        selectedDate || null,
-        null
-      );
-
-      console.log("Raw bookings from API:", data);
-      if (data.status === 200) {
-        setBookings(data.data || []);
-      } else {
-        setError(data.message || "Terjadi kesalahan saat mengambil data.");
-        setBookings([]);
-      }
-    } catch (err) {
-      console.error("Error fetching bookings:", err);
-      setError(err.message || "Terjadi kesalahan saat mengambil data.");
-      setBookings([]);
-    } finally {
-      setIsLoading(false);
+      const userData = await getUserByEmail(email);
+      console.log(userData);
+      const { id } = userData.data;
+      console.log(id);
+      const response = await getAllBookingsByUserId(id);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchBookings();
-  }, [userId, selectedDate, searchLocation]);
+    setIsLoading(true);
+    fetchHistoryBooking();
+  }, []);
 
   const handleOrderCardClick = (ticket) => {
     setSelectedOrder(ticket);
