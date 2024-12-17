@@ -92,9 +92,13 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
     searchFlights(data);
   };
 
-  const formatDate = (date) => {
+  const formatDate = (date, forDisplay = false) => {
     if (!date) return "";
-    return moment(date).format("YYYY-MM-DD");
+    if (forDisplay) {
+      return moment(date).format("DD MMMM YYYY");
+    } else {
+      return moment(date).format("YYYY-MM-DD");
+    }
   };
 
   useEffect(() => {
@@ -265,20 +269,9 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
                               onChange={(date) => {
                                 setDepartureDate(date);
                                 field.onChange(date);
-
-                                // if (date) {
-                                //   const formattedDate = new Date(date)
-                                //     .toISOString()
-                                //     .split("T")[0];
-                                //   setDepartureDate(formattedDate);
-                                //   field.onChange(formattedDate);
-                                // } else {
-                                //   setDepartureDate(null);
-                                //   field.onChange(null);
-                                // }
                               }}
                               displayFormat="DD MMMM YYYY"
-                              placeholder={departureDate ? "" : "Pilih tanggal"}
+                              placeholder="Pilih tanggal"
                               inputClassName="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
                             />
                           ) : (
@@ -286,7 +279,7 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
                               {...field}
                               readOnly
                               value={
-                                departureDate ? formatDate(departureDate) : ""
+                                departureDate ? formatDate(departureDate, true) : ""
                               }
                               className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
                             />
@@ -325,21 +318,10 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
                                 if (isReturnEnabled) {
                                   setReturnDate(date);
                                   field.onChange(date);
-
-                                  // if (date) {
-                                  //   const formattedDate = new Date(date)
-                                  //     .toISOString()
-                                  //     .split("T")[0];
-                                  //   setReturnDate(formattedDate);
-                                  //   field.onChange(formattedDate);
-                                  // } else {
-                                  //   setReturnDate(null);
-                                  //   field.onChange(null);
-                                  // }
                                 }
                               }}
                               displayFormat="DD MMMM YYYY"
-                              placeholder={departureDate ? "" : "Pilih tanggal"}
+                              placeholder="Pilih tanggal"
                               disabled={!isReturnEnabled}
                               inputClassName={`w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 lg:text-base ${
                                 isReturnEnabled
@@ -351,7 +333,7 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
                             <input
                               {...field}
                               readOnly
-                              value={returnDate ? formatDate(returnDate) : ""}
+                              value={returnDate ? formatDate(returnDate, true) : ""}
                               className="w-full text-sm border-b-2 border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] p-2 placeholder:text-[#7126B5] lg:text-base"
                             />
                           )}
