@@ -1,14 +1,16 @@
-import { current } from "@reduxjs/toolkit";
 import React, { useEffect, useRef, useState } from "react";
+import { FiSearch, FiX } from "react-icons/fi";
 
 const FlightModal = ({ isOpen, onClose, onSelectFlight, currentLocation }) => {
   const [searchTerm, setSearchTerm] = useState(currentLocation || "");
   const modalRef = useRef(null);
+  const [hovered, setHovered] = useState(null);
 
   const [locations, setLocations] = useState([
     "Jakarta",
     "Bandung",
     "Surabaya",
+    "Denpasar",
   ]);
 
   const filteredLocations = locations.filter((location) =>
@@ -43,7 +45,7 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight, currentLocation }) => {
   };
 
   useEffect(() => {
-    if(isOpen) {
+    if (isOpen) {
       setSearchTerm(currentLocation || "");
     }
   }, [isOpen, currentLocation]);
@@ -63,6 +65,14 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight, currentLocation }) => {
 
   if (!isOpen) return null;
 
+  const handleHoverStart = (index) => {
+    setHovered(index);
+  };
+
+  const handleHoverEnd = () => {
+    setHovered(null);
+  };
+
   return (
     <div className="fixed inset-0 z-20 bg-black bg-opacity-70 flex justify-center items-center">
       <div
@@ -71,10 +81,9 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight, currentLocation }) => {
       >
         <div className="relative w-full flex mb-4">
           <button>
-            <img
-              src="/icons/fi_search.svg"
-              alt="Search Butoon"
-              className="absolute left-3 top-1/2 transform -translate-y-1/2"
+            <FiSearch
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={20}
             />
           </button>
           <input
@@ -85,10 +94,10 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight, currentLocation }) => {
             onKeyDown={(e) => {
               if (e.key === "Enter") handleSearch();
             }}
-            className="w-full h-[40px] py-5 pl-12 mr-5 cursor-pointer rounded-lg border border-[#D0D0D0] focus:outline-none focus:border-[#7126B5]"
+            className="w-full h-[40px] py-5 pl-12 mr-3 cursor-pointer rounded-lg border border-[#D0D0D0] focus:outline-none focus:border-[#7126B5] placeholder:text-sm md:placeholder:text-base"
           />
           <button onClick={onClose} className="text-gray-600 text-lg font-bold">
-            <img src="/icons/fi_close.svg" alt="Close Button" />
+            <FiX size={25} className="text-gray-600" />
           </button>
         </div>
 
@@ -109,9 +118,15 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight, currentLocation }) => {
                 <li
                   key={index}
                   onClick={() => {
-                    handleLocationSelect(location)
+                    handleLocationSelect(location);
                   }}
-                  className="w-full flex justify-between items-center cursor-pointer p-3 border border-[#E2D4F0] rounded-lg focus:outline-none hover:bg-[#E2D4F0]"
+                  onMouseEnter={() => handleHoverStart(index)}
+                  onMouseLeave={handleHoverEnd}
+                  className={`w-full flex justify-between items-center cursor-pointer p-3 border border-[#E2D4F0] rounded-lg focus:outline-none transition-all duration-300 ${
+                    hovered === index
+                      ? "bg-[#4B1979] text-white shadow-lg"
+                      : "hover:bg-[#E2D4F0]"
+                  }`}
                 >
                   <span>{location}</span>
                   <button
@@ -120,10 +135,11 @@ const FlightModal = ({ isOpen, onClose, onSelectFlight, currentLocation }) => {
                       removeLocation(index);
                     }}
                   >
-                    <img
-                      src="/icons/fi_close.svg"
-                      alt="Close Button"
-                      className="w-3 h-3"
+                    <FiX
+                      size={20}
+                      className={`text-gray-600 transition-all duration-300 ${
+                        hovered === index ? "text-white" : "hover:text-white"
+                      }`}
                     />
                   </button>
                 </li>
