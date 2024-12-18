@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useForm, FormProvider, useFieldArray } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import FormPassenger from "../components/form/FormPassenger";
 import FormPemesan from "../components/form/FormPemesan";
 import DetailPenerbangan from "../components/Section/DetailPenerbangan";
-import Navbar from "../components/Navbar/Navbar";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 
 import Stage from "../components/Navbar/Stage";
@@ -13,10 +12,34 @@ import SeatSelection from "../components/Section/SeatSection";
 import { addBooking } from "../features/bookingSlice";
 import { useDispatch } from "react-redux";
 import { createBooking } from "../services/transaction.service";
+import { getFlightById } from "../services/flight.service";
 
 const OrderPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const [searchParams] = useSearchParams();
+
+    const fi = searchParams.get("fi")
+    const adult = searchParams.get("adult")
+    const youth = searchParams.get("youth") || 0
+    const baby = searchParams.get("baby") || 0
+
+    const [data, setData] = useState({});
+
+    const getFlightData = async() => {
+        if (!fi) return;
+        try {
+            const response = await getFlightById(fi)
+            setData(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getFlightData();
+    }, []);
 
     const [timeLeft, setTimeLeft] = useState(15 * 60);
 
@@ -41,7 +64,7 @@ const OrderPage = () => {
         ).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
     };
 
-    const [passengerCount, setPassengerCount] = useState(1);
+    const [passengerCount, setPassengerCount] = useState(adult);
 
     const methods = useForm({
         defaultValues: {
@@ -102,6 +125,8 @@ const OrderPage = () => {
         creatingBooking();
     };
 
+    const price = new Intl.NumberFormat('id-ID').format((data?.price * adult));
+
     return (
         <>
             {/* <Navbar /> */}
@@ -145,12 +170,18 @@ const OrderPage = () => {
                                     Detail Penerbangan
                                 </h2>
                                 <DetailPenerbangan
-                                    departure_time="07:00"
-                                    departure_date="27 November 2024"
-                                    departure_airport="Soekarno-Hatta"
-                                    return_time="11:00"
-                                    return_date="27 November 2024"
-                                    return_airport="Melbourne International Airport"
+                                flight_class={data?.class}
+                                information={data?.information}
+                                departure={data?.departure}
+                                    departure_airport={data?.airport?.name}
+                                    terminal={data?.airport?.terminal}
+                                    returnFlight={data?.return}
+                                    return_airport={data?.destinationCity?.fullname}
+                                    price={price}
+                                    adult={adult}
+                                    youth={youth}
+                                    baby={baby}
+                                    total_price={price}
                                 />
                             </div>
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Stage from "../components/Navbar/Stage";
 import DetailPenerbangan from "../components/Section/DetailPenerbangan";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
@@ -8,6 +8,9 @@ import { getBookingByCode } from "../services/transaction.service";
 const PaymentView = () => {
     const [searchParams] = useSearchParams();
     const bookingCode = searchParams.get("booking-code");
+
+    const [data, setData] = useState({});
+
     const insertSnapScript = () => {
         return new Promise((resolve) => {
             const script = document.createElement("script");
@@ -25,7 +28,7 @@ const PaymentView = () => {
         try {
             const response = await getBookingByCode(bookingCode);
             const { snap_token } = response.data;
-            console.log(response.data)
+            setData(response.data);
             window.snap.embed(snap_token, {
                 embedId: "snap-container",
                 onSuccess: function (result) {
@@ -57,6 +60,14 @@ const PaymentView = () => {
         insertSnapScript();
         pay();
     }, []);
+
+    const passangerCount = data && data.passengers ? data.passengers.length : 0;
+
+    const price = new Intl.NumberFormat('id-ID').format((data?.flight?.price * passangerCount));
+
+    const totalPrice = new Intl.NumberFormat('id-ID').format(data?.totalPrice);
+    console.log(data);
+
     return (
         <div>
             <LoggedInNavbar />
@@ -72,15 +83,19 @@ const PaymentView = () => {
                     <div className="space-y-6">
                         <div className="bg-white rounded-lg p-6">
                             <h2 className="font-bold text-xl mb-4">
-                                Detail Penerbangan
+                                Booking Code: <span className="text-purple-600">{bookingCode}</span>
                             </h2>
                             <DetailPenerbangan
-                                departure_time="07:00"
-                                departure_date="27 November 2024"
-                                departure_airport="Soekarno-Hatta"
-                                return_time="11:00"
-                                return_date="27 November 2024"
-                                return_airport="Melbourne International Airport"
+                                flight_class={data?.flight?.class}
+                                information={data?.flight?.information}
+                                departure={data?.flight?.departure}
+                                departure_airport={data?.flight?.airport.name}
+                                terminal={data?.flight?.airport.terminal}
+                                returnFlight={data?.flight?.return}
+                                return_airport={data?.flight?.destinationCity.fullname}
+                                ticket = {passangerCount}
+                                price= {price}
+                                total_price={totalPrice}
                             />
                         </div>
                     </div>
