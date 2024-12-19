@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import ButtonScroll from "../Button/ButtonScroll";
 import ButtonChange from "../Button/ButtonChange";
 import { useLocation } from "react-router-dom";
+import { addDays, format, parseISO } from "date-fns";
 
 const NavigationDates = ({ onDateClick }) => {
-  // const searchDetails = "JKT > MLB - 2 Penumpang - Economy";
   const [activeIndex, setActiveIndex] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
   const [searchDetails, setSearchDetails] = useState("");
-
+  const [dates, setDates] = useState([]);
   const location = useLocation();
 
   useEffect(() => {
@@ -16,47 +16,72 @@ const NavigationDates = ({ onDateClick }) => {
 
     const from = params.get("from");
     const to = params.get("to");
+    const departureDate = params.get("departureDate");
     const adult = parseInt(params.get("adult")) || 0;
     const child = parseInt(params.get("child")) || 0;
     const infant = parseInt(params.get("infant")) || 0;
-    const seatClass = params.get("class");
+    const seatClass = params.get("seatClass");
 
     const passengerCount = adult + child + infant;
 
     setSearchDetails(
       `${from} > ${to} - ${passengerCount} Penumpang - ${seatClass}`
     );
+
+    let departureDateObj;
+    if (departureDate) {
+      departureDateObj = parseISO(departureDate);
+    } else {
+      departureDateObj = new Date();
+    }
+    const generatedDates = getNextDates(departureDateObj, 60);
+    setDates(generatedDates);
+
+    const departureIndex = generatedDates.findIndex(
+      (dateObj) => dateObj.dateObj.getTime() === departureDateObj.getTime()
+    );
+    if (departureIndex !== -1) {
+      setActiveIndex(departureIndex);
+    }
   }, [location]);
 
-  const dates = [
-    { day: "Selasa", date: "01/03/2023" },
-    { day: "Rabu", date: "02/03/2023" },
-    { day: "Kamis", date: "03/03/2023" },
-    { day: "Jumat", date: "04/03/2023" },
-    { day: "Sabtu", date: "05/03/2023" },
-    { day: "Minggu", date: "06/03/2023" },
-    { day: "Senin", date: "07/03/2023" },
-    { day: "Selasa", date: "08/03/2023" },
-    { day: "Rabu", date: "09/03/2023" },
-  ];
+  const getNextDates = (startingDate = new Date(), count = 30) => {
+    const dates = [];
+    for (let i = 0; i < count; i++) {
+      const currentDate = addDays(startingDate, i);
+      dates.push({
+        day: format(currentDate, "EEEE"),
+        date: format(currentDate, "dd/MM/yyyy"),
+        dateObj: currentDate,
+      });
+    }
+    return dates;
+  };
 
   const scrollLeft = () => {
-    setStartIndex((prev) => Math.max(0, prev - 1));
+    setStartIndex((prev) => Math.max(0, prev - 7));
   };
 
   const scrollRight = () => {
-    setStartIndex((prev) => Math.min(dates.length - 7, prev + 1));
+    const lastIndex = dates.length - 1;
+    const newIndex = startIndex + 7;
+    if (newIndex >= dates.length) {
+      const nextStartDate = addDays(dates[lastIndex].dateObj, 1);
+      const newDates = getNextDates(nextStartDate, 30);
+      setDates([...dates, ...newDates]);
+    }
+    setStartIndex((prev) => Math.min(dates.length - 7, prev + 7));
   };
 
   const handleDateClick = (index, date) => {
     setActiveIndex(index);
-    onDateClick(date); // Panggil fungsi untuk filter tiket berdasarkan tanggal
+    onDateClick(date);
   };
 
   return (
     <div className="w-full md:w-4/5 mx-auto px-4 my-4 ">
       <div className="flex items-center justify-between gap-8 ">
-        <div className="w-[1650px] h-[50px] bg-purple-400 rounded-xl p-3 flex items-center hover:bg-purple-600 text-white shadow-lg mb-3 md:mb-0">
+        <div className="w-[1650px] h-[50px] bg-[#A06ECE] rounded-xl p-3 flex items-center hover:bg-[#7126B5] text-white shadow-lg mb-3 md:mb-0">
           <a href="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +108,6 @@ const NavigationDates = ({ onDateClick }) => {
         </div>
       </div>
 
-      {/* Navigation Dates */}
       <div className="flex items-center justify-between mt-8 gap-2 w-full">
         <ButtonScroll
           direction="left"
@@ -91,7 +115,6 @@ const NavigationDates = ({ onDateClick }) => {
           disabled={startIndex === 0}
         />
 
-        {/* Elemen Tanggal */}
         <div className="flex gap-8 overflow-x-auto scrollbar-hide items-center justify-center w-full sm:overflow-hidden">
           {dates.slice(startIndex, startIndex + 7).map((item, index) => (
             <div
@@ -99,8 +122,8 @@ const NavigationDates = ({ onDateClick }) => {
               onClick={() => handleDateClick(startIndex + index, item.date)}
               className={`flex flex-col items-center justify-center w-[120px] h-[60px] rounded-[8px] cursor-pointer transition-all ${
                 activeIndex === startIndex + index
-                  ? "bg-purple-500 text-white shadow-lg"
-                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
+                  ? "bg-[#7126B5] text-white shadow-lg"
+                  : "bg-white text-gray-700 border border-gray-300 hover:bg-[#7126B5] hover:text-white"
               }`}
               style={{
                 minWidth: "120px",

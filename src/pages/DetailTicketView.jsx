@@ -22,10 +22,12 @@ const DetailTicket = () => {
 
   const from = searchParams.get("from");
   const to = searchParams.get("to");
-  const departureDateStart = searchParams.get("departureDateStart");
-  const returnDateStart = searchParams.get("returnDateStart");
+  const departureDateStart = searchParams.get("departureDate");
+  const returnDateStart = searchParams.get("returnDate");
   const seatClass = searchParams.get("seatClass");
-  const passengers = searchParams.get("passengers");
+  const adultPassengers = parseInt(searchParams.get("adult")) || 0;
+  const childPassengers = parseInt(searchParams.get("child")) || 0;
+  const infantPassengers = parseInt(searchParams.get("infant")) || 0;
 
   const applyFilter = () => {
     const filterFunctions = {
@@ -86,7 +88,9 @@ const DetailTicket = () => {
           to,
           departureDateStart,
           returnDateStart,
-          passengers,
+          adultPassengers,
+          childPassengers,
+          infantPassengers,
           seatClass,
         });
 
@@ -109,7 +113,16 @@ const DetailTicket = () => {
     };
 
     fetchTickets();
-  }, [from, to, departureDateStart, returnDateStart, passengers, seatClass]);
+  }, [
+    from,
+    to,
+    departureDateStart,
+    returnDateStart,
+    adultPassengers,
+    childPassengers,
+    infantPassengers,
+    seatClass,
+  ]);
 
   return (
     <>
@@ -118,7 +131,7 @@ const DetailTicket = () => {
       <div className="pt-[100px] gap-2">
         <div className="w-full h-[231px] bg-white shadow-md ">
           <HeaderTicket />
-          <NavigationDates onDateClick={handleDateFilter} />
+          <NavigationDates onDateClick={handleDateFilter} tickets={tickets} />
         </div>
         <FilterButton
           tickets={tickets}
@@ -127,7 +140,7 @@ const DetailTicket = () => {
           onFilterChange={handleFilterChange}
           selectedFilter={activeFilter}
         />
-        <main className="w-full md:w-4/5 mx-auto mt-8 flex flex-col md:flex-row justify-center">
+        <main className="w-full md:w-4/5 mx-auto flex flex-col md:flex-row justify-center">
           {!loading && filteredTickets.length > 0 && <FilterSection />}
           <ResultsSection loading={loading} tickets={filteredTickets} />
         </main>

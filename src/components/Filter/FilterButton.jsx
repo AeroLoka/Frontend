@@ -19,9 +19,9 @@ const FilterButton = ({ onFilterChange, selectedFilter }) => {
   };
 
   return (
-    <div className="w-full md:w-4/5 mx-auto mt-5 flex items-center justify-end mb-7 px-4">
+    <div className="w-full md:w-4/5 mx-auto mt-5 flex items-center justify-end mb-7 p-2">
       <button
-        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 focus:outline-none bg-white text-purple-500 border border-purple-400 hover:bg-purple-600 hover:text-white shadow-lg h-[32px] min-w-fit px-4 py-2 rounded-[16px]"
+        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 focus:outline-none bg-white text-purple-500 border border-purple-400 hover:bg-purple-600 hover:text-white shadow-lg h-[32px] min-w-fit p-5 rounded-[16px]"
         type="button"
         onClick={handleModalToggle}
       >

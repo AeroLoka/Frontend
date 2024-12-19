@@ -5,28 +5,31 @@ import ButtonSelect from "../Button/ButtonSelect";
 const CardTicket = ({ ticket, isOpen, onSelect }) => {
   const {
     airline,
+    airport,
+    airportTerminal,
+    flightNumber,
     classType,
     departureTime,
     departureCity,
     arrivalTime,
     arrivalCity,
     duration,
-    flightType,
     departureDate,
-    departureLocation,
     arrivalDate,
-    arrivalLocation,
     price,
     airlineDetail,
   } = ticket;
 
   return (
-    <div className="cardTicket w-[699px] flex flex-col bg-white border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow mb-4">
+    <div
+      className="cardTicket w-full flex flex-col bg-white border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg hover:border-purple-500 transition-shadow mb-4 cursor-pointer"
+      onClick={onSelect}
+    >
       <div className="flex flex-col space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img
-              src="/src/assets/icons/Thumbnail.svg"
+              src="/images/Thumbnail.png"
               alt="Airline Logo"
               className="w-6 h-6"
             />
@@ -35,8 +38,11 @@ const CardTicket = ({ ticket, isOpen, onSelect }) => {
           <img
             src="/src/assets/icons/Suffix.svg"
             alt="Toggle Details"
-            className="w-6 h-6 cursor-pointer"
-            onClick={onSelect}
+            className="w-6 h-6 cursor-pointer hover:shadow-xl"
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelect();
+            }}
           />
         </div>
 
@@ -50,7 +56,7 @@ const CardTicket = ({ ticket, isOpen, onSelect }) => {
               <div className="text-sm text-gray-500 flex flex-col items-center flex-1">
                 <p className="mb-2">{duration}</p>
                 <div className="w-[233px] h-[1px] bg-gray-300"></div>
-                <span className="mt-2">{flightType}</span>
+                <span className="mt-2">Direct</span>
               </div>
 
               <div>
@@ -73,16 +79,20 @@ const CardTicket = ({ ticket, isOpen, onSelect }) => {
         </div>
       </div>
 
-      {/* Render DetailSection jika tiket ini aktif */}
       {isOpen && (
         <DetailSection
+          airline={airline}
+          airport={airport}
+          airportTerminal={airportTerminal}
+          flightNumber={flightNumber}
+          classType={classType}
           departureTime={departureTime}
-          departureDate={ticket.departure.split("T")[0]}
-          departureLocation={ticket.originCity.fullname}
-          airlineDetail={airlineDetail}
+          departureDate={departureDate}
+          departureCity={departureCity}
           arrivalTime={arrivalTime}
-          arrivalDate={ticket.return.split("T")[0]}
-          arrivalLocation={ticket.destinationCity.fullname}
+          arrivalDate={arrivalDate}
+          arrivalCity={arrivalCity}
+          airlineDetail={airlineDetail}
         />
       )}
     </div>

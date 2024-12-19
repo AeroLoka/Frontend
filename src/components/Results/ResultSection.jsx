@@ -8,6 +8,22 @@ const ResultsSection = ({ loading, tickets }) => {
     setSelectedTicketId((prevId) => (prevId === ticketId ? null : ticketId));
   };
 
+  const formatDuration = (durationInMinutes) => {
+    const hours = Math.floor(durationInMinutes / 60);
+    const minutes = durationInMinutes % 60;
+    return `${hours > 0 ? `${hours}h ` : ""}${
+      minutes > 0 ? `${minutes}m` : ""
+    }`;
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = date.toLocaleString("en-US", { month: "long" });
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
+
   const renderTickets = () => {
     if (loading) {
       return (
@@ -32,15 +48,19 @@ const ResultsSection = ({ loading, tickets }) => {
           ticket={{
             ...ticket,
             airline: ticket.airlines.name,
+            airport: ticket.airport.name,
+            airportTerminal: ticket.airport.terminal,
+            flightNumber: ticket.id,
             classType: ticket.class,
-            departureTime: ticket.departure.split("T")[1],
-            arrivalTime: ticket.return.split("T")[1],
-            departureCity: ticket.originCity.fullname,
-            arrivalCity: ticket.destinationCity.fullname,
-            flightType: ticket.information,
-            duration: `${ticket.duration} menit`,
-            price: `Rp ${ticket.price.toLocaleString()}`,
-            airlineDetail: ticket.airlines,
+            departureCity: ticket.originCity.shortname,
+            arrivalCity: ticket.destinationCity.shortname,
+            departureTime: ticket.departure.split("T")[1].slice(0, 5),
+            arrivalTime: ticket.return.split("T")[1].slice(0, 5),
+            departureDate: formatDate(ticket.departure),
+            arrivalDate: formatDate(ticket.return),
+            duration: formatDuration(ticket.duration),
+            price: `Rp ${Number(ticket.price).toLocaleString("id-ID")}`,
+            airlineDetail: ticket.information,
           }}
           isOpen={selectedTicketId === ticket.id}
           onSelect={() => handleSelect(ticket.id)}
@@ -51,31 +71,16 @@ const ResultsSection = ({ loading, tickets }) => {
       return (
         <div className="flex flex-col items-center justify-center text-center">
           <img
-            src="/images/NotTicket2.png"
-            alt="Tiket Habis"
+            src="/images/ilustrasi.png"
+            alt="Flights are not available"
             className="w-72 h-62"
           />
-          <p className="text-black text-lg font-medium mt-2">
-            Maaf, Tiket terjual habis!
-          </p>
-          <p className="text-[#7126B5] text-lg font-medium mt-2">
-            Coba cari perjalanan lainnya!
+          <p className="text-gray-600 text-lg font-medium mt-4">
+            Tidak ada penerbangan yang tersedia
           </p>
         </div>
       );
     }
-    return (
-      <div className="flex flex-col items-center justify-center text-center">
-        <img
-          src="/images/ilustrasi.png"
-          alt="Flights are not available"
-          className="w-72 h-62"
-        />
-        <p className="text-gray-600 text-lg font-medium mt-4">
-          Tidak ada penerbangan yang tersedia
-        </p>
-      </div>
-    );
   };
   return (
     <section className="md:w-4/5 md:ml-8 mt-8 md:mt-0 flex-col items-center justify-center">

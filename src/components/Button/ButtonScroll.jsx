@@ -5,7 +5,7 @@ const ButtonScroll = ({ direction, onClick, disabled }) => {
 
   return (
     <button
-      className="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring bg-purple-600 shadow-lg shadow-purple-500/50 hover:bg-purple-600 h-9 px-4 py-2 text-gray-600 hover:text-black disabled:opacity-50"
+      className="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring bg-[#A06ECE] shadow-lg shadow-purple-500/50 hover:bg-[#7126B5] h-9 px-4 py-2 text-gray-600 hover:text-black disabled:opacity-50"
       onClick={onClick}
       disabled={disabled}
     >

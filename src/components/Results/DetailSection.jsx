@@ -1,13 +1,17 @@
 import React from "react";
 
 const DetailSection = ({
+  airline,
+  airport,
+  airportTerminal,
+  flightNumber,
+  classType,
   departureTime,
   departureDate,
-  departureLocation,
-  airlineDetail,
   arrivalTime,
   arrivalDate,
-  arrivalLocation,
+  arrivalCity,
+  airlineDetail,
 }) => {
   return (
     <div
@@ -19,7 +23,6 @@ const DetailSection = ({
         Detail Penerbangan
       </p>
 
-      {/* Departure Section */}
       <div className="flex justify-between">
         <div className="flex flex-col">
           <p className="font-bold text-xl leading-[24px]">{departureTime}</p>
@@ -27,7 +30,7 @@ const DetailSection = ({
             {departureDate}
           </p>
           <p className="font-medium text-[14px] leading-[20px]">
-            {departureLocation}
+            {airport} - Terminal {airportTerminal}
           </p>
         </div>
         <p className="font-bold text-[12px] leading-[18px] text-[#6C3DAB] text-right">
@@ -36,7 +39,6 @@ const DetailSection = ({
       </div>
       <div className="border-t border-gray-300 w-full my-[12px]"></div>
 
-      {/* Airline Section */}
       <div>
         <div className="flex items-center gap-[8px] mt-[12px]">
           <img
@@ -46,21 +48,23 @@ const DetailSection = ({
           />
           <div>
             <p className="font-bold text-[14px] leading-[20px]">
-              {airlineDetail}
+              {airline} - {classType}
+            </p>
+            <p className="font-bold text-[14px] leading-[20px]">
+              {airline} - A0{flightNumber}
             </p>
             <br />
             <p className="font-bold text-[14px] leading-[20px]">Informasi:</p>
             <ul className="font-normal text-[14px] leading-[20px]">
               <li>Baggage 20 kg</li>
               <li>Cabin baggage 7 kg</li>
-              <li>In Flight Entertainment</li>
+              <li>{airlineDetail}</li>
             </ul>
           </div>
         </div>
       </div>
       <div className="border-t border-gray-300 w-full my-[12px]"></div>
 
-      {/* Arrival Section */}
       <div className="flex justify-between">
         <div className="flex flex-col">
           <p className="font-bold text-xl leading-[24px]">{arrivalTime}</p>
@@ -68,7 +72,7 @@ const DetailSection = ({
             {arrivalDate}
           </p>
           <p className="font-medium text-[14px] leading-[20px]">
-            {arrivalLocation}
+            {arrivalCity}
           </p>
         </div>
         <p className="font-bold text-[12px] leading-[18px] text-[#6C3DAB] text-right">
