@@ -9,4 +9,13 @@ const getFlightById = async (id) => {
     }
 }
 
-export { getFlightById }
+const getAllSeatByFlightId = async (id) => {
+    try {
+        const response = await axiosInstance.get(`/seats/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error.message;
+    }
+}
+
+export { getFlightById, getAllSeatByFlightId }

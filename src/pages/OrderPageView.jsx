@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useForm, FormProvider, useFieldArray } from "react-hook-form";
+import { useForm, FormProvider, useFieldArray, get, set } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import FormPassenger from "../components/form/FormPassenger";
@@ -12,7 +12,7 @@ import SeatSelection from "../components/Section/SeatSection";
 import { addBooking } from "../features/bookingSlice";
 import { useDispatch } from "react-redux";
 import { createBooking } from "../services/transaction.service";
-import { getFlightById } from "../services/flight.service";
+import { getAllSeatByFlightId, getFlightById } from "../services/flight.service";
 
 const OrderPage = () => {
     const navigate = useNavigate();
@@ -20,12 +20,13 @@ const OrderPage = () => {
 
     const [searchParams] = useSearchParams();
 
-    const fi = searchParams.get("fi")
+    const fi = parseInt(searchParams.get("fi"),10)
     const adult = searchParams.get("adult")
-    const youth = searchParams.get("youth") || 0
+    const youth = searchParams.get("child") || 0
     const baby = searchParams.get("baby") || 0
 
     const [data, setData] = useState({});
+    const [seats, setSeats] = useState([]);
 
     const getFlightData = async() => {
         if (!fi) return;
@@ -37,8 +38,18 @@ const OrderPage = () => {
         }
     }
 
+    const getSeatByFlightId = async () => {
+        try {
+            const response = await getAllSeatByFlightId(fi)
+            setSeats(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         getFlightData();
+        getSeatByFlightId();
     }, []);
 
     const [timeLeft, setTimeLeft] = useState(15 * 60);
@@ -106,8 +117,8 @@ const OrderPage = () => {
                 
                 const response = await createBooking({
                     email: pemesanData.email,
-                    flightId: 1,
-                    totalPrice: 900000,
+                    flightId: parseInt(fi, 10),
+                    totalPrice: parseInt(price.replace(/\D/g, ''), 10),
                     passengers: passengersForApi,
                     seats: passengers.map((p) => p.selected_seat),
                 });
@@ -161,7 +172,11 @@ const OrderPage = () => {
                                     />
                                 ))}
                             </div>
-                            <SeatSelection />
+                            <SeatSelection 
+                                seats={seats}
+                                airlines={data?.airlines?.name}
+                                airline_class={data?.class}
+                            />
                         </div>
 
                         <div className="space-y-6">
