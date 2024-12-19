@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../features/userSlice";
 
 const AccountSettings = () => {
-    const { id } = useSelector((state) => state.userState.user);
+    const { email } = useSelector((state) => state.userState.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ const AccountSettings = () => {
         e.stopPropagation();
         e.preventDefault();
         try {
-            await deleteUser(id);
+            await deleteUser(email);
             toast.info("user deleted successfully");
             dispatch(logoutUser())
             navigate("/");

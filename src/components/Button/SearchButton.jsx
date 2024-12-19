@@ -21,7 +21,7 @@ const SearchDestination = () => {
   };
 
   return (
-    <div className="px-8 flex gap-x-4 lg:px-40">
+    <div className="px-8 flex gap-x-4 mb-2 lg:px-20">
       <div className="flex gap-x-4 overflow-x-auto py-2">
         <div
           className={`min-w-[126px] h-[48px] rounded-xl flex items-center justify-center ${getButtonClasses(

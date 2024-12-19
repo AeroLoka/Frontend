@@ -13,6 +13,7 @@ import RegisterView from "./pages/auth/RegisterView";
 import ProfileView from "./pages/ProfileView";
 
 //loader
+import { checkAuth } from "./middlewares/auth.middleware";
 
 //storage
 import { store } from "./store";
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <ProfileView />,
+        loader: checkAuth(store),
       },
       {
         path: "/detail-ticket",
@@ -48,32 +50,41 @@ const router = createBrowserRouter([
       {
         path: "/order-page",
         element: <OrderPage />,
+        loader: checkAuth(store),
       },
       {
         path: "/payment",
         element: <PaymentView />,
+        loader: checkAuth(store),
       },
       {
         path: `/payment-status`,
         element: <PaymentStatusPage />,
+        loader: checkAuth(store),
       },
       {
         path: `/order-history`,
         element: <OrderHistory />,
+        loader: checkAuth(store),
       },
       {
         path: `/notifications`,
         element: <NotificationView />,
-      },
-      {
-        path: `/order-history`,
-        element: <OrderHistory />,
+        loader: checkAuth(store),
       },
     ],
   },
   {
     path: "/login",
     element: <LoginView />,
+  },
+  {
+    path: "/forget-password",
+    element: <VerifyEmailView />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPasswordView />,
   },
   {
     path: "/register",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ButtonScroll from "../Button/ButtonScroll";
 import ButtonChange from "../Button/ButtonChange";
 
@@ -19,6 +19,33 @@ const NavigationDates = ({ onDateClick }) => {
     { day: "Rabu", date: "09/03/2023" },
   ];
 
+  // const [searchDetails, setSearchDetails] = useState("");
+  // const [dates, setDates] = useState([]);
+  // const [activeIndex, setActiveIndex] = useState(1);
+  // const [startIndex, setStartIndex] = useState(0);
+
+  // useEffect(() => {
+  //   const fetchSearchDetails = async () => {
+  //     try {
+  //       const response = await fetch("/api/search-flights");
+  //       const data = await response.json();
+
+  //       // Set data yang diterima dari API
+  //       setSearchDetails(data.searchDetails || "Flight Details Unavailable");
+  //       setDates(
+  //         data.dates.map((date) => ({
+  //           day: date.day,
+  //           date: date.date,
+  //         }))
+  //       );
+  //     } catch (error) {
+  //       console.error("Error fetching search details:", error);
+  //     }
+  //   };
+
+  //   fetchSearchDetails();
+  // }, []);
+
   const scrollLeft = () => {
     setStartIndex((prev) => Math.max(0, prev - 1));
   };
@@ -29,12 +56,12 @@ const NavigationDates = ({ onDateClick }) => {
 
   const handleDateClick = (index, date) => {
     setActiveIndex(index);
-    onDateClick(date); // Panggil fungsi untuk filter tiket berdasarkan tanggal
+    onDateClick(date);
   };
 
   return (
-    <div className="w-full md:w-4/5 mx-auto px-4 my-4 ">
-      <div className="flex items-center justify-between gap-8 ">
+    <div className="w-full md:w-4/5 mx-auto px-4 my-4">
+      <div className="flex items-center justify-between gap-8">
         <div className="w-[1650px] h-[50px] bg-purple-400 rounded-xl p-3 flex items-center hover:bg-purple-600 text-white shadow-lg mb-3 md:mb-0">
           <a href="/">
             <svg
