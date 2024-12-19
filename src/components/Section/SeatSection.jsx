@@ -2,7 +2,26 @@ import React, { useState } from "react";
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { toast } from "react-toastify";
 
-const SeatSelection = () => {
+const SeatSelection = (props) => {
+    const {seats, airlines, airline_class } = props;
+
+    const bookedSeats = seats
+    .filter(seat => seat.status === 'booked' || seat.version === 2)
+    .map(seat => seat.seatNumber);
+
+    let airlineClass = (airline_class || '').trim().toUpperCase();
+    let seatRows;
+    if (airlineClass === 'FIRST CLASS') {
+        seatRows = 2;
+    } else if (airlineClass === 'BUSINESS') {
+        seatRows = 6;
+    } else if (airlineClass === 'PREMIUM ECONOMY') {
+        seatRows = 8;
+    } else {
+        seatRows = 12;
+    }
+    console.log(`airlineClass: "${airlineClass}"`);
+    
     const methods = useFormContext();
     const { update } = useFieldArray({
         control: methods.control,
@@ -12,12 +31,12 @@ const SeatSelection = () => {
     const [currentPassengerIndex, setCurrentPassengerIndex] = useState(0);
 
     // Generate seat layout data
-    const rows = Array.from({ length: 12 }, (_, i) => i + 1);
+    const rows = Array.from({ length: seatRows }, (_, i) => i + 1);
     const leftColumns = ["A", "B", "C"];
     const rightColumns = ["D", "E", "F"];
 
     // Predefined unavailable seats
-    const unavailableSeats = new Set(["A1", "B1"]);
+    const unavailableSeats = new Set(bookedSeats);
 
     // Special seats (P1, P2)
     const specialSeats = {};
@@ -82,16 +101,16 @@ const SeatSelection = () => {
                 <h2 className="text-2xl font-bold mb-6">Pilih Kursi</h2>
                 <div className="bg-green-400 text-white p-4 rounded-lg mb-8 text-center">
                     <h3 className="text-xl font-semibold">
-                        Economy - 64 Seats Available
+                        {airlineClass} - {airlines}
                     </h3>
                 </div>
 
                 {/* Passenger Selection for Seat Assignment */}
                 <div className="bg-white rounded-lg border p-6 mb-4">
-                    <h2 className="font-bold text-xl mb-4">
+                    <h2 className="font-bold text-xl text-center mb-4">
                         Select Passenger for Seat Assignment
                     </h2>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap justify-center gap-2">
                         {methods
                             .getValues("passengers")
                             .map((passenger, index) => {
@@ -166,7 +185,7 @@ const SeatSelection = () => {
                                 {/* Left seats */}
                                 <div className="col-span-3 grid grid-cols-3 gap-2">
                                     {leftColumns.map((col) => {
-                                        const seatId = `${col}${row}`;
+                                        const seatId = `${row}${col}`;
                                         return (
                                             <button
                                                 key={seatId}
@@ -200,7 +219,7 @@ const SeatSelection = () => {
                                 {/* Right seats */}
                                 <div className="col-span-3 grid grid-cols-3 gap-2">
                                     {rightColumns.map((col) => {
-                                        const seatId = `${col}${row}`;
+                                        const seatId = `${row}${col}`;
                                         return (
                                             <button
                                                 key={seatId}

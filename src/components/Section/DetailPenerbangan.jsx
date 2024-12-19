@@ -1,7 +1,46 @@
+import { div } from "framer-motion/client";
 import React from "react";
 
 const DetailPenerbangan = (props) => {
-    const {departure_time, departure_date, departure_airport, return_time, return_date, return_airport} = props;
+    const {
+        flight_class,
+        information,
+        departure,
+        departure_airport,
+        terminal,
+        returnFlight,
+        return_airport,
+        total_price,
+        price,
+        ticket,
+        adult,
+        youth,
+        baby
+    } = props;
+
+    const dateForDeparture = new Date(departure);
+    const departure_date = dateForDeparture.toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+    const departure_time = dateForDeparture.toLocaleTimeString("en-US", {
+        hour12: false,
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+
+    const dateForReturn = new Date(returnFlight);
+    const return_date = dateForReturn.toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+    const return_time = dateForReturn.toLocaleTimeString("en-US", {
+        hour12: false,
+        hour: "2-digit",
+        minute: "2-digit",
+    });
     return (
         <div className="space-y-4">
             <div className="flex justify-between m-0">
@@ -11,14 +50,16 @@ const DetailPenerbangan = (props) => {
             <div className="flex justify-between">
                 <div>
                     <p>{departure_date}</p>
-                    <p>{departure_airport} - Terminal 1A Domestik</p>
+                    <p>
+                        {departure_airport} - Terminal {terminal}
+                    </p>
                 </div>
             </div>
 
             <div className="border-t pt-4">
                 <div className="flex justify-between items-center">
                     <div>
-                        <p className="font-bold">Jet Air - Economy</p>
+                        <p className="font-bold">Jet Air - {flight_class}</p>
                         <p className="font-bold">JT - 203</p>
                     </div>
                 </div>
@@ -27,9 +68,7 @@ const DetailPenerbangan = (props) => {
             <div className="border-b py-4">
                 <p className="font-bold mb-2">Informasi:</p>
                 <ul className="text-gray-600 space-y-1">
-                    <li>Baggage 20 kg</li>
-                    <li>Cabin baggage 7 kg</li>
-                    <li>In Flight Entertainment</li>
+                    <li>{information}</li>
                 </ul>
             </div>
             <div className="flex justify-between">
@@ -46,21 +85,40 @@ const DetailPenerbangan = (props) => {
             <div className="border-t pt-4">
                 <div className="space-y-2 text-sm">
                     <p className="font-bold">Rincian Harga</p>
-                    <div className="flex justify-between">
-                        <span>2 Adults</span>
-                        <span>IDR 9.550.000</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>1 Baby</span>
-                        <span>IDR 0</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>Tax</span>
-                        <span>IDR 300.000</span>
-                    </div>
+                    {ticket ? (
+                        <>
+                            <div className="flex justify-between">
+                                <span>{ticket} Ticket(s)</span>
+                                <span>IDR {price}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span>Tax</span>
+                                <span>IDR 0</span>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="flex justify-between">
+                                <span>{adult} Adults</span>
+                                <span>IDR {price}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span>{youth} Youth</span>
+                                <span>IDR 0</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span>{baby} Baby</span>
+                                <span>IDR 0</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span>Tax</span>
+                                <span>IDR 0</span>
+                            </div>
+                        </>
+                    )}
                     <div className="flex justify-between font-bold text-purple-600 pt-2 border-t text-lg">
                         <span>Total</span>
-                        <span>IDR 9.850.000</span>
+                        <span>IDR {total_price}</span>
                     </div>
                 </div>
             </div>

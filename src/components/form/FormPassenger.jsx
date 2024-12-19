@@ -17,7 +17,7 @@ const FormPassenger = ({ index }) => {
     const handleToggle = (newValue) => {
         setValue(`passengers.${index}.hasLastName`, newValue);
         if (!newValue) {
-            setValue(`passengers.${index}.last_name`, "");
+            setValue(`passengers.${index}.lastName`, "");
         }
     };
 
@@ -33,7 +33,7 @@ const FormPassenger = ({ index }) => {
             </h3>
 
             <InputForm
-                name={`passengers.${index}.first_name`}
+                name={`passengers.${index}.firstName`}
                 label="First Name"
                 placeholder="Enter your first name"
                 validation={{
@@ -48,7 +48,7 @@ const FormPassenger = ({ index }) => {
 
             {hasLastName && (
                 <InputForm
-                    name={`passengers.${index}.last_name`}
+                    name={`passengers.${index}.lastName`}
                     label="Family Name"
                     placeholder="Enter your family name"
                     validation={{
@@ -58,7 +58,7 @@ const FormPassenger = ({ index }) => {
             )}
 
             <InputForm
-                name={`passengers.${index}.birth_date`}
+                name={`passengers.${index}.birthDate`}
                 label="Birth Date"
                 type="date"
                 validation={{
@@ -90,13 +90,13 @@ const FormPassenger = ({ index }) => {
                 }}
                 list={[
                     { label: "KTP", value: "ktp" },
-                    { label: "Passport", value: "passport" },
+                    { label: "Passport", value: "passportNumber" },
                 ]}
             />
 
             {identificationType === "ktp" && (
                 <InputForm
-                    name={`passengers.${index}.ktp_number`}
+                    name={`passengers.${index}.ktpNumber`}
                     label="KTP Number"
                     placeholder="Enter your KTP Number"
                     validation={{
@@ -109,10 +109,10 @@ const FormPassenger = ({ index }) => {
                 />
             )}
 
-            {identificationType === "passport" && (
+            {identificationType === "passportNumber" && (
                 <>
                     <InputForm
-                        name={`passengers.${index}.passport`}
+                        name={`passengers.${index}.passportNumber`}
                         label="Passport"
                         placeholder="Enter your Passport"
                         validation={{
@@ -124,16 +124,16 @@ const FormPassenger = ({ index }) => {
                         }}
                     />
                     <SelectForm
-                        name={`passengers.${index}.negara_penerbit`}
+                        name={`passengers.${index}.passportCountry`}
                         label="Negara Penerbit"
-                        placeholder="Select your negara penerbit"
+                        placeholder="Select your passport country"
                         validation={{
                             required: "Negara penerbit is required",
                         }}
                         list={countries}
                     />
                     <InputForm
-                        name={`passengers.${index}.berlaku_sampai`}
+                        name={`passengers.${index}.passportExpiry`}
                         label="Berlaku Sampai"
                         type="date"
                         validation={{
