@@ -15,8 +15,3 @@ body {
   margin: 0 auto;
   padding: 16px;
 }
-@media (max-width: 768px) {
-  .cardTicket {
-    width: 100%;
-  }
-}

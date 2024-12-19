@@ -97,7 +97,7 @@ const NotificationView = () => {
           <h2>Belum ada notif nih.</h2>
         </div>
       ) : (
-        <div className="sm:mt-[90px] mt-8  flex flex-col  items-center">
+        <div className="mt-[90px] flex flex-col  items-center">
           {notifications.map((notification, index) => (
             <div key={notification.id} className="notification-container w-5/6">
               <Notification notification={notification} />

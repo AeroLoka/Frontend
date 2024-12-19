@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { getAllFlights } from "../../services/home.service.js";
+import React from "react";
 import { motion } from "framer-motion";
 import {
   FaCalendarAlt,
@@ -19,44 +18,30 @@ const formatDateRange = (startDate, endDate) => {
   }`;
 };
 
-const HomeCard = ({ flights }) => {
-  // const [flights, setFlights] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchFlights = async () => {
-  //     try {
-  //       const response = await getAllFlights({ limit: 5, page: 1 });
-  //       setFlights(response.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchFlights();
-  // }, []);
+const HomeCard = ({ flights, onSelectFlight }) => {
+  if (!flights || flights.length === 0) {
+    return <p className="text-gray-400 my-5">No Flights Available</p>;
+  }
 
   return (
     <>
-      <div className="grid grid-cols-1 px-8 pt-2 gap-4 md:grid-cols-3 lg:grid-cols-5 lg:px-20">
+      <div className="grid grid-cols-1 px-8 pt-2 gap-3 md:grid-cols-3 md:px-0 lg:grid-cols-5">
         {flights.map((flight) =>
           flight.originCity && flight.destinationCity && flight.airlines ? (
             <motion.div
-              key={
-                flight.id ||
-                flight.originCity.name + flight.destinationCity.name
-              }
+              key={flight.id}
               whileHover={{
                 scale: 1.05,
                 boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.20)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="relative flex flex-col items-start justify-center px-3 py-5 bg-white rounded-lg shadow-lg"
+              className="relative flex flex-col mb-1 items-start justify-center p-3 bg-white rounded-lg shadow-lg cursor-pointer"
+              onClick={() => onSelectFlight(flight)}
             >
               <div className="relative mb-3 w-full h-auto rounded-lg">
                 <img
                   src={destination1}
-                  alt={`${flight.originCity.name} - ${flight.destinationCity.name}`}
+                  alt={`${flight.originCity.fullname} - ${flight.destinationCity.fullname}`}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute top-0 right-0 w-[50%] h-[25%] text-base font-medium rounded-tl-xl rounded-bl-xl bg-[#A06ECE] text-center text-white flex items-center justify-center lg:text-xs">
@@ -65,26 +50,25 @@ const HomeCard = ({ flights }) => {
               </div>
 
               <div className="flex flex-col gap-0.5 text-left w-full md:gap-1.5">
-                <p className="text-xl font-semibold flex flex-wrap items-center md:text-sm">
+                <p className="text-base font-semibold flex flex-wrap items-center md:text-sm">
                   <MdLocationOn className="mr-1 text-xl text-[#7126B5] md:text-lg" />
-                  {flight.originCity.name}{" "}
+                  {flight.originCity.fullname}{" "}
                   <FaArrowRight className="mx-1 text-[#7126B5]" />{" "}
-                  {flight.destinationCity.name}
+                  {flight.destinationCity.fullname}
                 </p>
-                <p className="text-xl text-[#7126B5] font-bold flex items-center md:text-sm">
+                <p className="text-case text-[#7126B5] font-bold flex items-center md:text-sm">
                   <FaPlaneDeparture className="mr-2 text-lg md:text-sm" />
                   {flight.airlines.name}
                 </p>
-                <p className="text-base font-medium flex items-center md:text-xs">
-                  <FaCalendarAlt className="mr-2 text-lg text-[#7126B5] md:text-sm" />
+                <p className="text-xs font-medium flex items-center">
+                  <FaCalendarAlt className="mr-2 text-sm text-[#7126B5]" />
                   {formatDateRange(flight.departure, flight.return)}
                 </p>
-                <p className="text-base font-medium flex items-center md:text-xs">
-                  <FaDollarSign className="mr-2 text-lg text-[#7126B5] md:text-sm" />
+                <p className="text-xs font-medium flex items-center">
+                  <FaDollarSign className="mr-2 text-sm text-[#7126B5]" />
                   Mulai dari{" "}
                   <span className="text-red-500 font-bold">
-                    {" "}
-                    IDR {flight.price.toLocaleString()}
+                    IDR {parseInt(flight.price).toLocaleString()}
                   </span>
                 </p>
               </div>

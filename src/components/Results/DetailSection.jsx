@@ -1,21 +1,18 @@
 import React from "react";
 
 const DetailSection = ({
-  departure,
-  returnTime,
-  departureCity,
-  departureAirport,
   airline,
-  destinationCity,
-  destinationAirport,
+  airport,
+  airportTerminal,
+  flightNumber,
+  classType,
+  departureTime,
+  departureDate,
+  arrivalTime,
+  arrivalDate,
+  arrivalCity,
+  airlineDetail,
 }) => {
-  const formatTime = (date) =>
-    new Date(date).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  const formatDate = (date) => new Date(date).toLocaleDateString();
-
   return (
     <div
       className="flex flex-col bg-white p-[10px] gap-[12px] overflow-hidden"
@@ -26,17 +23,14 @@ const DetailSection = ({
         Detail Penerbangan
       </p>
 
-      {/* Departure Section */}
       <div className="flex justify-between">
         <div className="flex flex-col">
-          <p className="font-bold text-xl leading-[24px]">
-            {formatTime(departure)}
-          </p>
+          <p className="font-bold text-xl leading-[24px]">{departureTime}</p>
           <p className="font-normal text-[14px] leading-[20px]">
-            {formatDate(departure)}
+            {departureDate}
           </p>
           <p className="font-medium text-[14px] leading-[20px]">
-            {departureCity} ({departureAirport})
+            {airport} - Terminal {airportTerminal}
           </p>
         </div>
         <p className="font-bold text-[12px] leading-[18px] text-[#6C3DAB] text-right">
@@ -45,7 +39,6 @@ const DetailSection = ({
       </div>
       <div className="border-t border-gray-300 w-full my-[12px]"></div>
 
-      {/* Airline Section */}
       <div>
         <div className="flex items-center gap-[8px] mt-[12px]">
           <img
@@ -54,30 +47,32 @@ const DetailSection = ({
             className="w-6 h-6"
           />
           <div>
-            <p className="font-bold text-[14px] leading-[20px]">{airline}</p>
+            <p className="font-bold text-[14px] leading-[20px]">
+              {airline} - {classType}
+            </p>
+            <p className="font-bold text-[14px] leading-[20px]">
+              {airline} - A0{flightNumber}
+            </p>
             <br />
             <p className="font-bold text-[14px] leading-[20px]">Informasi:</p>
             <ul className="font-normal text-[14px] leading-[20px]">
               <li>Baggage 20 kg</li>
               <li>Cabin baggage 7 kg</li>
-              <li>In Flight Entertainment</li>
+              <li>{airlineDetail}</li>
             </ul>
           </div>
         </div>
       </div>
       <div className="border-t border-gray-300 w-full my-[12px]"></div>
 
-      {/* Arrival Section */}
       <div className="flex justify-between">
         <div className="flex flex-col">
-          <p className="font-bold text-xl leading-[24px]">
-            {formatTime(returnTime)}
-          </p>
+          <p className="font-bold text-xl leading-[24px]">{arrivalTime}</p>
           <p className="font-normal text-[14px] leading-[20px]">
-            {formatDate(returnTime)}
+            {arrivalDate}
           </p>
           <p className="font-medium text-[14px] leading-[20px]">
-            {destinationCity} ({destinationAirport})
+            {arrivalCity}
           </p>
         </div>
         <p className="font-bold text-[12px] leading-[18px] text-[#6C3DAB] text-right">

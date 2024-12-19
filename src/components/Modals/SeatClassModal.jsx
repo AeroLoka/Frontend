@@ -81,7 +81,12 @@ const SeatClassModal = ({
         <div className="mt-6 flex justify-end">
           <button
             onClick={handleSave}
-            className="w-[150px] p-3 py-2 bg-[#4B1979] text-white rounded-lg"
+            className={`w-[150px] p-3 py-2 rounded-lg  ${
+              selectSeatClass
+                ? "bg-[#A06ECE] text-white hover:bg-[#4B1979] transition-colors duration-300"
+                : "bg-[#D0D0D0] text-gray-500 cursor-not-allowed"
+            }`}
+            disabled={!selectSeatClass}
           >
             Simpan
           </button>

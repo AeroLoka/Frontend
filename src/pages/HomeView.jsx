@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-// import FormSkeleton from "../components/skeletons/FormSkeleton";
+import SkeletonCard from "../components/skeletons/SkeletonCard";
 import { getAllFlights } from "../services/home.service";
 import Navbar from "../components/Navbar/Navbar";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
@@ -9,175 +9,73 @@ import SearchDestination from "../components/Button/SearchButton";
 import DiscountBanner from "../components/Banner/Banner";
 import SearchFlight from "../components/Flight/SearchFlight";
 import Pagination from "../components/Pagination/Pagination";
+import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
 
 const HomeView = () => {
   const { user } = useSelector((state) => state.userState);
-
-  const limit = 5;
+  const limit = 10;
   const [flights, setFlights] = useState([]);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [continent, setContinent] = useState("semua");
+  const [noDataFound, setNoDataFound] = useState(false);
+  const [selectedFlight, setSelectedFlight] = useState(null);
+  const [isDatepickerVisible, setIsDatepickerVisible] = useState(true);
 
-  const offset = (page - 1) * limit;
-
-  const totalPages = Math.ceil(flights.length / limit);
-  const currPageData = flights.slice(offset, offset + limit);
-
-  // useEffect(() => {
-  //   const fetchFlights = async () => {
-  //     try {
-  //       const response = await getAllFlights();
-  //       setFlights(response.data);
-  //     } catch (err) {
-  //       setError(err.message);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchFlights();
-  // }, [page]);
-
-  const dummyFlights = [
-    {
-      id: 1,
-      originCity: { name: "Jakarta" },
-      destinationCity: { name: "Bali" },
-      airlines: { name: "Garuda Indonesia" },
-      departure: "2024-12-15T10:00:00Z",
-      return: "2024-12-20T18:00:00Z",
-      price: "1,200,000",
-    },
-    {
-      id: 2,
-      originCity: { name: "Surabaya" },
-      destinationCity: { name: "Medan" },
-      airlines: { name: "Lion Air" },
-      departure: "2024-12-18T14:00:00Z",
-      return: "2024-12-23T20:00:00Z",
-      price: "950,000",
-    },
-    {
-      id: 3,
-      originCity: { name: "Bali" },
-      destinationCity: { name: "Jakarta" },
-      airlines: { name: "AirAsia" },
-      departure: "2024-12-10T06:00:00Z",
-      return: "2024-12-15T12:00:00Z",
-      price: "1,100,000",
-    },
-    {
-      id: 4,
-      originCity: { name: "Bandung" },
-      destinationCity: { name: "Semarang" },
-      airlines: { name: "Citilink" },
-      departure: "2024-12-13T08:00:00Z",
-      return: "2024-12-18T15:00:00Z",
-      price: "800,000",
-    },
-    {
-      id: 5,
-      originCity: { name: "Yogyakarta" },
-      destinationCity: { name: "Malang" },
-      airlines: { name: "Sriwijaya Air" },
-      departure: "2024-12-14T09:00:00Z",
-      return: "2024-12-19T16:00:00Z",
-      price: "700,000",
-    },
-    {
-      id: 6,
-      originCity: { name: "Palembang" },
-      destinationCity: { name: "Batam" },
-      airlines: { name: "Garuda Indonesia" },
-      departure: "2024-12-11T12:00:00Z",
-      return: "2024-12-16T17:00:00Z",
-      price: "1,300,000",
-    },
-    {
-      id: 7,
-      originCity: { name: "Pekanbaru" },
-      destinationCity: { name: "Padang" },
-      airlines: { name: "Lion Air" },
-      departure: "2024-12-12T07:00:00Z",
-      return: "2024-12-17T14:00:00Z",
-      price: "600,000",
-    },
-    {
-      id: 8,
-      originCity: { name: "Banda Aceh" },
-      destinationCity: { name: "Medan" },
-      airlines: { name: "AirAsia" },
-      departure: "2024-12-13T10:00:00Z",
-      return: "2024-12-18T18:00:00Z",
-      price: "500,000",
-    },
-    {
-      id: 9,
-      originCity: { name: "Makassar" },
-      destinationCity: { name: "Manado" },
-      airlines: { name: "Citilink" },
-      departure: "2024-12-14T11:00:00Z",
-      return: "2024-12-19T19:00:00Z",
-      price: "900,000",
-    },
-    {
-      id: 10,
-      originCity: { name: "Balikpapan" },
-      destinationCity: { name: "Samarinda" },
-      airlines: { name: "Sriwijaya Air" },
-      departure: "2024-12-15T13:00:00Z",
-      return: "2024-12-20T20:00:00Z",
-      price: "800,000",
-    },
-    {
-      id: 11,
-      originCity: { name: "Kupang" },
-      destinationCity: { name: "Labuan Bajo" },
-      airlines: { name: "Garuda Indonesia" },
-      departure: "2024-12-16T08:00:00Z",
-      return: "2024-12-21T14:00:00Z",
-      price: "1,500,000",
-    },
-    {
-      id: 12,
-      originCity: { name: "Denpasar" },
-      destinationCity: { name: "Lombok" },
-      airlines: { name: "Lion Air" },
-      departure: "2024-12-17T09:00:00Z",
-      return: "2024-12-22T16:00:00Z",
-      price: "600,000",
-    },
-    {
-      id: 13,
-      originCity: { name: "Pontianak" },
-      destinationCity: { name: "Palangkaraya" },
-      airlines: { name: "AirAsia" },
-      departure: "2024-12-18T10:00:00Z",
-      return: "2024-12-23T17:00:00Z",
-      price: "700,000",
-    },
-    {
-      id: 14,
-      originCity: { name: "Tarakan" },
-      destinationCity: { name: "Banjarmasin" },
-      airlines: { name: "Citilink" },
-      departure: "2024-12-19T12:00:00Z",
-      return: "2024-12-24T19:00:00Z",
-      price: "800,000",
-    },
-    {
-      id: 15,
-      originCity: { name: "Jayapura" },
-      destinationCity: { name: "Biak" },
-      airlines: { name: "Sriwijaya Air" },
-      departure: "2024-12-20T14:00:00Z",
-      return: "2024-12-25T20:00:00Z",
-      price: "1,200,000",
-    },
-  ];
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const queryContinent = queryParams.get("continent");
 
   useEffect(() => {
-    setFlights(dummyFlights);
-  }, []);
+    if (queryContinent) {
+      setContinent(queryContinent);
+    } else {
+      setContinent("semua");
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    setFlights([]);
+    setPage(1);
+    setLoading(true);
+    fetchFlights();
+  }, [continent]);
+
+  const fetchFlights = async () => {
+    try {
+      const response = await getAllFlights({ page, limit, continent });
+      if (response.data.length === 0 && page === 1) {
+        setNoDataFound(true);
+      } else {
+        setFlights(response.data);
+        setTotalPages(response.meta.totalPages);
+        setNoDataFound(false);
+      }
+    } catch (error) {
+      toast.error(error.response?.data || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage !== page) {
+      setPage(newPage);
+      setLoading(true);
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    fetchFlights();
+  }, [page]);
+
+  const handleSelectFlight = (flight) => {
+    setSelectedFlight(flight);
+    setIsDatepickerVisible(false);
+  };
 
   return (
     <>
@@ -188,27 +86,49 @@ const HomeView = () => {
           <DiscountBanner />
         </div>
         <div className="">
-          <SearchFlight />
+          <SearchFlight
+            selectedFlight={selectedFlight}
+            isDatepickerVisible={isDatepickerVisible}
+          />
         </div>
       </section>
 
       <section className="container mx-auto">
         <div>
-          <h2 className="text-xl font-bold mb-4 px-8 pt-96 mt-36 md:pt-72 lg:px-20 lg:pt-24">
+          <h2 className="text-xl font-bold mb-4 px-8 pt-96 mt-40 md:pt-72 md:px-0 lg:pt-28">
             Destinasi Favorit
           </h2>
-          <SearchDestination />
-          <HomeCard flights={currPageData} />
+          <SearchDestination onContinentChange={setContinent} />
+          {noDataFound ? (
+            <p className="text-center text-lg text-gray-500">
+              Tidak ada penerbangan ditemukan untuk benua {continent}.
+            </p>
+          ) : (
+            <>
+              {loading ? (
+                <div className="grid grid-cols-1 px-8 pt-2 gap-3 md:grid-cols-3 md:px-0 lg:grid-cols-5">
+                  {Array.from({ length: limit }).map((_, index) => (
+                    <SkeletonCard key={index} />
+                  ))}
+                </div>
+              ) : (
+                <HomeCard
+                  flights={flights}
+                  onSelectFlight={handleSelectFlight}
+                />
+              )}
+            </>
+          )}
 
-          <Pagination
-            currPage={page}
-            totalPages={totalPages}
-            onPageChange={(newPage) => setPage(newPage)}
-          />
+          {flights.length > 0 && totalPages > 1 && !noDataFound && (
+            <Pagination
+              currPage={page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       </section>
-
-      {/* <FormSkeleton height="h-96" width="w-96"/> */}
     </>
   );
 };

@@ -6,13 +6,13 @@ const DiscountBanner = () => {
       <div className="flex items-center mt-24 lg:mt-40">
         <div className="w-[236px] h-[150px] bg-[#7126B5] opacity-50 hidden sm:block"></div>
 
-        <div className="w-full grid- m-4 sm:m-0 p-8 sm:ps-[80px]  bg-[#FFE9CA]  text-[36px] font-[800] rounded-[20px]  sm:h-[232px]  flex items-center justify-between relative overflow-hidden sm:bg-none bg-cover bg-[url('/images/Bangkok.png')]">
-          <div>
-            <p className="italic ">Diskon Hari ini</p>
-            <p className="text-[#7126B5]">85%</p>
+        <div className="w-full m-4 sm:m-0 p-8 sm:ps-[80px] bg-[#FFE9CA]  text-[36px] font-[800] rounded-[20px] sm:h-[232px] flex items-center justify-between relative overflow-hidden sm:bg-none bg-cover bg-[url('/images/Bangkok.png')]">
+          <div className="relative z-10">
+            <p className="italic text-3xl lg:text-4xl">Diskon Hari ini</p>
+            <p className="text-[#7126B5] text-3xl lg:text-4xl">85%</p>
           </div>
 
-          <div className="absolute right-0 top-0 w-7/12 h-full hidden sm:block overflow-hidden">
+          <div className="absolute left-0 top-0 h-full block overflow-hidden md:right-0 md:left-auto">
             <img
               src="/images/Bangkok.png"
               alt="Bangkok"
