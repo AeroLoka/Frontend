@@ -7,15 +7,15 @@ const CardTicket = ({ ticket, isOpen, onSelect }) => {
     airline,
     classType,
     departureTime,
-    departureDate,
-    departureLocation,
     departureCity,
+    arrivalTime,
+    arrivalCity,
     duration,
     flightType,
-    arrivalTime,
+    departureDate,
+    departureLocation,
     arrivalDate,
     arrivalLocation,
-    arrivalCity,
     price,
     airlineDetail,
   } = ticket;
@@ -77,12 +77,12 @@ const CardTicket = ({ ticket, isOpen, onSelect }) => {
       {isOpen && (
         <DetailSection
           departureTime={departureTime}
-          departureDate={departureDate}
-          departureLocation={departureLocation}
+          departureDate={ticket.departure.split("T")[0]}
+          departureLocation={ticket.originCity.fullname}
           airlineDetail={airlineDetail}
           arrivalTime={arrivalTime}
-          arrivalDate={arrivalDate}
-          arrivalLocation={arrivalLocation}
+          arrivalDate={ticket.return.split("T")[0]}
+          arrivalLocation={ticket.destinationCity.fullname}
         />
       )}
     </div>

@@ -1,11 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ButtonScroll from "../Button/ButtonScroll";
 import ButtonChange from "../Button/ButtonChange";
+import { useLocation } from "react-router-dom";
 
 const NavigationDates = ({ onDateClick }) => {
-  const searchDetails = "JKT > MLB - 2 Penumpang - Economy";
+  // const searchDetails = "JKT > MLB - 2 Penumpang - Economy";
   const [activeIndex, setActiveIndex] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
+  const [searchDetails, setSearchDetails] = useState("");
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+
+    const from = params.get("from");
+    const to = params.get("to");
+    const adult = parseInt(params.get("adult")) || 0;
+    const child = parseInt(params.get("child")) || 0;
+    const infant = parseInt(params.get("infant")) || 0;
+    const seatClass = params.get("class");
+
+    const passengerCount = adult + child + infant;
+
+    setSearchDetails(
+      `${from} > ${to} - ${passengerCount} Penumpang - ${seatClass}`
+    );
+  }, [location]);
 
   const dates = [
     { day: "Selasa", date: "01/03/2023" },

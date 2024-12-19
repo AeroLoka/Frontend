@@ -151,10 +151,39 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
         infantPassengers: passengers.Bayi,
         seatClass: seatClass,
       });
-      toast.success("Penerbangan ditemukan!");
-      navigate("/detail-ticket", { state: { flightData: response.data } });
+
+      const queryParams = new URLSearchParams({
+        from: data.from,
+        to: data.to,
+        departureDate: isoDepartureDate,
+        returnDate: isoReturnDate || "",
+        adult: data.passengers.Dewasa,
+        child: data.passengers.Anak,
+        infant: data.passengers.Bayi,
+        class: data.seatClass,
+      });
+
+      if (response && response.data && response.data.length > 0) {
+        toast.success("Penerbangan ditemukan!");
+        navigate(`/detail-ticket?${queryParams.toString()}`, {
+          state: { flightData: response.data },
+        });
+      } else if (response && response.data && response.data.length === 0) {
+        toast.info("Maaf, tiket terjual habis!");
+        navigate(`/detail-ticket?${queryParams.toString()}`, {
+          state: { flightData: [] },
+        });
+      } else {
+        toast.info("Tidak ada penerbangan yang tersedia!");
+        navigate(`/detail-ticket?${queryParams.toString()}`, {
+          state: { flightData: [] },
+        });
+      }
     } catch (error) {
-      toast.error(error.resposnse?.data || error.message);
+      toast.error(error.resposnse?.data);
+      navigate(`/detail-ticket?${queryParams.toString()}`, {
+        state: { flightData: [] },
+      });
     }
   };
 
