@@ -12,8 +12,10 @@ const ResetPassword = () => {
     const token = searchParams.get("token");
 
     const [showPassword, setShowPassword] = useState(false);
-    const methods = useForm();
-    const { handleSubmit } = methods;
+    const methods = useForm({
+        mode: "onChange",
+    });
+    const { handleSubmit, formState: {isValid, errors} } = methods;
 
     const onSubmit = async (data) => {
         try {
@@ -88,7 +90,12 @@ const ResetPassword = () => {
                     </div>
                     <button
                         type="submit"
-                        className="w-full bg-[#7126B5] text-white py-3 px-4 rounded-lg hover:bg-[#531d85] transition-colors"
+                        disabled={!isValid || Object.keys(errors).length > 0}
+                        className={`w-full py-3 px-4 rounded-lg transition-colors ${
+                            isValid && Object.keys(errors).length === 0
+                                ? "bg-[#7126B5] text-white hover:bg-[#531d85]"
+                                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        }`}
                     >
                         Kirim
                     </button>

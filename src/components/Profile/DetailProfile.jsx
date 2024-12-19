@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import InputForm from "../form/InputForm";
-import { useSelector } from "react-redux";
-import { getUserById, updateUser } from "../../services/profile.service";
-import { toast } from "react-toastify"; // Make sure to import toast
+import { useDispatch, useSelector } from "react-redux";
+import { getUserByEmail, updateUser } from "../../services/profile.service";
+import { toast } from "react-toastify";
+import { updateUserState } from "../../features/userSlice";
 
 const DetailProfile = () => {
-    const { id } = useSelector((state) => state.userState.user);
+    const dispatch = useDispatch();
+    const { email } = useSelector((state) => state.userState.user);
     const methods = useForm();
     const { handleSubmit, setValue } = methods;
 
@@ -14,8 +16,8 @@ const DetailProfile = () => {
 
     const profileData = async () => {
         try {
-            if (id) {
-                const response = await getUserById(id);
+            if (email) {
+                const response = await getUserByEmail(email);
                 setProfile(response.data);
                 setValue('name', response.data.name);
                 setValue('email', response.data.email);
@@ -26,14 +28,15 @@ const DetailProfile = () => {
         }
     };
 
+
     useEffect(() => {
         profileData();
-    }, [id]);
+    }, [email]);
 
     const onSubmit = async (data) => {
         try {
-            console.log('User ID:', id);
-            const response = await updateUser(id, data);
+            const response = await updateUser(email, data);
+            dispatch(updateUserState(response));
             toast.success(response.message);
         } catch (error) {
             toast.error(error.response?.data || error.message);

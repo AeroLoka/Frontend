@@ -106,7 +106,7 @@ const LoggedInNavbar = () => {
               className="absolute top-1/2 right-4 transform -translate-y-1/2 w-5 h-5 cursor-pointer"
             />
           </div>
-          <div>
+          <div className="flex gap-8">
             <NavLink
               to="/order-history"
               className={({ isActive }) =>
@@ -114,7 +114,11 @@ const LoggedInNavbar = () => {
               }
               aria-label="Open List"
             >
-              <img src="/icons/fi_list.svg" alt="list icon" className="w-6 h-6" />
+              <img
+                src="/icons/fi_list.svg"
+                alt="list icon"
+                className="w-6 h-6"
+              />
             </NavLink>
 
             <NavLink
@@ -124,7 +128,11 @@ const LoggedInNavbar = () => {
               }
               aria-label="Open Notification"
             >
-              <img src="/icons/fi_bell.svg" alt="bell icon" className="my-1.5 w-6 h-6" />
+              <img
+                src="/icons/fi_bell.svg"
+                alt="bell icon"
+                className="w-6 h-6"
+              />
             </NavLink>
 
             <NavLink
@@ -134,7 +142,11 @@ const LoggedInNavbar = () => {
               }
               aria-label="Open User"
             >
-              <img src="/icons/fi_user.svg" alt="user icon" className="w-6 h-6" />
+              <img
+                src="/icons/fi_user.svg"
+                alt="user icon"
+                className="w-6 h-6"
+              />
             </NavLink>
           </div>
         </div>
