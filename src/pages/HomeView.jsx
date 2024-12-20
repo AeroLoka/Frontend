@@ -11,6 +11,7 @@ import SearchFlight from "../components/Flight/SearchFlight";
 import Pagination from "../components/Pagination/Pagination";
 import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
+import TitleOfPage from "../components/Title/TitleOfPage";
 
 const HomeView = () => {
   const { user } = useSelector((state) => state.userState);
@@ -27,6 +28,8 @@ const HomeView = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const queryContinent = queryParams.get("continent");
+
+  TitleOfPage("Aeroloka");
 
   useEffect(() => {
     if (queryContinent) {

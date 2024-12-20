@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 import SubHeader from "../components/Header/SubHeader";
 import Notification from "../components/Notification/Notification";
+import TitleOfPage from "../components/Title/TitleOfPage";
 const NotificationView = () => {
+
+  TitleOfPage("Aeroloka - Notifikasi");
   // dummy data
   const [notifications, setNotifications] = useState([
     {

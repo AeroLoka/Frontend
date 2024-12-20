@@ -9,6 +9,7 @@ import FilterSection from "../components/Filter/FilterSection";
 import ResultsSection from "../components/Results/ResultSection";
 import { useLocation } from "react-router-dom";
 import { getFlights } from "../services/home.service";
+import TitleOfPage from "../components/Title/TitleOfPage";
 
 const DetailTicket = () => {
   const [loading, setLoading] = useState(true);
@@ -19,6 +20,8 @@ const DetailTicket = () => {
   const { user } = useSelector((state) => state.userState);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
+
+  TitleOfPage("Aeroloka - Detail Tiket");
 
   const from = searchParams.get("from");
   const to = searchParams.get("to");

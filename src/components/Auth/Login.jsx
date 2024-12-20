@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputForm from "../form/InputForm";
 import { login } from "../../services/auth.service";
 import { useDispatch } from "react-redux";
@@ -56,12 +56,11 @@ const Login = () => {
                             Password
                         </label>
                         <span className="text-[#7126B5] font-medium text-xs lg:text-sm">
-                            <a
-                                href="#"
-                                onClick={() => navigate("/forget-password")}
+                            <Link
+                                to={"/forget-password"}
                             >
                                 Lupa Kata Sandi
-                            </a>
+                            </Link>
                         </span>
                     </div>
 
@@ -109,15 +108,14 @@ const Login = () => {
             <div className="text-center text-sm mt-10">
                 <p className="">
                     Belum punya akun?
-                    <a href="">
+                    <Link to={"/register"}>
                         <span
-                            onClick={() => navigate("/register")}
                             className="text-[#7126B5] font-bold"
                         >
                             {" "}
                             Daftar di sini
                         </span>
-                    </a>
+                    </Link>
                 </p>
             </div>
         </div>

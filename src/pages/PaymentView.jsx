@@ -4,8 +4,10 @@ import DetailPenerbangan from "../components/Section/DetailPenerbangan";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 import { useSearchParams } from "react-router-dom";
 import { getBookingByCode } from "../services/transaction.service";
+import TitleOfPage from "../components/Title/TitleOfPage";
 
 const PaymentView = () => {
+    TitleOfPage("Aeroloka - Pembayaran");
     const [searchParams] = useSearchParams();
     const bookingCode = searchParams.get("booking-code");
 

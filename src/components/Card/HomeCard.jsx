@@ -66,7 +66,7 @@ const HomeCard = ({ flights, onSelectFlight }) => {
                 </p>
                 <p className="text-xs font-medium flex items-center">
                   <FaDollarSign className="mr-2 text-sm text-[#7126B5]" />
-                  Mulai dari{" "}
+                  Mulai dari ‎
                   <span className="text-red-500 font-bold">
                     IDR {parseInt(flight.price).toLocaleString()}
                   </span>
