@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import SkeletonCard from "../components/skeletons/SkeletonCard";
 import { getAllFlights } from "../services/home.service";
+import { toast } from "react-toastify";
+
 import Navbar from "../components/Navbar/Navbar";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 import HomeCard from "../components/Card/HomeCard";
@@ -9,8 +11,7 @@ import SearchDestination from "../components/Button/SearchButton";
 import DiscountBanner from "../components/Banner/Banner";
 import SearchFlight from "../components/Flight/SearchFlight";
 import Pagination from "../components/Pagination/Pagination";
-import { toast } from "react-toastify";
-import { useLocation } from "react-router-dom";
+import SkeletonCard from "../components/skeletons/SkeletonCard";
 import TitleOfPage from "../components/Title/TitleOfPage";
 
 const HomeView = () => {
@@ -31,6 +32,35 @@ const HomeView = () => {
 
   TitleOfPage("Aeroloka");
 
+  const handlePageChange = (newPage) => {
+    if (newPage !== page) {
+      setPage(newPage);
+      setLoading(true);
+    }
+  };
+
+  const handleSelectFlight = (flight) => {
+    setSelectedFlight(flight);
+    setIsDatepickerVisible(false);
+  };
+
+  const fetchFlights = async () => {
+    try {
+      const response = await getAllFlights({ page, limit, continent });
+      if (response.data.length === 0 && page === 1) {
+        setNoDataFound(true);
+      } else {
+        setFlights(response.data);
+        setTotalPages(response.meta.totalPages);
+        setNoDataFound(false);
+      }
+    } catch (error) {
+      toast.error("Tidak ada penerbangan yang tersedia!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (queryContinent) {
       setContinent(queryContinent);
@@ -46,39 +76,10 @@ const HomeView = () => {
     fetchFlights();
   }, [continent]);
 
-  const fetchFlights = async () => {
-    try {
-      const response = await getAllFlights({ page, limit, continent });
-      if (response.data.length === 0 && page === 1) {
-        setNoDataFound(true);
-      } else {
-        setFlights(response.data);
-        setTotalPages(response.meta.totalPages);
-        setNoDataFound(false);
-      }
-    } catch (error) {
-      toast.error(error.response?.data || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePageChange = (newPage) => {
-    if (newPage !== page) {
-      setPage(newPage);
-      setLoading(true);
-    }
-  };
-
   useEffect(() => {
     setLoading(true);
     fetchFlights();
   }, [page]);
-
-  const handleSelectFlight = (flight) => {
-    setSelectedFlight(flight);
-    setIsDatepickerVisible(false);
-  };
 
   return (
     <>

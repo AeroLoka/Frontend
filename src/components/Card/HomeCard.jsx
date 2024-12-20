@@ -1,26 +1,44 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { MdLocationOn } from "react-icons/md";
 import {
   FaCalendarAlt,
   FaPlaneDeparture,
   FaDollarSign,
   FaArrowRight,
 } from "react-icons/fa";
-import { MdLocationOn } from "react-icons/md";
-import destination1 from "../../assets/images/destination.png";
 
 const formatDateRange = (startDate, endDate) => {
+  const depDateString = startDate.split(" ")[0];
+  const depDate = new Date(Date.UTC(
+    depDateString.substring(0, 4),
+    depDateString.substring(5, 7) - 1,
+    depDateString.substring(8, 10),
+    0, 0, 0
+  ));
+
+  const endDateString = endDate.split(" ")[0];
+  const endDateFormatted = new Date(Date.UTC(
+    endDateString.substring(0, 4),
+    endDateString.substring(5, 7) - 1,
+    endDateString.substring(8, 10),
+    0, 0, 0
+  ));
+
   const options = { year: "numeric", month: "long", day: "numeric" };
-  const start = new Date(startDate).toLocaleDateString("id-ID", options);
-  const end = new Date(endDate).toLocaleDateString("id-ID", options);
-  return `${start.split(" ")[0]} - ${end.split(" ")[0]} ${end.split(" ")[1]} ${
-    end.split(" ")[2]
-  }`;
+  const start = depDate.toLocaleDateString("id-ID", options);
+  const end = endDateFormatted.toLocaleDateString("id-ID", options);
+
+  return `${start.split(" ")[0]} - ${end.split(" ")[0]} ${end.split(" ")[1]} ${end.split(" ")[2]}`;
 };
 
 const HomeCard = ({ flights, onSelectFlight }) => {
   if (!flights || flights.length === 0) {
-    return <p className="text-gray-400 my-5">No Flights Available</p>;
+    return (
+      <p className="text-gray-400 mt-8 ml-8 lg:ml-0 md:mt-5">
+        No Flights Available
+      </p>
+    );
   }
 
   return (
@@ -40,7 +58,11 @@ const HomeCard = ({ flights, onSelectFlight }) => {
             >
               <div className="relative mb-3 w-full h-auto rounded-lg">
                 <img
-                  src={destination1}
+                  src={
+                    flight.id % 2 === 0
+                      ? "/images/destination2.png"
+                      : "/images/destination.png"
+                  }
                   alt={`${flight.originCity.fullname} - ${flight.destinationCity.fullname}`}
                   className="w-full h-full object-cover"
                 />
@@ -66,7 +88,7 @@ const HomeCard = ({ flights, onSelectFlight }) => {
                 </p>
                 <p className="text-xs font-medium flex items-center">
                   <FaDollarSign className="mr-2 text-sm text-[#7126B5]" />
-                  Mulai dari ‎
+                  Mulai dari&nbsp;
                   <span className="text-red-500 font-bold">
                     IDR {parseInt(flight.price).toLocaleString()}
                   </span>

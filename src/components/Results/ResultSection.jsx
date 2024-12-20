@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import CardTicket from "../Card/CardTicket";
 
-const ResultsSection = ({ loading, tickets }) => {
+const ResultsSection = ({ loading, tickets, onSelectTicket, onNavigate }) => {
   const [selectedTicketId, setSelectedTicketId] = useState(null);
 
   const handleSelect = (ticketId) => {
     setSelectedTicketId((prevId) => (prevId === ticketId ? null : ticketId));
+    const selectedTicket = tickets.find((ticket) => ticket.id === ticketId);
+    onSelectTicket(selectedTicket);
   };
 
   const formatDuration = (durationInMinutes) => {
@@ -64,6 +66,7 @@ const ResultsSection = ({ loading, tickets }) => {
           }}
           isOpen={selectedTicketId === ticket.id}
           onSelect={() => handleSelect(ticket.id)}
+          onNavigate={onNavigate}
         />
       ));
     }
@@ -82,6 +85,7 @@ const ResultsSection = ({ loading, tickets }) => {
       );
     }
   };
+
   return (
     <section className="md:w-4/5 md:ml-8 mt-8 md:mt-0 flex-col items-center justify-center">
       {renderTickets()}

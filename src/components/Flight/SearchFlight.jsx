@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Controller, useForm } from "react-hook-form";
+import { getFlights } from "../../services/home.service";
+import { toast } from "react-toastify";
+import moment from "moment";
+
 import Datepicker from "react-tailwindcss-datepicker";
 import FlightModal from "../Modals/FlightModal";
 import PassengerModal from "../Modals/PassengerModal";
 import SeatClassModal from "../Modals/SeatClassModal";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import { getFlights } from "../../services/home.service";
-import moment from "moment";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.userState);
 
   const [isFlightFromModalOpen, setIsFlightFromModalOpen] = useState(false);
   const [isFlightToModalOpen, setIsFlightToModalOpen] = useState(false);
@@ -40,6 +39,7 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
     Anak: 0,
     Bayi: 0,
   });
+
   const totalPassengers = passengers.Dewasa + passengers.Anak + passengers.Bayi;
 
   const openModal = (modal) => {
@@ -60,6 +60,13 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
     setTo(from);
   };
 
+  const handleToggle = () => {
+    setIsReturnEnabled((prev) => !prev);
+    if (!isReturnEnabled) {
+      setReturnDate(null);
+    }
+  };
+
   const handleSelectLocation = (location, type) => {
     if (type === "from") {
       setFrom(location);
@@ -69,13 +76,6 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
       setTo(location);
       setValue("to", location);
       setIsFlightToModalOpen(false);
-    }
-  };
-
-  const handleToggle = () => {
-    setIsReturnEnabled((prev) => !prev);
-    if (!isReturnEnabled) {
-      setReturnDate(null);
     }
   };
 
@@ -91,22 +91,6 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
     setValue("seatClass", selectedClass.label);
   };
 
-  const handleSearch = async (data) => {
-    if (!user) {
-      toast.error("Anda harus login atau register terlebih dahulu!");
-      return;
-    }
-    setIsButtonClicked(true);
-
-    try {
-      await searchFlights(data);
-    } catch (error) {
-      toast.error("Penerbangan tidak ditemukan!");
-    } finally {
-      setIsButtonClicked(false);
-    }
-  };
-
   const formatDate = (date, forDisplay = false) => {
     if (!date) return "";
     if (forDisplay) {
@@ -116,25 +100,16 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
     }
   };
 
-  useEffect(() => {
-    if (selectedFlight) {
-      const depDate = new Date(selectedFlight.departure);
-      const retDate = selectedFlight.return
-        ? new Date(selectedFlight.return)
-        : null;
+  const handleSearch = async (data) => {
+    setIsButtonClicked(true);
 
-      setFrom(selectedFlight.originCity.fullnmae);
-      setTo(selectedFlight.destinationCity.fullnmae);
-      setDepartureDate(depDate);
-      setReturnDate(retDate);
-      setIsReturnEnabled(!!selectedFlight.return);
-
-      setValue("from", selectedFlight.originCity.fullname);
-      setValue("to", selectedFlight.destinationCity.fullname);
-      setValue("departureDate", depDate);
-      setValue("returnDate", retDate);
+    try {
+      await searchFlights(data);
+    } catch (error) {
+    } finally {
+      setIsButtonClicked(false);
     }
-  }, [selectedFlight, setValue]);
+  };
 
   const searchFlights = async (data) => {
     try {
@@ -145,7 +120,7 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
         from: data.from,
         to: data.to,
         departureDateStart: isoDepartureDate,
-        returnDateStart: isoReturnDate,
+        returnDateStart: isoReturnDate || " ",
         adultPassengers: passengers.Dewasa,
         childPassengers: passengers.Anak,
         infantPassengers: passengers.Bayi,
@@ -156,7 +131,7 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
         from: data.from,
         to: data.to,
         departureDate: isoDepartureDate,
-        returnDate: isoReturnDate || "",
+        returnDate: isoReturnDate || " ",
         adult: data.passengers.Dewasa,
         child: data.passengers.Anak,
         infant: data.passengers.Bayi,
@@ -169,18 +144,58 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
           state: { flightData: response.data },
         });
       } else {
-        toast.info("Tidak ada penerbangan yang tersedia!");
-        navigate(`/detail-ticket?${queryParams.toString()}`, {
-          state: { flightData: [] },
-        });
+        toast.error("Penerbangan tidak ditemukan!");
       }
     } catch (error) {
-      toast.error(error.resposnse?.data);
-      navigate(`/detail-ticket?${queryParams.toString()}`, {
-        state: { flightData: [] },
-      });
+      toast.error("Penerbangan tidak ditemukan!");
     }
   };
+
+  useEffect(() => {
+    if (selectedFlight) {
+      const depDateString = selectedFlight.departure.split(" ")[0];
+      const depDate = new Date(
+        Date.UTC(
+          depDateString.substring(0, 4),
+          depDateString.substring(5, 7) - 1,
+          depDateString.substring(8, 10),
+          0, 0, 0
+        )
+      );
+
+      const retDateString = selectedFlight.return
+        ? selectedFlight.return.split(" ")[0]
+        : null;
+      const retDate = retDateString
+        ? new Date(
+            Date.UTC(
+              retDateString.substring(0, 4),
+              retDateString.substring(5, 7) - 1,
+              retDateString.substring(8, 10),
+              0, 0, 0
+            )
+          )
+        : null;
+
+      depDate.setHours(0, 0, 0, 0);
+      if (retDate) {
+        retDate.setHours(0, 0, 0, 0);
+      }
+
+      setFrom(selectedFlight.originCity.fullnmae);
+      setTo(selectedFlight.destinationCity.fullnmae);
+      setDepartureDate(depDate);
+      setReturnDate(retDate || "");
+      setSeatClass(selectedFlight.class);
+      setIsReturnEnabled(!!selectedFlight.return);
+
+      setValue("from", selectedFlight.originCity.fullname);
+      setValue("to", selectedFlight.destinationCity.fullname);
+      setValue("departureDate", depDate);
+      setValue("returnDate", retDate || "");
+      setValue("seatClass", selectedFlight.class);
+    }
+  }, [selectedFlight, setValue]);
 
   return (
     <div>
