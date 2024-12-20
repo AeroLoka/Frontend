@@ -52,7 +52,7 @@ const HomeView = () => {
         setNoDataFound(false);
       }
     } catch (error) {
-      toast.error(error.response?.data || error.message);
+      toast.error("Tidak ada penerbangan yang tersedia!");
     } finally {
       setLoading(false);
     }
