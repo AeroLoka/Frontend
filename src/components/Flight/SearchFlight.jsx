@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Controller, useForm } from "react-hook-form";
+import { getFlights } from "../../services/home.service";
+import { toast } from "react-toastify";
+import moment from "moment";
+
 import Datepicker from "react-tailwindcss-datepicker";
 import FlightModal from "../Modals/FlightModal";
 import PassengerModal from "../Modals/PassengerModal";
 import SeatClassModal from "../Modals/SeatClassModal";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import { getFlights } from "../../services/home.service";
-import moment from "moment";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.userState);
 
   const [isFlightFromModalOpen, setIsFlightFromModalOpen] = useState(false);
   const [isFlightToModalOpen, setIsFlightToModalOpen] = useState(false);
@@ -40,6 +39,7 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
     Anak: 0,
     Bayi: 0,
   });
+
   const totalPassengers = passengers.Dewasa + passengers.Anak + passengers.Bayi;
 
   const openModal = (modal) => {
@@ -60,6 +60,13 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
     setTo(from);
   };
 
+  const handleToggle = () => {
+    setIsReturnEnabled((prev) => !prev);
+    if (!isReturnEnabled) {
+      setReturnDate(null);
+    }
+  };
+
   const handleSelectLocation = (location, type) => {
     if (type === "from") {
       setFrom(location);
@@ -69,13 +76,6 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
       setTo(location);
       setValue("to", location);
       setIsFlightToModalOpen(false);
-    }
-  };
-
-  const handleToggle = () => {
-    setIsReturnEnabled((prev) => !prev);
-    if (!isReturnEnabled) {
-      setReturnDate(null);
     }
   };
 
@@ -91,28 +91,63 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
     setValue("seatClass", selectedClass.label);
   };
 
-  const handleSearch = async (data) => {
-    if (!user) {
-      toast.error("Anda harus login atau register terlebih dahulu!");
-      return;
-    }
-    setIsButtonClicked(true);
-
-    try {
-      await searchFlights(data);
-    } catch (error) {
-      toast.error("Penerbangan tidak ditemukan!");
-    } finally {
-      setIsButtonClicked(false);
-    }
-  };
-
   const formatDate = (date, forDisplay = false) => {
     if (!date) return "";
     if (forDisplay) {
       return moment(date).format("DD MMMM YYYY");
     } else {
       return moment(date).format("YYYY-MM-DD");
+    }
+  };
+
+  const handleSearch = async (data) => {
+    setIsButtonClicked(true);
+
+    try {
+      await searchFlights(data);
+    } catch (error) {
+    } finally {
+      setIsButtonClicked(false);
+    }
+  };
+
+  const searchFlights = async (data) => {
+    try {
+      const isoDepartureDate = departureDate ? formatDate(departureDate) : null;
+      const isoReturnDate = returnDate ? formatDate(returnDate) : null;
+
+      const response = await getFlights({
+        from: data.from,
+        to: data.to,
+        departureDateStart: isoDepartureDate,
+        returnDateStart: isoReturnDate || " ",
+        adultPassengers: passengers.Dewasa,
+        childPassengers: passengers.Anak,
+        infantPassengers: passengers.Bayi,
+        seatClass: seatClass,
+      });
+
+      const queryParams = new URLSearchParams({
+        from: data.from,
+        to: data.to,
+        departureDate: isoDepartureDate,
+        returnDate: isoReturnDate || " ",
+        adult: data.passengers.Dewasa,
+        child: data.passengers.Anak,
+        infant: data.passengers.Bayi,
+        seatClass: data.seatClass,
+      });
+
+      if (response && response.data && response.data.length > 0) {
+        toast.success("Penerbangan ditemukan!");
+        navigate(`/detail-ticket?${queryParams.toString()}`, {
+          state: { flightData: response.data },
+        });
+      } else {
+        toast.error("Penerbangan tidak ditemukan!");
+      }
+    } catch (error) {
+      toast.error("Penerbangan tidak ditemukan!");
     }
   };
 
@@ -126,61 +161,17 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
       setFrom(selectedFlight.originCity.fullnmae);
       setTo(selectedFlight.destinationCity.fullnmae);
       setDepartureDate(depDate);
-      setReturnDate(retDate);
+      setReturnDate(retDate || "");
+      setSeatClass(selectedFlight.class);
       setIsReturnEnabled(!!selectedFlight.return);
 
       setValue("from", selectedFlight.originCity.fullname);
       setValue("to", selectedFlight.destinationCity.fullname);
       setValue("departureDate", depDate);
-      setValue("returnDate", retDate);
+      setValue("returnDate", retDate || "");
+      setValue("seatClass", selectedFlight.class);
     }
   }, [selectedFlight, setValue]);
-
-  const searchFlights = async (data) => {
-    try {
-      const isoDepartureDate = departureDate ? formatDate(departureDate) : null;
-      const isoReturnDate = returnDate ? formatDate(returnDate) : null;
-
-      const response = await getFlights({
-        from: data.from,
-        to: data.to,
-        departureDateStart: isoDepartureDate,
-        returnDateStart: isoReturnDate,
-        adultPassengers: passengers.Dewasa,
-        childPassengers: passengers.Anak,
-        infantPassengers: passengers.Bayi,
-        seatClass: seatClass,
-      });
-
-      const queryParams = new URLSearchParams({
-        from: data.from,
-        to: data.to,
-        departureDate: isoDepartureDate,
-        returnDate: isoReturnDate || "",
-        adult: data.passengers.Dewasa,
-        child: data.passengers.Anak,
-        infant: data.passengers.Bayi,
-        seatClass: data.seatClass,
-      });
-
-      if (response && response.data && response.data.length > 0) {
-        toast.success("Penerbangan ditemukan!");
-        navigate(`/detail-ticket?${queryParams.toString()}`, {
-          state: { flightData: response.data },
-        });
-      } else {
-        toast.info("Tidak ada penerbangan yang tersedia!");
-        navigate(`/detail-ticket?${queryParams.toString()}`, {
-          state: { flightData: [] },
-        });
-      }
-    } catch (error) {
-      toast.error(error.resposnse?.data);
-      navigate(`/detail-ticket?${queryParams.toString()}`, {
-        state: { flightData: [] },
-      });
-    }
-  };
 
   return (
     <div>
