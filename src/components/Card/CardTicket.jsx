@@ -2,7 +2,7 @@ import React from "react";
 import DetailSection from "../Results/DetailSection";
 import ButtonSelect from "../Button/ButtonSelect";
 
-const CardTicket = ({ ticket, isOpen, onSelect }) => {
+const CardTicket = ({ ticket, isOpen, onSelect, onNavigate }) => {
   const {
     airline,
     airport,
@@ -39,10 +39,6 @@ const CardTicket = ({ ticket, isOpen, onSelect }) => {
             src="/src/assets/icons/Suffix.svg"
             alt="Toggle Details"
             className="w-6 h-6 cursor-pointer hover:shadow-xl"
-            onClick={(e) => {
-              e.stopPropagation();
-              onSelect();
-            }}
           />
         </div>
 
@@ -74,7 +70,7 @@ const CardTicket = ({ ticket, isOpen, onSelect }) => {
           </div>
           <div className="flex flex-col items-end space-y-2">
             <p className="text-lg font-bold text-purple-600">{price}</p>
-            <ButtonSelect />
+            <ButtonSelect onSelect={onSelect} onNavigate={onNavigate} />
           </div>
         </div>
       </div>
