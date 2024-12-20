@@ -153,10 +153,34 @@ const SearchFlight = ({ selectedFlight, isDatepickerVisible }) => {
 
   useEffect(() => {
     if (selectedFlight) {
-      const depDate = new Date(selectedFlight.departure);
-      const retDate = selectedFlight.return
-        ? new Date(selectedFlight.return)
+      const depDateString = selectedFlight.departure.split(" ")[0];
+      const depDate = new Date(
+        Date.UTC(
+          depDateString.substring(0, 4),
+          depDateString.substring(5, 7) - 1,
+          depDateString.substring(8, 10),
+          0, 0, 0
+        )
+      );
+
+      const retDateString = selectedFlight.return
+        ? selectedFlight.return.split(" ")[0]
         : null;
+      const retDate = retDateString
+        ? new Date(
+            Date.UTC(
+              retDateString.substring(0, 4),
+              retDateString.substring(5, 7) - 1,
+              retDateString.substring(8, 10),
+              0, 0, 0
+            )
+          )
+        : null;
+
+      depDate.setHours(0, 0, 0, 0);
+      if (retDate) {
+        retDate.setHours(0, 0, 0, 0);
+      }
 
       setFrom(selectedFlight.originCity.fullnmae);
       setTo(selectedFlight.destinationCity.fullnmae);

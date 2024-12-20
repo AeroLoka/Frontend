@@ -9,12 +9,27 @@ import {
 } from "react-icons/fa";
 
 const formatDateRange = (startDate, endDate) => {
+  const depDateString = startDate.split(" ")[0];
+  const depDate = new Date(Date.UTC(
+    depDateString.substring(0, 4),
+    depDateString.substring(5, 7) - 1,
+    depDateString.substring(8, 10),
+    0, 0, 0
+  ));
+
+  const endDateString = endDate.split(" ")[0];
+  const endDateFormatted = new Date(Date.UTC(
+    endDateString.substring(0, 4),
+    endDateString.substring(5, 7) - 1,
+    endDateString.substring(8, 10),
+    0, 0, 0
+  ));
+
   const options = { year: "numeric", month: "long", day: "numeric" };
-  const start = new Date(startDate).toLocaleDateString("id-ID", options);
-  const end = new Date(endDate).toLocaleDateString("id-ID", options);
-  return `${start.split(" ")[0]} - ${end.split(" ")[0]} ${end.split(" ")[1]} ${
-    end.split(" ")[2]
-  }`;
+  const start = depDate.toLocaleDateString("id-ID", options);
+  const end = endDateFormatted.toLocaleDateString("id-ID", options);
+
+  return `${start.split(" ")[0]} - ${end.split(" ")[0]} ${end.split(" ")[1]} ${end.split(" ")[2]}`;
 };
 
 const HomeCard = ({ flights, onSelectFlight }) => {
