@@ -15,10 +15,11 @@ const userSlice = createSlice({
             localStorage.setItem("user", JSON.stringify(user));
         },
         updateUserState: (state, action) => {
-            const {name, email} = action.payload.data;
+            const {name, email, phoneNumber} = action.payload.data;
             state.user = {
                 ...state.user,
                 name,
+                phoneNumber,
                 email
             }
             localStorage.setItem("user", JSON.stringify(state.user));

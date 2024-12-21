@@ -25,75 +25,75 @@ const OrderCard = ({ ticket }) => {
       : "cancelled";
 
   return (
-    <div className="w-[568px] p-6 border-2 hover:border-[#7126B5BF] rounded-lg flex flex-col justify-between items-center active:border-[#7126B5BF]  bg-white border-gray-300 shadow-md hover:shadow-lg transition-shadow">
+    <div className="w-full min-w-[320px] p-4 sm:p-6 border-2 hover:border-[#7126B5BF] rounded-lg flex flex-col justify-between items-center active:border-[#7126B5BF] bg-white border-gray-300 shadow-md hover:shadow-lg transition-shadow mx-auto">
       <div className="self-start">
         <PaidButton type={buttonType}>{status}</PaidButton>
       </div>
 
       {/* Route Section */}
-      <div className="w-[536px] h-auto border-b-[1px] border-gray-300 p-[16px] flex gap-[16px]">
-        <div className="flex flex-1 gap-[8px] items-center">
+      <div className="w-full border-b border-gray-300 p-2 sm:p-4 flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-1 flex-col sm:flex-row gap-2 sm:gap-4 items-center">
           {/* Departure Section */}
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <img
               src="/src/assets/icons/Icon_wrapper.svg"
               alt="Toggle Details"
               className="w-6 h-6"
             />
-          </div>
-          <div className="w-[78px] h-[60px] gap-[2px]">
-            <p className="font-bold text-[14px] leading-[20px]">
-              {departureCity}
-            </p>
-            <p className="font-medium text-[12px] leading-[18px] ">
-              {departureDate}
-            </p>
-            <p className="font-medium text-[12px] leading-[18px]">
-              {departureTime}
-            </p>
+            <div className="text-center sm:text-left">
+              <p className="font-bold text-sm sm:text-base">
+                {departureCity}
+              </p>
+              <p className="font-medium text-xs sm:text-sm">
+                {departureDate}
+              </p>
+              <p className="font-medium text-xs sm:text-sm">
+                {departureTime}
+              </p>
+            </div>
           </div>
 
           {/* Duration Section */}
-          <div className="text-sm flex flex-col items-center flex-1">
-            <p className="font-medium text-[12px] leading-[18px] text-[#3C3C3C] mb-2">
+          <div className="text-sm flex flex-col ml-6 md:ml-0 items-center flex-1">
+            <p className="font-medium text-xs sm:text-sm text-[#3C3C3C] mb-2">
               {duration}
             </p>
-            <div className="w-[233px] h-[1px] bg-gray-300"></div>
+            <div className="w-full max-w-[233px] h-[1px] bg-gray-300"></div>
           </div>
 
           {/* Arrival Section */}
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <img
               src="/src/assets/icons/Icon_wrapper.svg"
               alt="Toggle Details"
               className="w-6 h-6"
             />
-          </div>
-          <div className="w-[78px] h-[60px] gap-[2px]">
-            <p className="font-bold text-[14px] leading-[20px] ">
-              {arrivalCity}
-            </p>
-            <p className="font-medium text-[12px] leading-[18px]">
-              {arrivalDate}
-            </p>
-            <p className="font-medium text-[12px] leading-[18px]">
-              {arrivalTime}
-            </p>
+            <div className="text-center sm:text-left">
+              <p className="font-bold text-sm sm:text-base">
+                {arrivalCity}
+              </p>
+              <p className="font-medium text-xs sm:text-sm">
+                {arrivalDate}
+              </p>
+              <p className="font-medium text-xs sm:text-sm">
+                {arrivalTime}
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Details Section */}
-      <div className="mt-4 border-gray-300 pt-2 pb-2 flex justify-between items-center w-[536px] h-aut gap-[8px]">
-        <div className="text-sm">
-          <p className="font-bold text-[14px] leading-[20px] ">Booking Code:</p>
-          <p className="font-medium text-[14px] leading-[20px]">
+      <div className="mt-4 pt-2 pb-2 flex flex-col sm:flex-row justify-between items-center w-full gap-4 sm:gap-8">
+        <div className="text-center sm:text-left">
+          <p className="font-bold text-sm sm:text-base">Booking Code:</p>
+          <p className="font-medium text-sm sm:text-base">
             {bookingCode}
           </p>
         </div>
-        <div className="text-sm">
-          <p className="font-bold text-[14px] leading-[20px] ">Class:</p>
-          <p className="font-medium text-[14px] leading-[20px]">{classType}</p>
+        <div className="text-center sm:text-left">
+          <p className="font-bold text-sm sm:text-base">Class:</p>
+          <p className="font-medium text-sm sm:text-base">{classType}</p>
         </div>
         <p className="text-[#7126B5] font-bold text-lg">{`IDR ${price.toLocaleString()}`}</p>
       </div>

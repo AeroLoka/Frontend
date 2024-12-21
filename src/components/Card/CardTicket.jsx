@@ -21,11 +21,12 @@ const CardTicket = ({ ticket, isOpen, onSelect, onNavigate }) => {
   } = ticket;
 
   return (
-    <div
-      className="cardTicket w-full flex flex-col bg-white border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg hover:border-purple-500 transition-shadow mb-4 cursor-pointer"
+        <div
+      className="w-full flex flex-col bg-white border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg hover:border-purple-500 transition-shadow mb-4 cursor-pointer"
       onClick={onSelect}
     >
       <div className="flex flex-col space-y-4">
+        {/* Airline Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img
@@ -42,33 +43,43 @@ const CardTicket = ({ ticket, isOpen, onSelect, onNavigate }) => {
           />
         </div>
 
-        <div className="flex gap-x-12">
-          <div className="flex-1 flex gap-x-8">
-            <div className="flex-1 flex items-center gap-x-4 ml-[30px]">
-              <div>
-                <p className="text-xl font-bold">{departureTime}</p>
+        {/* Flight Details */}
+        <div className="flex flex-col lg:flex-row lg:gap-x-12">
+          {/* Time and Route Section */}
+          <div className="flex-1 flex flex-col sm:flex-row gap-4 sm:gap-8">
+            <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-8 sm:ml-8">
+              {/* Departure */}
+              <div className="flex flex-col items-center">
+                <p className="text-lg sm:text-xl font-bold">{departureTime}</p>
                 <p className="text-sm text-gray-500">{departureCity}</p>
               </div>
-              <div className="text-sm text-gray-500 flex flex-col items-center flex-1">
+
+              {/* Duration */}
+              <div className="text-sm text-gray-500 flex flex-col items-center w-full sm:w-auto">
                 <p className="mb-2">{duration}</p>
-                <div className="w-[233px] h-[1px] bg-gray-300"></div>
+                <div className="w-full sm:w-[150px] lg:w-[233px] h-[1px] bg-gray-300"></div>
                 <span className="mt-2">Direct</span>
               </div>
 
-              <div>
-                <p className="text-xl font-bold">{arrivalTime}</p>
+              {/* Arrival */}
+              <div className="flex flex-col items-center">
+                <p className="text-lg sm:text-xl font-bold">{arrivalTime}</p>
                 <p className="text-sm text-gray-500">{arrivalCity}</p>
               </div>
-              <div className="flex justify-center items-center">
+
+              {/* Baggage Icon */}
+              <div className="hidden sm:flex justify-center items-center">
                 <img
                   src="/src/assets/icons/icon_baggage-delay.svg"
-                  alt="Toggle Details"
+                  alt="Baggage Info"
                   className="w-6 h-6"
                 />
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-end space-y-2">
+
+          {/* Price and Button Section */}
+          <div className="flex justify-between sm:justify-end items-center sm:flex-col sm:items-end space-y-0 sm:space-y-2 mt-4 lg:mt-0">
             <p className="text-lg font-bold text-purple-600">{price}</p>
             <ButtonSelect onSelect={onSelect} onNavigate={onNavigate} />
           </div>
