@@ -8,11 +8,15 @@ import { updateUserState } from "../../features/userSlice";
 
 const DetailProfile = () => {
     const dispatch = useDispatch();
-    const { email } = useSelector((state) => state.userState.user);
+    const { email, phoneNumber, name } = useSelector((state) => state.userState.user);
     const methods = useForm();
     const { handleSubmit, setValue } = methods;
 
-    const [profile, setProfile] = useState({});
+    const [profile, setProfile] = useState({
+        name: name,
+        email: email,
+        phoneNumber: phoneNumber,
+    });
 
     const profileData = async () => {
         try {
