@@ -18,4 +18,13 @@ const getBookingByCode = async (code) => {
     }
 }
 
-export { createBooking, getBookingByCode  };
+const getAllBookingByUser = async (data) => {
+    try {
+        const response = await axiosInstance.get(`/bookings`, { params: data });
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error.message
+    }
+}
+
+export { createBooking, getBookingByCode, getAllBookingByUser };
