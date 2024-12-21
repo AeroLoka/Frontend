@@ -44,6 +44,10 @@ const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
     onClose();
   };
 
+  const hasPassengers = Object.values(tempPassengers).some(
+    (count) => count > 0
+  );
+
   useEffect(() => {
     if (isOpen) {
       const handleClickOutside = (e) => {
@@ -106,8 +110,13 @@ const PassengerModal = ({ isOpen, onClose, passengers, onPassengerChange }) => {
         </div>
         <div className="mt-6 flex justify-end">
           <button
-            onClick={(console.log(tempPassengers), handleSave)}
-            className="w-[150px] p-3 py-2 bg-[#4B1979] text-white rounded-lg"
+            onClick={handleSave}
+            className={`w-[150px] p-3 py-2 rounded-lg ${
+              hasPassengers
+                ? "bg-[#A06ECE] text-white hover:bg-[#4B1979] transition-colors duration-300"
+                : "bg-[#D0D0D0] text-gray-500 cursor-not-allowed"
+            }`}
+            disabled={!hasPassengers}
           >
             Simpan
           </button>

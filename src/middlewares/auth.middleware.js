@@ -9,6 +9,5 @@ export const checkAuth = (store) => () => {
         }, 100);
         return redirect("/login");
     }
-    toast.success("You are logged in!");
     return null
 }

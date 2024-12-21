@@ -5,17 +5,17 @@ import OrderDetailCard from "../components/Card/OrderDetailCard";
 import Navbar from "../components/Navbar/Navbar";
 import HeaderOrder from "../components/Header/HeaderOrder";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
+import TitleOfPage from "../components/Title/TitleOfPage";
 import { useSelector } from "react-redux";
-import { getUserByEmail } from "../services/user.services";
 
 const OrderHistory = () => {
-  const user = useSelector((state) => state.user.user);
-  const userId = user?.userId || 123;
+  TitleOfPage("Aeroloka - Riwayat Pesanan");
 
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isDetailView, setDetailView] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
   const [searchLocation, setSearchLocation] = useState("");
+
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);

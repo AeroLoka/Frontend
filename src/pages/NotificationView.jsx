@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 import SubHeader from "../components/Header/SubHeader";
 import Notification from "../components/Notification/Notification";
+import TitleOfPage from "../components/Title/TitleOfPage";
 const NotificationView = () => {
+
+  TitleOfPage("Aeroloka - Notifikasi");
   // dummy data
   const [notifications, setNotifications] = useState([
     {
@@ -97,7 +100,7 @@ const NotificationView = () => {
           <h2>Belum ada notif nih.</h2>
         </div>
       ) : (
-        <div className="sm:mt-[90px] mt-8  flex flex-col  items-center">
+        <div className="mt-[90px] flex flex-col  items-center">
           {notifications.map((notification, index) => (
             <div key={notification.id} className="notification-container w-5/6">
               <Notification notification={notification} />

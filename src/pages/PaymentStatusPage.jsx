@@ -4,9 +4,12 @@ import { toast } from "react-toastify";
 import Navbar from "../components/Navbar/Navbar";
 import Stepper from "../components/Stepper/Stepper";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
+import TitleOfPage from "../components/Title/TitleOfPage";
 
 const PaymentStatusPage = () => {
   const navigate = useNavigate();
+
+  TitleOfPage("Aeroloka - Status Pembayaran");
 
   // dummy
   const isPaymentSuccess = Math.random() < 0.5;

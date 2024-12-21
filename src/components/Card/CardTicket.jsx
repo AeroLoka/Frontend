@@ -2,94 +2,93 @@ import React from "react";
 import DetailSection from "../Results/DetailSection";
 import ButtonSelect from "../Button/ButtonSelect";
 
-const CardTicket = ({ ticket, isOpen, onSelect }) => {
+const CardTicket = ({ ticket, isOpen, onSelect, onNavigate }) => {
   const {
-    airlines,
-    class: classType,
-    departure,
-    return: returnTime,
-    price,
+    airline,
+    airport,
+    airportTerminal,
+    flightNumber,
+    classType,
+    departureTime,
+    departureCity,
+    arrivalTime,
+    arrivalCity,
     duration,
-    cities,
+    departureDate,
+    arrivalDate,
+    price,
+    airlineDetail,
   } = ticket;
 
-  const airlineName = airlines[0]?.name || "Unknown Airline";
-  const departureCode = cities[0]?.shortname || "N/A";
-  const arrivalCity = ticket.destinationCityId
-    ? `City ${ticket.destinationCityId}`
-    : "Unknown City";
-
-  const formatTime = (date) => {
-    const options = { hour: "2-digit", minute: "2-digit" };
-    return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
-  };
-
   return (
-    <div className="cardTicket w-[699px] flex flex-col bg-white border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow mb-4">
+    <div
+      className="cardTicket w-full flex flex-col bg-white border border-gray-300 rounded-lg shadow-md p-4 hover:shadow-lg hover:border-purple-500 transition-shadow mb-4 cursor-pointer"
+      onClick={onSelect}
+    >
       <div className="flex flex-col space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img
-              src="/src/assets/icons/Thumbnail.svg"
+              src="/images/Thumbnail.png"
               alt="Airline Logo"
               className="w-6 h-6"
             />
-            <p className="text-sm font-medium">{`${airlineName} - ${classType}`}</p>
+            <p className="text-sm font-medium">{`${airline} - ${classType}`}</p>
           </div>
-
           <img
             src="/src/assets/icons/Suffix.svg"
             alt="Toggle Details"
-            className="w-6 h-6 cursor-pointer"
-            onClick={onSelect}
+            className="w-6 h-6 cursor-pointer hover:shadow-xl"
           />
         </div>
 
         <div className="flex gap-x-12">
-          <div className="flex-1 flex gap-x-4">
-            <div className="flex-1 flex items-center gap-x-4 ml-[10px]">
+          <div className="flex-1 flex gap-x-8">
+            <div className="flex-1 flex items-center gap-x-4 ml-[30px]">
               <div>
-                <p className="font-bold text-xl">{formatTime(departure)}</p>
-                <p className="text-sm text-gray-500">{departureCode}</p>
+                <p className="text-xl font-bold">{departureTime}</p>
+                <p className="text-sm text-gray-500">{departureCity}</p>
               </div>
               <div className="text-sm text-gray-500 flex flex-col items-center flex-1">
-                <p className="mb-2">{`${duration} minutes`}</p>
+                <p className="mb-2">{duration}</p>
                 <div className="w-[233px] h-[1px] bg-gray-300"></div>
-                {/* <span className="mt-2">{flightType}</span> */}
+                <span className="mt-2">Direct</span>
               </div>
 
               <div>
-                <p className="text-xl font-bold">{formatTime(returnTime)}</p>
+                <p className="text-xl font-bold">{arrivalTime}</p>
                 <p className="text-sm text-gray-500">{arrivalCity}</p>
               </div>
               <div className="flex justify-center items-center">
                 <img
                   src="/src/assets/icons/icon_baggage-delay.svg"
-                  alt="Baggage Delay Icon"
+                  alt="Toggle Details"
                   className="w-6 h-6"
                 />
               </div>
             </div>
           </div>
           <div className="flex flex-col items-end space-y-2">
-            <p className="text-lg font-bold text-purple-600">
-              Rp {price.toLocaleString()}
-            </p>
-            <ButtonSelect />
+            <p className="text-lg font-bold text-purple-600">{price}</p>
+            <ButtonSelect onSelect={onSelect} onNavigate={onNavigate} />
           </div>
         </div>
       </div>
 
-      {/* Render DetailSection jika tiket ini aktif */}
       {isOpen && (
         <DetailSection
-          departure={ticket.departure}
-          returnTime={ticket.return}
-          departureCity={ticket.cities[0]?.fullname}
-          departureAirport={ticket.airports[0]?.name}
-          airline={ticket.airlines[0]?.name}
-          destinationCity={`City ${ticket.destinationCityId}`}
-          destinationAirport={"Bandara Tujuan"} // Sesuaikan jika ada data spesifik
+          airline={airline}
+          airport={airport}
+          airportTerminal={airportTerminal}
+          flightNumber={flightNumber}
+          classType={classType}
+          departureTime={departureTime}
+          departureDate={departureDate}
+          departureCity={departureCity}
+          arrivalTime={arrivalTime}
+          arrivalDate={arrivalDate}
+          arrivalCity={arrivalCity}
+          airlineDetail={airlineDetail}
         />
       )}
     </div>

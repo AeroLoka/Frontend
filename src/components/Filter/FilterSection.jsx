@@ -11,7 +11,7 @@ const FilterSection = () => {
   ];
 
   return (
-    <aside className="w-full md:w-1/4 bg-white rounded-lg shadow-md p-4 top-4 max-h-screen">
+    <aside className="w-full md:w-1/4 bg-white rounded-lg shadow-lg p-4 top-4 border border-slate-200 max-h-screen">
       <h3 className="font-semibold text-lg mb-4">Filter</h3>
       <div className="space-y-4">
         {filters.map(({ label, icon }, index) => (
