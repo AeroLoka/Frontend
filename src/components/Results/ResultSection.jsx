@@ -87,7 +87,7 @@ const ResultsSection = ({ loading, tickets, onSelectTicket, onNavigate }) => {
   };
 
   return (
-    <section className="md:w-4/5 md:ml-8 mt-8 md:mt-0 flex-col items-center justify-center">
+    <section className="w-full md:w-4/5 px-4 md:ml-8 mt-8 md:mt-0 flex flex-col items-center justify-center">
       {renderTickets()}
     </section>
   );
