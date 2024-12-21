@@ -162,8 +162,8 @@ const DetailTicket = () => {
     <>
       {user ? <LoggedInNavbar /> : <Navbar />}
 
-      <div className="pt-[100px] gap-2">
-        <div className="w-full h-[231px] bg-white shadow-md ">
+      <div className="pt-16 gap-2">
+        <div className="w-full h-auto py-6 bg-white shadow-md ">
           <HeaderTicket />
           <NavigationDates onDateClick={handleDateFilter} tickets={tickets} />
         </div>

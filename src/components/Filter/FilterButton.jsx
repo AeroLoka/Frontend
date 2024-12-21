@@ -15,13 +15,13 @@ const FilterButton = ({ onFilterChange, selectedFilter }) => {
 
   const applyFilter = () => {
     onFilterChange(temporaryFilter);
-    setIsModalOpen(false); // Tutup modal
+    setIsModalOpen(false);
   };
 
   return (
     <div className="w-full md:w-4/5 mx-auto mt-5 flex items-center justify-end mb-7 p-2">
       <button
-        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 focus:outline-none bg-white text-purple-500 border border-purple-400 hover:bg-purple-600 hover:text-white shadow-lg h-[32px] min-w-fit p-5 rounded-[16px]"
+        className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 focus:outline-none bg-white text-[#7126B5] border border-[#7126B5] hover:bg-[#7126B5] hover:text-white shadow-lg h-[32px] min-w-fit p-5 rounded-[16px]"
         type="button"
         onClick={handleModalToggle}
       >
@@ -49,11 +49,11 @@ const FilterButton = ({ onFilterChange, selectedFilter }) => {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="relative bg-white rounded-[16px] shadow-lg w-[400px] h-[384px]">
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+          <div className="relative bg-white rounded-[16px] shadow-lg w-[90%] min-h-[430px] md:w-[25%]">
             {/* Close */}
             <button
-              className="absolute top-2 right-4 text-gray-500 hover:text-gray-800"
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
               onClick={handleModalToggle}
             >
               <svg
@@ -73,8 +73,7 @@ const FilterButton = ({ onFilterChange, selectedFilter }) => {
             </button>
             <div className="bg-white text-center py-3 rounded-t-[16px] mb-2"></div>
 
-            {/* List Options */}
-            <ul className="w-full">
+            <ul className="w-full mt-8 px-2 rounded-lg">
               {[
                 "Harga - Termurah",
                 "Durasi - Terpendek",
@@ -89,7 +88,7 @@ const FilterButton = ({ onFilterChange, selectedFilter }) => {
                   className={`flex items-center justify-between px-4 py-3 border-b border-gray-200 last:border-b-0 cursor-pointer ${
                     temporaryFilter === option
                       ? "bg-[#7126B5] text-white"
-                      : "hover:bg-gray-100"
+                      : "hover:bg-gray-200"
                   }`}
                 >
                   {option}
@@ -99,13 +98,13 @@ const FilterButton = ({ onFilterChange, selectedFilter }) => {
 
             <div className="absolute bottom-4 right-4 flex gap-2">
               <button
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                className="px-7 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
                 onClick={handleModalToggle}
               >
                 Batal
               </button>
               <button
-                className="px-4 py-2 bg-[#7126B5] text-white rounded hover:bg-[#5a1b8a]"
+                className="px-7 py-2 bg-[#7126B5] text-white rounded-lg hover:bg-[#5a1b8a]"
                 onClick={applyFilter}
               >
                 Pilih
