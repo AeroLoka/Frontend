@@ -20,7 +20,6 @@ const SeatSelection = (props) => {
     } else {
         seatRows = 12;
     }
-    console.log(`airlineClass: "${airlineClass}"`);
     
     const methods = useFormContext();
     const { update } = useFieldArray({

@@ -38,8 +38,6 @@ const OrderHistory = () => {
     getData();
   }, [fromDate, toDate]);
 
-  console.log(data)
-
   const handleOrderCardClick = (ticket) => {
     setSelectedOrder(ticket);
     if (window.innerWidth < 768) setDetailView(true);
