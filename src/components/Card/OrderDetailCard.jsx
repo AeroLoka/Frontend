@@ -44,8 +44,8 @@ const OrderDetailCard = ({ orderDetails }) => {
 
     // Mapping status to PaidButton type
     const buttonType =
-        status === "Issued"
-            ? "issued"
+        status === "paid"
+            ? "paid"
             : status.toLowerCase() === "unpaid"
             ? "unpaid"
             : "cancelled";
@@ -55,8 +55,10 @@ const OrderDetailCard = ({ orderDetails }) => {
             navigate(`/payment?booking-code=${bookingCode}`);
         } else {
             toast.success("Tiket berhasil dikirim ke email Anda");
-    }
-  }
+        }
+    };
+
+    const showButton = status.toLowerCase() !== "cancelled";
 
     return (
         <div className="border-2  border-gray-300 rounded-lg hover:shadow-lg transition-shadow p-6 bg-white shadow-lg">
@@ -94,11 +96,7 @@ const OrderDetailCard = ({ orderDetails }) => {
 
             {/* Flight Info */}
             <div className="flex items-center gap-[8px] mt-[12px] border-t border-gray-300">
-                <img
-                    src="/logo.png"
-                    alt="Airline Logo"
-                    className="w-6 h-6"
-                />
+                <img src="/logo.png" alt="Airline Logo" className="w-6 h-6" />
                 <div className="pt-4">
                     <p className="font-bold text-[14px] leading-[18px]">{`${airline} - ${classType}`}</p>
                     <p className="font-bold text-[14px] leading-[18px]">{`${flightCode}`}</p>
@@ -156,20 +154,21 @@ const OrderDetailCard = ({ orderDetails }) => {
                 </div>
             </div>
 
-            {/* Button */}
-            <div className="mt-4 gap-2">
-                <button
-                    onClick={handleClick}
-                    className={`w-full h-[62px] py-3 rounded-[12px] font-bold text-lg transition ${
-                        buttonType === "unpaid"
-                            ? "bg-red-600 hover:bg-red-700 text-white"
-                            : "bg-purple-700 hover:bg-purple-800 text-white"
-                    }`}
-                >
-                    {buttonType === "unpaid" ? "Lanjut Bayar" : "Cetak Tiket"}{" "}
-                    {/* Teks tombol */}
-                </button>
-            </div>
+            {/* Button - Only show if status is not cancelled */}
+            {showButton && (
+                <div className="mt-4 gap-2">
+                    <button
+                        onClick={handleClick}
+                        className={`w-full h-[62px] py-3 rounded-[12px] font-bold text-lg transition ${
+                            buttonType === "unpaid"
+                                ? "bg-red-600 hover:bg-red-700 text-white"
+                                : "bg-purple-700 hover:bg-purple-800 text-white"
+                        }`}
+                    >
+                        {buttonType === "unpaid" ? "Lanjut Bayar" : "Cetak Tiket"}{" "}
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
