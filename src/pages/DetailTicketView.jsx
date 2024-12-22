@@ -54,7 +54,6 @@ const DetailTicket = () => {
       });
 
       if (response.data && Array.isArray(response.data)) {
-        // Filter tickets for the selected date
         const ticketsForDate = response.data.filter((ticket) => {
           const ticketDate = new Date(ticket.departure).toISOString().split('T')[0];
           return ticketDate === date;
@@ -84,7 +83,6 @@ const DetailTicket = () => {
   const applyFilter = () => {
     const filterFunctions = {
       "harga-termurah": (a, b) => {
-        // Pastikan price adalah number
         const priceA = typeof a.price === 'number' ? a.price : parseFloat(a.price);
         const priceB = typeof b.price === 'number' ? b.price : parseFloat(b.price);
         return priceA - priceB;
@@ -95,7 +93,6 @@ const DetailTicket = () => {
         return priceB - priceA;
       },
       "durasi-terpendek": (a, b) => {
-        // Asumsikan duration dalam format menit atau timestamp
         const durationA = typeof a.duration === 'number' ? a.duration : 0;
         const durationB = typeof b.duration === 'number' ? b.duration : 0;
         return durationA - durationB;
@@ -166,7 +163,6 @@ const DetailTicket = () => {
     navigate(`/order-page?${params.toString()}`);
   };
 
-  // Initial fetch of tickets
   useEffect(() => {
     const fetchInitialTickets = async () => {
       setLoading(true);
@@ -202,7 +198,6 @@ const DetailTicket = () => {
     fetchInitialTickets();
   }, []);
 
-  // Apply filters whenever sortBy or tickets change
   useEffect(() => {
     applyFilter();
   }, [sortBy, tickets]);
