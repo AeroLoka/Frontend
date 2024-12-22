@@ -17,7 +17,7 @@ const DetailTicket = () => {
   const [loading, setLoading] = useState(true);
   const [tickets, setTickets] = useState([]);
   const [filteredTickets, setFilteredTickets] = useState([]);
-  const [activeFilter, setActiveFilter] = useState("Termurah");
+  const [sortBy, setSortBy] = useState("harga-termurah");
   const [activeDate, setActiveDate] = useState(null);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const { user } = useSelector((state) => state.userState);
@@ -36,44 +36,6 @@ const DetailTicket = () => {
   const adultPassengers = parseInt(searchParams.get("adult")) || 0;
   const childPassengers = parseInt(searchParams.get("child")) || 0;
   const infantPassengers = parseInt(searchParams.get("infant")) || 0;
-
-  const applyFilter = () => {
-    const filterFunctions = {
-      "Harga - Termurah": (a, b) =>
-        parseInt(a.price.replace(/\D/g, "")) -
-        parseInt(b.price.replace(/\D/g, "")),
-      "Durasi - Terpendek": (a, b) => {
-        const durationToMinutes = (d) =>
-          parseInt(d.split("h")[0]) * 60 +
-          parseInt(d.split("h")[1]?.split("m")[0] || 0);
-        return durationToMinutes(a.duration) - durationToMinutes(b.duration);
-      },
-      "Keberangkatan - Paling Awal": (a, b) =>
-        a.departureTime.localeCompare(b.departureTime),
-      "Keberangkatan - Paling Akhir": (a, b) =>
-        b.departureTime.localeCompare(a.departureTime),
-      "Kedatangan - Paling Awal": (a, b) =>
-        a.arrivalTime.localeCompare(b.arrivalTime),
-      "Kedatangan - Paling Akhir": (a, b) =>
-        b.arrivalTime.localeCompare(a.arrivalTime),
-    };
-
-    let updatedTickets = [...tickets];
-
-    // Filter tickets based on active date if set
-    if (activeDate) {
-      updatedTickets = updatedTickets.filter((ticket) => {
-        const ticketDate = new Date(ticket.departure).toISOString().split('T')[0];
-        return ticketDate === activeDate;
-      });
-    }
-
-    if (filterFunctions[activeFilter]) {
-      updatedTickets.sort(filterFunctions[activeFilter]);
-    }
-
-    setFilteredTickets(updatedTickets);
-  };
 
   const handleDateFilter = async (date) => {
     setActiveDate(date);
@@ -119,8 +81,64 @@ const DetailTicket = () => {
     }
   };
 
+  const applyFilter = () => {
+    const filterFunctions = {
+      "harga-termurah": (a, b) => {
+        // Pastikan price adalah number
+        const priceA = typeof a.price === 'number' ? a.price : parseFloat(a.price);
+        const priceB = typeof b.price === 'number' ? b.price : parseFloat(b.price);
+        return priceA - priceB;
+      },
+      "harga-termahal": (a, b) => {
+        const priceA = typeof a.price === 'number' ? a.price : parseFloat(a.price);
+        const priceB = typeof b.price === 'number' ? b.price : parseFloat(b.price);
+        return priceB - priceA;
+      },
+      "durasi-terpendek": (a, b) => {
+        // Asumsikan duration dalam format menit atau timestamp
+        const durationA = typeof a.duration === 'number' ? a.duration : 0;
+        const durationB = typeof b.duration === 'number' ? b.duration : 0;
+        return durationA - durationB;
+      },
+      "durasi-terpanjang": (a, b) => {
+        const durationA = typeof a.duration === 'number' ? a.duration : 0;
+        const durationB = typeof b.duration === 'number' ? b.duration : 0;
+        return durationB - durationA;
+      },
+      "keberangkatan-paling-awal": (a, b) => {
+        const timeA = new Date(a.departure || a.departureTime).getTime();
+        const timeB = new Date(b.departure || b.departureTime).getTime();
+        return timeA - timeB;
+      },
+      "keberangkatan-paling-akhir": (a, b) => {
+        const timeA = new Date(a.departure || a.departureTime).getTime();
+        const timeB = new Date(b.departure || b.departureTime).getTime();
+        return timeB - timeA;
+      },
+      "kedatangan-paling-awal": (a, b) => {
+        const timeA = new Date(a.return || a.returnTime).getTime();
+        const timeB = new Date(b.return || b.returnTime).getTime();
+        return timeA - timeB;
+      },
+      "kedatangan-paling-akhir": (a, b) => {
+        const timeA = new Date(a.return || a.returnTime).getTime();
+        const timeB = new Date(b.return || b.returnTime).getTime();
+        return timeB - timeA;
+      },
+    };
+  
+    let updatedTickets = [...tickets];
+  
+    if (filterFunctions[sortBy]) {
+      updatedTickets.sort(filterFunctions[sortBy]);
+    }
+  
+    setFilteredTickets(updatedTickets);
+  };
+
   const handleFilterChange = (filter) => {
-    setActiveFilter(filter);
+    const backendFilter = filter.toLowerCase().replace(/\s+/g, '-');
+    setSortBy(backendFilter);
   };
 
   const handleSelectTicket = (ticket) => {
@@ -184,10 +202,10 @@ const DetailTicket = () => {
     fetchInitialTickets();
   }, []);
 
-  // Apply filters whenever activeFilter or tickets change
+  // Apply filters whenever sortBy or tickets change
   useEffect(() => {
     applyFilter();
-  }, [activeFilter, tickets]);
+  }, [sortBy, tickets]);
 
   return (
     <>
@@ -199,11 +217,8 @@ const DetailTicket = () => {
           <NavigationDates onDateClick={handleDateFilter} tickets={tickets} />
         </div>
         <FilterButton
-          tickets={tickets}
-          activeDate={activeDate}
-          setFilteredData={setFilteredTickets}
           onFilterChange={handleFilterChange}
-          selectedFilter={activeFilter}
+          selectedFilter={sortBy}
         />
         <main className="w-full md:w-4/5 mx-auto flex flex-col md:flex-row justify-center">
           {!loading && filteredTickets.length > 0 && <FilterSection />}
