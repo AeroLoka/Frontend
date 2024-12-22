@@ -1,125 +1,166 @@
 import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { addDays, format, parseISO, startOfMonth, isValid } from "date-fns";
+import { FiArrowLeft } from "react-icons/fi";
 import ButtonScroll from "../Button/ButtonScroll";
 import ButtonChange from "../Button/ButtonChange";
-import { useLocation } from "react-router-dom";
-import { addDays, format, parseISO } from "date-fns";
 
-const NavigationDates = ({ onDateClick }) => {
+const NavigationDates = ({ onDateClick, tickets }) => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
   const [searchDetails, setSearchDetails] = useState("");
   const [dates, setDates] = useState([]);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-
-    const from = params.get("from");
-    const to = params.get("to");
-    const departureDate = params.get("departureDate");
-    const adult = parseInt(params.get("adult")) || 0;
-    const child = parseInt(params.get("child")) || 0;
-    const infant = parseInt(params.get("infant")) || 0;
-    const seatClass = params.get("seatClass");
+    const queryParams = new URLSearchParams(location.search);
+    const departureDate = queryParams.get("departureDate");
+    const adult = parseInt(queryParams.get("adult")) || 0;
+    const child = parseInt(queryParams.get("child")) || 0;
+    const infant = parseInt(queryParams.get("infant")) || 0;
 
     const passengerCount = adult + child + infant;
 
-    setSearchDetails(
-      `${from} > ${to} - ${passengerCount} Penumpang - ${seatClass}`
-    );
+    if (tickets && tickets.length > 0) {
+      const ticket = tickets[0];
 
-    let departureDateObj;
-    if (departureDate) {
-      departureDateObj = parseISO(departureDate);
-    } else {
-      departureDateObj = new Date();
-    }
-    const generatedDates = getNextDates(departureDateObj, 60);
-    setDates(generatedDates);
+      const from = ticket.originCity?.shortname;
+      const to = ticket.destinationCity?.shortname;
+      const seatClass = ticket.class;
 
-    const departureIndex = generatedDates.findIndex(
-      (dateObj) => dateObj.dateObj.getTime() === departureDateObj.getTime()
-    );
-    if (departureIndex !== -1) {
-      setActiveIndex(departureIndex);
-    }
-  }, [location]);
+      setSearchDetails(
+        `${from} > ${to} - ${passengerCount} Penumpang - ${seatClass}`
+      );
 
-  const getNextDates = (startingDate = new Date(), count = 30) => {
-    const dates = [];
-    for (let i = 0; i < count; i++) {
-      const currentDate = addDays(startingDate, i);
-      dates.push({
-        day: format(currentDate, "EEEE"),
-        date: format(currentDate, "dd/MM/yyyy"),
-        dateObj: currentDate,
-      });
+      let departureDateObj;
+
+      if (departureDate && isValid(parseISO(departureDate))) {
+        departureDateObj = parseISO(departureDate);
+      } else {
+        departureDateObj = new Date();
+      }
+
+      // Start from the beginning of the month
+      const monthStart = startOfMonth(departureDateObj);
+      const generatedDates = getNextDates(monthStart, 60); // Generate 60 days worth of dates
+      setDates(generatedDates);
+
+      // Find and set the active index based on the departure date
+      const departureIndex = generatedDates.findIndex(
+        (dateObj) => format(dateObj.dateObj, 'yyyy-MM-dd') === format(departureDateObj, 'yyyy-MM-dd')
+      );
+      
+      if (departureIndex !== -1) {
+        setActiveIndex(departureIndex);
+        // Set startIndex to show the active date in view
+        setStartIndex(Math.max(0, Math.min(departureIndex, generatedDates.length - 7)));
+      }
     }
-    return dates;
+  }, [tickets, location]);
+
+  const getNextDates = (startingDate = new Date(), count = 60) => {
+    try {
+      const dates = [];
+      let currentDate = startingDate;
+
+      for (let i = 0; i < count; i++) {
+        if (isValid(currentDate)) {
+          dates.push({
+            day: format(currentDate, "EEEE"),
+            date: format(currentDate, "dd/MM/yyyy"),
+            dateObj: currentDate,
+            isoDate: format(currentDate, "yyyy-MM-dd")
+          });
+        }
+        currentDate = addDays(currentDate, 1);
+      }
+      return dates;
+    } catch (e) {
+      console.error('Error generating dates:', e);
+      return [];
+    }
   };
 
   const scrollLeft = () => {
-    setStartIndex((prev) => Math.max(0, prev - 7));
+    if (startIndex > 0) {
+      setStartIndex(startIndex - 1);
+    } else {
+      const firstDate = dates[0].dateObj;
+      const newDates = getNextDates(addDays(firstDate, -30), 30);
+      setDates([...newDates, ...dates]);
+      setStartIndex(29);
+      setActiveIndex(activeIndex + 30);
+    }
   };
 
   const scrollRight = () => {
-    const lastIndex = dates.length - 1;
-    const newIndex = startIndex + 7;
-    if (newIndex >= dates.length) {
-      const nextStartDate = addDays(dates[lastIndex].dateObj, 1);
-      const newDates = getNextDates(nextStartDate, 30);
+    if (startIndex + 7 < dates.length) {
+      setStartIndex(startIndex + 1);
+    } else {
+      const lastDate = dates[dates.length - 1].dateObj;
+      const newDates = getNextDates(addDays(lastDate, 1), 30);
       setDates([...dates, ...newDates]);
     }
-    setStartIndex((prev) => Math.min(dates.length - 7, prev + 7));
   };
 
-  const handleDateClick = (index, date) => {
+  const handleDateClick = (index, date, isoDate) => {
     setActiveIndex(index);
-    onDateClick(date);
+    
+    try {
+      const dateObj = parseISO(isoDate);
+      if (!isValid(dateObj)) {
+        console.error('Invalid date selected');
+        return;
+      }
+
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set('departureDate', isoDate);
+
+      const returnDate = searchParams.get('returnDate');
+      if (returnDate) {
+        const returnDateObj = parseISO(returnDate);
+        if (isValid(returnDateObj) && returnDateObj < dateObj) {
+          searchParams.set('returnDate', isoDate);
+        }
+      }
+
+      navigate({
+        pathname: location.pathname,
+        search: searchParams.toString()
+      }, { replace: true });
+
+      onDateClick(isoDate);
+    } catch (e) {
+      console.error('Error handling date click:', e);
+    }
   };
 
+  // Rest of the return statement remains the same
   return (
-    <div className="w-full md:w-4/5 mx-auto px-4 my-4 ">
-      <div className="flex items-center justify-between gap-8 ">
-        <div className="w-[1650px] h-[50px] bg-[#A06ECE] rounded-xl p-3 flex items-center hover:bg-[#7126B5] text-white shadow-lg mb-3 md:mb-0">
-          <a href="/">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-arrow-left"
-            >
-              <path d="m12 19-7-7 7-7"></path>
-              <path d="M19 12H5"></path>
-            </svg>
-          </a>
-          <div className="flex-1 font-medium truncate ml-4 text-white">
-            {searchDetails}
+    <div className="w-full md:w-4/5 mx-auto px-4 my-4">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4">
+        <a href="/">
+          <div className="w-full h-[50px] flex bg-[#A06ECE] items-center rounded-xl p-3 shadow-lg md:mb-0 hover:bg-[#7126B5]">
+            <FiArrowLeft size={25} className="me-3 text-white" />
+            <div className="font-medium text-sm text-white md:text-base">
+              {searchDetails}
+            </div>
           </div>
-        </div>
-        <div className="md:w-1/2">
+        </a>
+        <div className="">
           <ButtonChange />
         </div>
       </div>
 
-      <div className="flex items-center justify-between mt-8 gap-2 w-full">
-        <ButtonScroll
-          direction="left"
-          onClick={scrollLeft}
-          disabled={startIndex === 0}
-        />
+      <div className="flex items-center justify-between mt-8 gap-4 w-full md:gap-2">
+        <ButtonScroll direction="left" onClick={scrollLeft} />
 
-        <div className="flex gap-8 overflow-x-auto scrollbar-hide items-center justify-center w-full sm:overflow-hidden">
+        <div className="flex gap-5 overflow-x-auto scrollbar-hide items-center justify-center w-full sm:overflow-hidden ms-10">
           {dates.slice(startIndex, startIndex + 7).map((item, index) => (
             <div
               key={index}
-              onClick={() => handleDateClick(startIndex + index, item.date)}
+              onClick={() => handleDateClick(startIndex + index, item.date, item.isoDate)}
               className={`flex flex-col items-center justify-center w-[120px] h-[60px] rounded-[8px] cursor-pointer transition-all ${
                 activeIndex === startIndex + index
                   ? "bg-[#7126B5] text-white shadow-lg"
@@ -140,11 +181,7 @@ const NavigationDates = ({ onDateClick }) => {
           ))}
         </div>
 
-        <ButtonScroll
-          direction="right"
-          onClick={scrollRight}
-          disabled={startIndex + 7 >= dates.length}
-        />
+        <ButtonScroll direction="right" onClick={scrollRight} />
       </div>
     </div>
   );

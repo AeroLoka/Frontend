@@ -28,7 +28,7 @@ const SearchDestination = ({ onContinentChange }) => {
           className={`min-w-[126px] h-[48px] rounded-xl flex items-center justify-center ${
             activeButton === "semua"
               ? "bg-[#7126B5] text-white hover:bg-purple-900"
-              : "bg-[#E2D4F0] text-black hover:bg-[#C594F6] hover:shadow-xl"
+              : "bg-[#E2D4F0] text-black hover:bg-[#7126B5] hover:text-white hover:shadow-xl"
           }`}
         >
           <a
@@ -39,7 +39,7 @@ const SearchDestination = ({ onContinentChange }) => {
             <FiSearch
               className={`w-5 h-5 ${
                 activeButton === "semua" ? "text-white" : "text-black"
-              }`}
+              }hover:text-white`}
             />
             {continentMap["semua"]}
           </a>
