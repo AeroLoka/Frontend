@@ -1,111 +1,189 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 import SubHeader from "../components/Header/SubHeader";
 import Notification from "../components/Notification/Notification";
 import TitleOfPage from "../components/Title/TitleOfPage";
-const NotificationView = () => {
+import { getAllNotificationByUser, markNotificationRead } from "../services/home.service";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
+const NotificationView = () => {
   TitleOfPage("Aeroloka - Notifikasi");
-  // dummy data
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      type: "Promosi",
-      title: "Dapatkan Potongan 50% untuk Tiket Penerbangan!",
-      detail:
-        "Syarat dan Ketentuan berlaku untuk tiket ke tujuan internasional.",
-      date: "2024-12-09T14:00:00Z",
-    },
-    {
-      id: 2,
-      type: "Notifikasi",
-      title: "Perubahan Jadwal Penerbangan untuk Kode Booking 45GT6",
-      detail:
-        "Jadwal penerbangan Anda telah berubah. Cek jadwal terbaru di aplikasi.",
-      date: "2024-12-08T10:00:00Z",
-    },
-    {
-      id: 3,
-      type: "Promosi",
-      title: "Diskon 30% untuk Tiket Penerbangan Domestik!",
-      detail:
-        "Promo hanya berlaku untuk penerbangan domestik hingga akhir bulan ini.",
-      date: "2024-12-07T08:15:00Z",
-    },
-    {
-      id: 4,
-      type: "Notifikasi",
-      title: "Pemberitahuan Pembatalan Penerbangan Kode Booking 23AB5",
-      detail:
-        "Penerbangan Anda telah dibatalkan. Silakan pilih penerbangan alternatif.",
-      date: "2024-12-06T11:30:00Z",
-    },
-    {
-      id: 5,
-      type: "Promosi",
-      title: "Beli 1 Tiket, Gratis 1 Tiket untuk Penerbangan Internasional!",
-      detail:
-        "Promo terbatas hingga 10 Desember. Pesan sekarang untuk dapatkan kesempatan ini!",
-      date: "2024-12-05T16:45:00Z",
-    },
-    {
-      id: 6,
-      type: "Notifikasi",
-      title: "Check-in untuk Penerbangan Kode Booking 88TR9 Dibuka",
-      detail: "Jangan lupa melakukan check-in 24 jam sebelum penerbangan.",
-      date: "2024-12-04T09:00:00Z",
-    },
-    {
-      id: 7,
-      type: "Promosi",
-      title: "Promo Tiket Keluarga! Diskon 25% untuk 3 Tiket atau Lebih",
-      detail: "Dapatkan diskon keluarga hanya di bulan Desember!",
-      date: "2024-12-03T13:00:00Z",
-    },
-    {
-      id: 8,
-      type: "Notifikasi",
-      title: "Pemberitahuan Perubahan Gate untuk Penerbangan 72GB",
-      detail:
-        "Gate penerbangan Anda telah berubah. Silakan periksa papan informasi di bandara.",
-      date: "2024-12-02T17:30:00Z",
-    },
-    {
-      id: 9,
-      type: "Promosi",
-      title: "Gratis Bagasi 20kg untuk Penerbangan ke Bali!",
-      detail: "Promo berlaku hingga 15 Desember untuk tujuan Bali.",
-      date: "2024-12-01T12:00:00Z",
-    },
-    {
-      id: 10,
-      type: "Notifikasi",
-      title: "Reminder: Pembayaran Tiket Penerbangan Anda Belum Selesai",
-      detail: "Segera selesaikan pembayaran agar tiket Anda tetap valid.",
-      date: "2024-11-30T10:15:00Z",
-    },
-  ]);
+  const { email } = useSelector((state) => state.userState.user);
+  const [notifications, setNotifications] = useState([]);
+  const [filteredNotifications, setFilteredNotifications] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+
+  const getData = async () => {
+    try {
+      setIsLoading(true);
+      const response = await getAllNotificationByUser(email);
+      
+      const formattedNotifications = response.data.map(notification => ({
+        id: notification.id,
+        type: "Notification",
+        title: notification.name || "Notification",
+        detail: notification.detail,
+        date: notification.createdAt,
+        isRead: notification.isRead
+      }));
+
+      setNotifications(formattedNotifications);
+      setFilteredNotifications(formattedNotifications);
+      setError(null);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      setError("Tidak ada notifikasi yang ditemukan.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleClickNotification = async (id) => {
+    try {
+      await markNotificationRead(id);
+      
+      const updateNotification = (notificationList) =>
+        notificationList.map(notification =>
+          notification.id === id
+            ? { ...notification, isRead: true }
+            : notification
+        );
+
+      setNotifications(updateNotification);
+      setFilteredNotifications(updateNotification);
+    } catch (error) {
+      toast.error(error.message || "Failed to mark notification as read");
+    }
+  };
+
+  const handleMarkAllRead = async () => {
+    try {
+      const unreadNotifications = notifications.filter(notification => !notification.isRead);
+      
+      if (unreadNotifications.length === 0) {
+        toast.info("All notifications are already read");
+        return;
+      }
+
+      const loadingToast = toast.loading("Marking all notifications as read...");
+
+      await Promise.all(
+        unreadNotifications.map(notification => 
+          markNotificationRead(notification.id)
+        )
+      );
+
+      const markAllAsRead = (notificationList) =>
+        notificationList.map(notification => ({
+          ...notification,
+          isRead: true
+        }));
+
+      setNotifications(markAllAsRead);
+      setFilteredNotifications(markAllAsRead);
+      
+      toast.update(loadingToast, {
+        render: "All notifications marked as read",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000
+      });
+    } catch (error) {
+      toast.error(error.message || "Failed to mark all notifications as read");
+    }
+  };
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    setIsSearching(!!query);
+    
+    if (!query.trim()) {
+      setFilteredNotifications(notifications);
+      return;
+    }
+
+    const searchResult = notifications.filter(notification =>
+      notification.detail.toLowerCase().includes(query.toLowerCase()) ||
+      notification.title.toLowerCase().includes(query.toLowerCase())
+    );
+
+    setFilteredNotifications(searchResult);
+  };
+
+  useEffect(() => {
+    getData();
+  }, [email]);
+
+  if (isLoading) {
+    return (
+      <>
+        <LoggedInNavbar />
+        <SubHeader label="Notifikasi" />
+        <div className="mt-[90px] flex justify-center">
+          <p>Loading notifications...</p>
+        </div>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <LoggedInNavbar />
+        <SubHeader label="Notifikasi" />
+        <div className="mt-[90px] flex justify-center text-red-500">
+          <p>{error}</p>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
       <LoggedInNavbar />
-      <SubHeader label="Notifikasi"></SubHeader>
-      {notifications.length === 0 ? (
+      <SubHeader 
+        label="Notifikasi" 
+        onMarkAllRead={handleMarkAllRead}
+        onSearch={handleSearch}
+        searchQuery={searchQuery}
+      />
+      {filteredNotifications.length === 0 ? (
         <div className="mt-[90px] flex flex-col text-center items-center">
-          <img
-            src="images/cart_shopping_list.png"
-            className="w-[204px] mb-5"
-            alt="Payment Status"
-          />
-          <h2>Belum ada notif nih.</h2>
+          {isSearching ? (
+            <>
+              <h2>No notifications found matching your search.</h2>
+              <button 
+                className="mt-4 text-purple-600 hover:text-purple-800"
+                onClick={() => handleSearch("")}
+              >
+                Clear search
+              </button>
+            </>
+          ) : (
+            <>
+              <img
+                src="images/cart_shopping_list.png"
+                className="w-[204px] mb-5"
+                alt="Payment Status"
+              />
+              <h2>Belum ada notif nih.</h2>
+            </>
+          )}
         </div>
       ) : (
-        <div className="mt-[90px] flex flex-col  items-center">
-          {notifications.map((notification, index) => (
-            <div key={notification.id} className="notification-container w-5/6">
+        <div className="mt-4 flex flex-col items-center">
+          {filteredNotifications.map((notification, index) => (
+            <div 
+              key={notification.id} 
+              className="notification-container w-5/6 hover:bg-gray-50 transition-colors cursor-pointer"
+              onClick={() => handleClickNotification(notification.id)}
+            >
               <Notification notification={notification} />
-
-              {index < notifications.length - 1 && <hr className="my-4" />}
+              {index < filteredNotifications.length - 1 && <hr className="my-4" />}
             </div>
           ))}
         </div>

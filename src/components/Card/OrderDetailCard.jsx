@@ -11,6 +11,7 @@ const OrderDetailCard = ({ orderDetails }) => {
 
     const {
         bookingCode,
+        bookingDate,
         status,
         departureTime,
         departureDate,
@@ -37,6 +38,13 @@ const OrderDetailCard = ({ orderDetails }) => {
 
     const dateForReturn = new Date(arrivalDate);
     const arrival_date = dateForReturn.toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+
+    const dateForBooking = new Date(bookingDate);
+    const booking_date = dateForBooking.toLocaleDateString("id-ID", {
         day: "numeric",
         month: "long",
         year: "numeric",
@@ -69,10 +77,17 @@ const OrderDetailCard = ({ orderDetails }) => {
             </div>
 
             {/* Booking Code */}
-            <div className="mb-4 flex  items-center gap-4">
+            <div className="mb-2 flex  items-center gap-4">
                 <p className="text-[18px] leading-[26px]">Booking Code:</p>
                 <p className="text-lg font-bold text-purple-700">
                     {bookingCode}
+                </p>
+            </div>
+
+            <div className="mb-4 flex  items-center gap-4">
+                <p className="text-[18px] leading-[26px]">Tanggal Booking:</p>
+                <p className="text-lg font-bold text-purple-700">
+                    {booking_date}
                 </p>
             </div>
 

@@ -6,6 +6,8 @@ import HeaderOrder from "../components/Header/HeaderOrder";
 import TitleOfPage from "../components/Title/TitleOfPage";
 import { getAllBookingByUser } from "../services/transaction.service";
 import { useSelector } from "react-redux";
+import { FaArrowLeft } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const OrderHistory = () => {
   TitleOfPage("Aeroloka - Riwayat Pesanan");
@@ -17,26 +19,29 @@ const OrderHistory = () => {
   const [searchLocation, setSearchLocation] = useState("");
   const [filteredDate, setFilteredDate] = useState(null);
   const [data, setData] = useState([]);
-  const [fromDate, setFromDate] = useState();
-  const [toDate, setToDate] = useState();
-
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
+  
   const getData = async () => {
     try {
       const params = {
         email: email,
-        from: fromDate,
-        to: toDate
+        from: fromDate ? fromDate.toISOString().split('T')[0] : undefined,
+        to: toDate ? toDate.toISOString().split('T')[0] : undefined
       };
       const response = await getAllBookingByUser(params);
+      console.log(params)
       setData(response.data);
     } catch (error) {
-      console.error("Failed to fetch orders: ", error);
+      toast.error(error.message || "Failed to load orders");
     }
   };
 
   useEffect(() => {
     getData();
   }, [fromDate, toDate]);
+
+
 
   const handleOrderCardClick = (ticket) => {
     setSelectedOrder(ticket);
@@ -51,8 +56,15 @@ const OrderHistory = () => {
     setSearchLocation(location.toLowerCase());
   };
 
-  const handleDateFilter = (date) => {
-    setFilteredDate(date);
+  // Updated to handle date range
+  const handleDateFilter = (dateRange) => {
+    if (dateRange.startDate && dateRange.endDate) {
+      setFromDate(dateRange.startDate);
+      setToDate(dateRange.endDate);
+    } else {
+      setFromDate(null);
+      setToDate(null);
+    }
   };
 
   const formatTicketData = (booking) => {
@@ -71,6 +83,7 @@ const OrderHistory = () => {
       arrivalTime: booking.flight.return.split("T")[1].slice(0, 5),
       duration: `${durationHours} h ${durationMinutes} m`,
       bookingCode: booking.bookingCode,
+      bookingDate: booking.bookingDate,
       classType: booking.flight.class,
       airline: "Airline Name",
       flightCode: "Airline " + booking.flightId.toString(),
@@ -85,18 +98,16 @@ const OrderHistory = () => {
   const filteredTickets = data
     .map(formatTicketData)
     .filter((ticket) => {
-      const isDateMatched = filteredDate
-        ? ticket.departureDate === filteredDate
-        : true;
+      // Location filter remains the same
       const isLocationMatched = searchLocation
         ? ticket.departureCity.toLowerCase().includes(searchLocation) ||
           ticket.arrivalCity.toLowerCase().includes(searchLocation)
         : true;
-      return isDateMatched && isLocationMatched;
+      return isLocationMatched;
     });
 
   const groupedTickets = filteredTickets.reduce((acc, ticket) => {
-    const date = new Date(ticket.departureDate);
+    const date = ticket.departureDate;
     const key = date.toLocaleString('id-ID', { year: 'numeric', month: 'long' });
     if (!acc[key]) acc[key] = [];
     acc[key].push(ticket);
@@ -154,9 +165,9 @@ const OrderHistory = () => {
                 <div className="flex flex-col gap-4">
                   <button
                     onClick={handleBackToList}
-                    className="mb-4 text-blue-500 underline text-start"
+                    className="mb-4 text-purple-500 text-start flex gap-2"
                   >
-                    ← Back to Order List
+                    <span className="mt-1"><FaArrowLeft /></span>Back to Order List
                   </button>
                   {selectedOrder && (
                     <OrderDetailCard orderDetails={selectedOrder} />

@@ -2,7 +2,7 @@ import React from "react";
 
 const Notification = ({ notification }) => {
   return (
-    <div className="notification-item">
+    <div className={`notification-item ${notification.isRead ? "bg-gray-100": "bg-white"} rounded-lg p-4`}>
       <div className="flex justify-between">
         <div className="flex gap-4">
           <img src="icons/notification.svg" alt="" className="w-6 h-6" />
@@ -23,15 +23,14 @@ const Notification = ({ notification }) => {
           </p>
           <span
             className={`mt-1.5 ml-2 w-2 h-2 rounded-full ${
-              notification.type === "Promosi" ? "bg-green-500" : "bg-red-500"
+              !notification.isRead ? "bg-red-500" : "bg-green-500"
             }`}
-          ></span>{" "}
+          ></span>
         </div>
       </div>
 
-      <div className="ml-10">
+      <div className={`ml-10`}>
         <p className="font-[400] text-[16px]">{notification.title}</p>
-
         <p className="text-[14px] text-[#8A8A8A]">{notification.detail}</p>
       </div>
     </div>
