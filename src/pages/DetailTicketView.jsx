@@ -60,10 +60,12 @@ const DetailTicket = () => {
 
     let updatedTickets = [...tickets];
 
+    // Filter tickets based on active date if set
     if (activeDate) {
-      updatedTickets = updatedTickets.filter(
-        (ticket) => ticket.departureDate === activeDate
-      );
+      updatedTickets = updatedTickets.filter((ticket) => {
+        const ticketDate = new Date(ticket.departure).toISOString().split('T')[0];
+        return ticketDate === activeDate;
+      });
     }
 
     if (filterFunctions[activeFilter]) {
@@ -73,25 +75,64 @@ const DetailTicket = () => {
     setFilteredTickets(updatedTickets);
   };
 
-  const handleDateFilter = (date) => {
+  const handleDateFilter = async (date) => {
     setActiveDate(date);
+    setLoading(true);
+    
+    try {
+      const response = await getFlights({
+        from,
+        to,
+        departureDateStart: date,
+        returnDateStart: date,
+        adultPassengers,
+        childPassengers,
+        infantPassengers,
+        seatClass,
+      });
+
+      if (response.data && Array.isArray(response.data)) {
+        // Filter tickets for the selected date
+        const ticketsForDate = response.data.filter((ticket) => {
+          const ticketDate = new Date(ticket.departure).toISOString().split('T')[0];
+          return ticketDate === date;
+        });
+
+        setTickets(ticketsForDate);
+        setFilteredTickets(ticketsForDate);
+        
+        if (ticketsForDate.length === 0) {
+          toast.info("Tidak ada penerbangan yang tersedia untuk tanggal ini");
+        }
+      } else {
+        setTickets([]);
+        setFilteredTickets([]);
+        toast.error("Tidak ada penerbangan yang tersedia!");
+      }
+    } catch (error) {
+      console.error("Error fetching flights:", error);
+      setTickets([]);
+      setFilteredTickets([]);
+      toast.error("Penerbangan tidak ditemukan!");
+    } finally {
+      setLoading(false);
+    }
   };
-  
+
   const handleFilterChange = (filter) => {
     setActiveFilter(filter);
   };
-  
+
   const handleSelectTicket = (ticket) => {
     setSelectedTicket(ticket);
-    console.log(ticket);
   };
-  
+
   const handleNavigate = () => {
     if (!user) {
       toast.error("Silahkan login atau register terlebih dahulu!");
       return;
     }
-    
+
     const params = new URLSearchParams({
       flightId: selectedTicket.id,
       from,
@@ -103,19 +144,13 @@ const DetailTicket = () => {
       infant: infantPassengers,
       seatClass,
     });
-    
-    console.log("Navigating to /order-page with params:", params.toString());
+
     navigate(`/order-page?${params.toString()}`);
   };
 
+  // Initial fetch of tickets
   useEffect(() => {
-    if (tickets.length > 0) {
-      applyFilter();
-    }
-  }, [activeFilter, activeDate, tickets]);
-  
-  useEffect(() => {
-    const fetchTickets = async () => {
+    const fetchInitialTickets = async () => {
       setLoading(true);
       try {
         const response = await getFlights({
@@ -146,24 +181,20 @@ const DetailTicket = () => {
       }
     };
 
-    fetchTickets();
-  }, [
-    from,
-    to,
-    departureDateStart,
-    returnDateStart,
-    adultPassengers,
-    childPassengers,
-    infantPassengers,
-    seatClass,
-  ]);
+    fetchInitialTickets();
+  }, []);
+
+  // Apply filters whenever activeFilter or tickets change
+  useEffect(() => {
+    applyFilter();
+  }, [activeFilter, tickets]);
 
   return (
     <>
       {user ? <LoggedInNavbar /> : <Navbar />}
 
       <div className="pt-16 gap-2">
-        <div className="w-full h-auto py-6 bg-white shadow-md ">
+        <div className="w-full h-auto py-6 bg-white shadow-md">
           <HeaderTicket />
           <NavigationDates onDateClick={handleDateFilter} tickets={tickets} />
         </div>
