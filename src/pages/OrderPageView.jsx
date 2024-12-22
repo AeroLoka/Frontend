@@ -13,8 +13,10 @@ import { addBooking } from "../features/bookingSlice";
 import { useDispatch } from "react-redux";
 import { createBooking } from "../services/transaction.service";
 import { getAllSeatByFlightId, getFlightById } from "../services/flight.service";
+import TitleOfPage from "../components/Title/TitleOfPage";
 
 const OrderPage = () => {
+    TitleOfPage("Aeroloka - Form Pemesanan");
     const navigate = useNavigate();
     const dispatch = useDispatch();
 

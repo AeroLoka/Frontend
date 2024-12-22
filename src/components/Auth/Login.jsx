@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputForm from "../form/InputForm";
 import { login } from "../../services/auth.service";
 import { useDispatch } from "react-redux";
@@ -11,8 +11,10 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const methods = useForm();
-    const { handleSubmit } = methods;
+    const methods = useForm({
+        mode: "onChange"
+    });
+    const { handleSubmit, formState: {isValid, errors} } = methods;
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -54,12 +56,11 @@ const Login = () => {
                             Password
                         </label>
                         <span className="text-[#7126B5] font-medium text-xs lg:text-sm">
-                            <a
-                                href="#"
-                                onClick={() => navigate("/forget-password")}
+                            <Link
+                                to={"/forget-password"}
                             >
                                 Lupa Kata Sandi
-                            </a>
+                            </Link>
                         </span>
                     </div>
 
@@ -92,7 +93,12 @@ const Login = () => {
 
                     <button
                         type="submit"
-                        className="w-full bg-[#7126B5] text-white py-3 px-4 rounded-lg hover:bg-[#531d85] transition-colors"
+                        disabled={!isValid || Object.keys(errors).length > 0}
+                        className={`w-full py-3 px-4 rounded-lg transition-colors ${
+                            isValid && Object.keys(errors).length === 0
+                                ? "bg-[#7126B5] text-white hover:bg-[#531d85]"
+                                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        }`}
                     >
                         Masuk
                     </button>
@@ -102,15 +108,14 @@ const Login = () => {
             <div className="text-center text-sm mt-10">
                 <p className="">
                     Belum punya akun?
-                    <a href="">
+                    <Link to={"/register"}>
                         <span
-                            onClick={() => navigate("/register")}
                             className="text-[#7126B5] font-bold"
                         >
                             {" "}
                             Daftar di sini
                         </span>
-                    </a>
+                    </Link>
                 </p>
             </div>
         </div>

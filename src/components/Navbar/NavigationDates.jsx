@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import ButtonScroll from "../Button/ButtonScroll";
 import ButtonChange from "../Button/ButtonChange";
 import { useLocation } from "react-router-dom";
-import { addDays, format, parseISO } from "date-fns";
+import { addDays, format, parseISO, startOfWeek } from "date-fns";
+import { FiArrowLeft } from "react-icons/fi";
 
-const NavigationDates = ({ onDateClick }) => {
+const NavigationDates = ({ onDateClick, tickets }) => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
   const [searchDetails, setSearchDetails] = useState("");
@@ -12,43 +13,51 @@ const NavigationDates = ({ onDateClick }) => {
   const location = useLocation();
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-
-    const from = params.get("from");
-    const to = params.get("to");
-    const departureDate = params.get("departureDate");
-    const adult = parseInt(params.get("adult")) || 0;
-    const child = parseInt(params.get("child")) || 0;
-    const infant = parseInt(params.get("infant")) || 0;
-    const seatClass = params.get("seatClass");
+    const queryParams = new URLSearchParams(location.search);
+    const departureDate = queryParams.get("departureDate");
+    const adult = parseInt(queryParams.get("adult")) || 0;
+    const child = parseInt(queryParams.get("child")) || 0;
+    const infant = parseInt(queryParams.get("infant")) || 0;
 
     const passengerCount = adult + child + infant;
 
-    setSearchDetails(
-      `${from} > ${to} - ${passengerCount} Penumpang - ${seatClass}`
-    );
+    if (tickets && tickets.length > 0) {
+      const ticket = tickets[0];
 
-    let departureDateObj;
-    if (departureDate) {
-      departureDateObj = parseISO(departureDate);
-    } else {
-      departureDateObj = new Date();
-    }
-    const generatedDates = getNextDates(departureDateObj, 60);
-    setDates(generatedDates);
+      const from = ticket.originCity?.shortname;
+      const to = ticket.destinationCity?.shortname;
+      const seatClass = ticket.class;
 
-    const departureIndex = generatedDates.findIndex(
-      (dateObj) => dateObj.dateObj.getTime() === departureDateObj.getTime()
-    );
-    if (departureIndex !== -1) {
-      setActiveIndex(departureIndex);
+      setSearchDetails(
+        `${from} > ${to} - ${passengerCount} Penumpang - ${seatClass}`
+      );
+
+      let departureDateObj;
+
+      if (departureDate) {
+        departureDateObj = parseISO(departureDate);
+      } else {
+        departureDateObj = new Date();
+      }
+
+      const generatedDates = getNextDates(departureDateObj, 30);
+      setDates(generatedDates);
+
+      const departureIndex = generatedDates.findIndex(
+        (dateObj) => dateObj.dateObj.getTime() === departureDateObj.getTime()
+      );
+      if (departureIndex !== -1) {
+        setActiveIndex(departureIndex);
+      }
     }
-  }, [location]);
+  }, [tickets, location]);
 
   const getNextDates = (startingDate = new Date(), count = 30) => {
     const dates = [];
+    const startOfWeekDate = startOfWeek(startingDate, { weekStartsOn: 0 });
+
     for (let i = 0; i < count; i++) {
-      const currentDate = addDays(startingDate, i);
+      const currentDate = addDays(startOfWeekDate, i);
       dates.push({
         day: format(currentDate, "EEEE"),
         date: format(currentDate, "dd/MM/yyyy"),
@@ -59,18 +68,24 @@ const NavigationDates = ({ onDateClick }) => {
   };
 
   const scrollLeft = () => {
-    setStartIndex((prev) => Math.max(0, prev - 7));
+    if (startIndex > 0) {
+      setStartIndex(startIndex - 1);
+    } else {
+      const firstDate = dates[0].dateObj;
+      const newDates = getNextDates(addDays(firstDate, -30), 30);
+      setDates([...newDates, ...dates]);
+      setStartIndex(29);
+    }
   };
 
   const scrollRight = () => {
-    const lastIndex = dates.length - 1;
-    const newIndex = startIndex + 7;
-    if (newIndex >= dates.length) {
-      const nextStartDate = addDays(dates[lastIndex].dateObj, 1);
-      const newDates = getNextDates(nextStartDate, 30);
+    if (startIndex + 7 < dates.length) {
+      setStartIndex(startIndex + 1);
+    } else {
+      const lastDate = dates[dates.length - 1].dateObj;
+      const newDates = getNextDates(addDays(lastDate, 1), 30);
       setDates([...dates, ...newDates]);
     }
-    setStartIndex((prev) => Math.min(dates.length - 7, prev + 7));
   };
 
   const handleDateClick = (index, date) => {
@@ -80,42 +95,24 @@ const NavigationDates = ({ onDateClick }) => {
 
   return (
     <div className="w-full md:w-4/5 mx-auto px-4 my-4 ">
-      <div className="flex items-center justify-between gap-8 ">
-        <div className="w-[1650px] h-[50px] bg-[#A06ECE] rounded-xl p-3 flex items-center hover:bg-[#7126B5] text-white shadow-lg mb-3 md:mb-0">
-          <a href="/">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-arrow-left"
-            >
-              <path d="m12 19-7-7 7-7"></path>
-              <path d="M19 12H5"></path>
-            </svg>
-          </a>
-          <div className="flex-1 font-medium truncate ml-4 text-white">
-            {searchDetails}
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4">
+        <a href="/">
+          <div className="w-full h-[50px] flex bg-[#A06ECE] items-center rounded-xl p-3 shadow-lg md:mb-0 hover:bg-[#7126B5]">
+            <FiArrowLeft size={25} className="me-3 text-white" />
+            <div className="font-medium text-sm text-white md:text-base">
+              {searchDetails}
+            </div>
           </div>
-        </div>
-        <div className="md:w-1/2">
+        </a>
+        <div className="">
           <ButtonChange />
         </div>
       </div>
 
-      <div className="flex items-center justify-between mt-8 gap-2 w-full">
-        <ButtonScroll
-          direction="left"
-          onClick={scrollLeft}
-          disabled={startIndex === 0}
-        />
+      <div className="flex items-center justify-between mt-8 gap-4 w-full md:gap-2">
+        <ButtonScroll direction="left" onClick={scrollLeft} />
 
-        <div className="flex gap-8 overflow-x-auto scrollbar-hide items-center justify-center w-full sm:overflow-hidden">
+        <div className="flex gap-5 overflow-x-auto scrollbar-hide items-center justify-center w-full sm:overflow-hidden ms-10">
           {dates.slice(startIndex, startIndex + 7).map((item, index) => (
             <div
               key={index}
@@ -140,11 +137,7 @@ const NavigationDates = ({ onDateClick }) => {
           ))}
         </div>
 
-        <ButtonScroll
-          direction="right"
-          onClick={scrollRight}
-          disabled={startIndex + 7 >= dates.length}
-        />
+        <ButtonScroll direction="right" onClick={scrollRight} />
       </div>
     </div>
   );

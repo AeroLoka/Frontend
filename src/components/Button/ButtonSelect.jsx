@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 
-const ButtonSelect = ({ onSelect }) => {
+const ButtonSelect = ({ onSelect, onNavigate }) => {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {
     setIsClicked(true);
     if (onSelect) onSelect();
+    if (onNavigate) onNavigate();
     setTimeout(() => setIsClicked(false), 200);
   };
 

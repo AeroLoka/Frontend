@@ -4,14 +4,18 @@ import OrderDetailCard from "../components/Card/OrderDetailCard";
 import Navbar from "../components/Navbar/Navbar";
 import HeaderOrder from "../components/Header/HeaderOrder";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
+import TitleOfPage from "../components/Title/TitleOfPage";
 
 const OrderHistory = () => {
+  TitleOfPage("Aeroloka - Riwayat Pesanan");
+
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isDetailView, setDetailView] = useState(false);
   const [selectedFlights, setSelectedFlights] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
   const [filteredDate, setFilteredDate] = useState(null);
   const [searchLocation, setSearchLocation] = useState("");
+
 
   const handleOrderCardClick = (ticket) => {
     setSelectedOrder(ticket);

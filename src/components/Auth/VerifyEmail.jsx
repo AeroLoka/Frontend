@@ -5,8 +5,10 @@ import { forgetPassword } from "../../services/auth.service";
 import { toast } from "react-toastify";
 
 const VerifyEmail = () => {
-    const methods = useForm();
-    const { handleSubmit } = methods;
+    const methods = useForm({
+        mode: "onChange",
+    });
+    const { handleSubmit, formState: {isValid, errors} } = methods;
 
     const onSubmit = async(data) => {
         try {
@@ -41,7 +43,15 @@ const VerifyEmail = () => {
                         }}
                         className="placeholder:text-xs placeholder:lg:text-md"
                     />
-                    <button type="submit" className="w-full bg-[#7126B5] text-white py-3 px-4 rounded-lg hover:bg-[#531d85] transition-colors">
+                    <button 
+                    type="submit" 
+                    disabled={!isValid || Object.keys(errors).length > 0}
+                    className={`w-full py-3 px-4 rounded-lg transition-colors ${
+                        isValid && Object.keys(errors).length === 0
+                            ? "bg-[#7126B5] text-white hover:bg-[#531d85]"
+                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    }`}
+                >
                         Kirim
                     </button>
                     </form>
