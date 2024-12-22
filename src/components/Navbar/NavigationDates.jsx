@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ButtonScroll from "../Button/ButtonScroll";
 import ButtonChange from "../Button/ButtonChange";
 import { useLocation } from "react-router-dom";
-import { addDays, format, parseISO } from "date-fns";
+import { addDays, format, parseISO, startOfWeek } from "date-fns";
 import { FiArrowLeft } from "react-icons/fi";
 
 const NavigationDates = ({ onDateClick, tickets }) => {
@@ -39,7 +39,8 @@ const NavigationDates = ({ onDateClick, tickets }) => {
       } else {
         departureDateObj = new Date();
       }
-      const generatedDates = getNextDates(departureDateObj, 60);
+
+      const generatedDates = getNextDates(departureDateObj, 30);
       setDates(generatedDates);
 
       const departureIndex = generatedDates.findIndex(
@@ -53,8 +54,10 @@ const NavigationDates = ({ onDateClick, tickets }) => {
 
   const getNextDates = (startingDate = new Date(), count = 30) => {
     const dates = [];
+    const startOfWeekDate = startOfWeek(startingDate, { weekStartsOn: 0 });
+
     for (let i = 0; i < count; i++) {
-      const currentDate = addDays(startingDate, i);
+      const currentDate = addDays(startOfWeekDate, i);
       dates.push({
         day: format(currentDate, "EEEE"),
         date: format(currentDate, "dd/MM/yyyy"),
@@ -65,18 +68,24 @@ const NavigationDates = ({ onDateClick, tickets }) => {
   };
 
   const scrollLeft = () => {
-    setStartIndex((prev) => Math.max(0, prev - 7));
+    if (startIndex > 0) {
+      setStartIndex(startIndex - 1);
+    } else {
+      const firstDate = dates[0].dateObj;
+      const newDates = getNextDates(addDays(firstDate, -30), 30);
+      setDates([...newDates, ...dates]);
+      setStartIndex(29);
+    }
   };
 
   const scrollRight = () => {
-    const lastIndex = dates.length - 1;
-    const newIndex = startIndex + 7;
-    if (newIndex >= dates.length) {
-      const nextStartDate = addDays(dates[lastIndex].dateObj, 1);
-      const newDates = getNextDates(nextStartDate, 30);
+    if (startIndex + 7 < dates.length) {
+      setStartIndex(startIndex + 1);
+    } else {
+      const lastDate = dates[dates.length - 1].dateObj;
+      const newDates = getNextDates(addDays(lastDate, 1), 30);
       setDates([...dates, ...newDates]);
     }
-    setStartIndex((prev) => Math.min(dates.length - 7, prev + 7));
   };
 
   const handleDateClick = (index, date) => {
@@ -101,13 +110,9 @@ const NavigationDates = ({ onDateClick, tickets }) => {
       </div>
 
       <div className="flex items-center justify-between mt-8 gap-4 w-full md:gap-2">
-        <ButtonScroll
-          direction="left"
-          onClick={scrollLeft}
-          disabled={startIndex === 0}
-        />
+        <ButtonScroll direction="left" onClick={scrollLeft} />
 
-        <div className="flex gap-5 overflow-x-auto scrollbar-hide items-center justify-center w-full sm:overflow-hidden">
+        <div className="flex gap-5 overflow-x-auto scrollbar-hide items-center justify-center w-full sm:overflow-hidden ms-10">
           {dates.slice(startIndex, startIndex + 7).map((item, index) => (
             <div
               key={index}
@@ -132,11 +137,7 @@ const NavigationDates = ({ onDateClick, tickets }) => {
           ))}
         </div>
 
-        <ButtonScroll
-          direction="right"
-          onClick={scrollRight}
-          disabled={startIndex + 7 >= dates.length}
-        />
+        <ButtonScroll direction="right" onClick={scrollRight} />
       </div>
     </div>
   );
