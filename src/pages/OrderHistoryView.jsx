@@ -83,6 +83,7 @@ const OrderHistory = () => {
       arrivalTime: booking.flight.return.split("T")[1].slice(0, 5),
       duration: `${durationHours} h ${durationMinutes} m`,
       bookingCode: booking.bookingCode,
+      bookingDate: booking.bookingDate,
       classType: booking.flight.class,
       airline: "Airline Name",
       flightCode: "Airline " + booking.flightId.toString(),
