@@ -2,9 +2,12 @@ import React from "react";
 import InputForm from "./InputForm";
 import { useFormContext, useWatch } from "react-hook-form";
 import ToggleSwitch from "../Button/SwitchButton";
+import { useSelector } from "react-redux";
 
 const FormPemesan = () => {
     const { control, setValue } = useFormContext();
+
+    const {email} = useSelector((state) => state.userState.user);
 
     const hasLastName = useWatch({
         control,
@@ -72,6 +75,7 @@ const FormPemesan = () => {
                         message: "Invalid email address",
                     },
                 }}
+                value={email}
             />
         </div>
     );

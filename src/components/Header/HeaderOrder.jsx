@@ -8,7 +8,10 @@ import "react-datepicker/dist/react-datepicker.css";
 const HeaderOrder = ({ onAddFlight, onFilterDate, onSearchLocation }) => {
   const navigate = useNavigate();
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [departureDate, setDepartureDate] = useState("");
+  const [dateRange, setDateRange] = useState({
+    startDate: null,
+    endDate: null
+  });
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [searchLocation, setSearchLocation] = useState("");
 
@@ -24,12 +27,31 @@ const HeaderOrder = ({ onAddFlight, onFilterDate, onSearchLocation }) => {
     setIsCalendarOpen(false);
   };
 
-  const handleDateChange = (date) => {
-    setDepartureDate(date);
+  // Format date for display in Indonesian format
+  const formatDisplayDate = (date) => {
+    if (!date) return "";
+    return date.toLocaleDateString('id-ID', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  };
+
+  const handleDateChange = (dates) => {
+    const [startDate, endDate] = dates;
+    setDateRange({
+      startDate: startDate,
+      endDate: endDate
+    });
+    
     if (onFilterDate) {
-      onFilterDate(date);
+      // Pass the original Date objects to parent component
+      onFilterDate({ startDate, endDate });
     }
-    closeCalendar();
+    
+    if (startDate && endDate) {
+      closeCalendar();
+    }
   };
 
   const handleLocationChange = (event) => {
@@ -43,6 +65,16 @@ const HeaderOrder = ({ onAddFlight, onFilterDate, onSearchLocation }) => {
     if (event.key === "Enter") {
       console.log("Pencarian untuk:", searchLocation);
     }
+  };
+
+  // Get display date range string in Indonesian format
+  const getDisplayDate = () => {
+    if (dateRange.startDate && dateRange.endDate) {
+      const start = formatDisplayDate(dateRange.startDate);
+      const end = formatDisplayDate(dateRange.endDate);
+      return `${start} - ${end}`;
+    }
+    return "Filter";
   };
 
   return (
@@ -63,22 +95,21 @@ const HeaderOrder = ({ onAddFlight, onFilterDate, onSearchLocation }) => {
           <span>Beranda</span>
         </button>
 
-        {/* Tombol Filter Tanggal */}
+        {/* Date Range Filter Button */}
         <div>
           <button
             onClick={openCalendar}
-            className="flex items-center justify-center w-[96px] h-[32px] px-[4px] border border-purple-500 rounded-[16px] text-black space-x-2"
+            className="flex items-center justify-center min-w-[150px] h-[32px] px-[12px] border border-purple-500 rounded-[16px] text-black space-x-2"
           >
             <img
               src="/icons/Prefix_wrapper.svg"
               alt="Filter Icon"
               className="w-6 h-6"
             />
-            <span className="text-sm">Filter</span>
+            <span className="text-sm truncate">{getDisplayDate()}</span>
           </button>
         </div>
 
-        {/* Tombol untuk membuka popup pencarian lokasi */}
         <div className="flex items-center justify-center gap-4">
           <div className="flex items-center">
             <img
@@ -95,7 +126,9 @@ const HeaderOrder = ({ onAddFlight, onFilterDate, onSearchLocation }) => {
         isOpen={isCalendarOpen}
         onClose={closeCalendar}
         onSelectDate={handleDateChange}
-        selectedDate={departureDate}
+        startDate={dateRange.startDate}
+        endDate={dateRange.endDate}
+        selectsRange={true}
       />
 
       <ModalLocationFilter

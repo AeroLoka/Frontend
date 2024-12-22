@@ -17,9 +17,23 @@ const OrderCard = ({ ticket }) => {
     price,
   } = ticket;
 
+  const dateForDeparture = new Date(departureDate);
+  const departure_date = dateForDeparture.toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+  });
+
+  const dateForReturn = new Date(arrivalDate);
+  const arrival_date = dateForReturn.toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+});
+
   const buttonType =
-    status === "Issued"
-      ? "issued"
+    status === "paid"
+      ? "paid"
       : status.toLowerCase() === "unpaid"
       ? "unpaid"
       : "cancelled";
@@ -45,7 +59,7 @@ const OrderCard = ({ ticket }) => {
                 {departureCity}
               </p>
               <p className="font-medium text-xs sm:text-sm">
-                {departureDate}
+                {departure_date}
               </p>
               <p className="font-medium text-xs sm:text-sm">
                 {departureTime}
@@ -73,7 +87,7 @@ const OrderCard = ({ ticket }) => {
                 {arrivalCity}
               </p>
               <p className="font-medium text-xs sm:text-sm">
-                {arrivalDate}
+                {arrival_date}
               </p>
               <p className="font-medium text-xs sm:text-sm">
                 {arrivalTime}
