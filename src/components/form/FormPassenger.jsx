@@ -29,7 +29,7 @@ const FormPassenger = ({ index }) => {
     return (
         <div className="mt-4">
             <h3 className="text-lg font-semibold mb-4 bg-black text-white px-4 py-2 rounded-t-xl">
-                Data Diri Penumpang {index + 1} - Adult
+                Data Diri Penumpang {index + 1}
             </h3>
 
             <InputForm

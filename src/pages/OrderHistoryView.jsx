@@ -56,23 +56,26 @@ const OrderHistory = () => {
   };
 
   const formatTicketData = (booking) => {
+    const durationHours = Math.floor(booking.flight.duration / 60);
+    const durationMinutes = booking.flight.duration % 60;
+
     return {
       departureCity: booking.flight.originCity.fullname,
       departureLocation: booking.flight.airport.name,
       departureTerminal: booking.flight.airport.terminal,
-      departureDate: new Date(booking.flight.departure.split("T")[0]).toLocaleDateString('id-ID'),
+      departureDate: new Date(booking.flight.departure.split("T")[0]),
       departureTime: booking.flight.departure.split("T")[1].slice(0, 5),
       arrivalCity: booking.flight.destinationCity.fullname,
-      arrivalLocation: `${booking.flight.destinationCity.fullname} Airport`,
-      arrivalDate: new Date(booking.flight.return.split("T")[0]).toLocaleDateString('id-ID'),
+      arrivalLocation: `${booking.flight.destinationCity.fullname}`,
+      arrivalDate: new Date(booking.flight.return.split("T")[0]),
       arrivalTime: booking.flight.return.split("T")[1].slice(0, 5),
-      duration: `${booking.flight.duration} menit`,
+      duration: `${durationHours} h ${durationMinutes} m`,
       bookingCode: booking.bookingCode,
       classType: booking.flight.class,
       airline: "Airline Name",
       flightCode: "Airline " + booking.flightId.toString(),
       price: parseInt(booking.totalPrice),
-      totalPrice:(parseInt(booking.totalPrice) * booking.passengers.length),
+      totalPrice: parseInt(booking.totalPrice) * booking.passengers.length,
       status: booking.status,
       information: booking.flight.information,
       passengers: booking && booking.passengers ? booking.passengers.length : [],

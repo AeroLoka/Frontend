@@ -14,8 +14,8 @@ const DetailPenerbangan = (props) => {
         price,
         ticket,
         adult,
-        youth,
-        baby
+        child,
+        infrant
     } = props;
 
     const dateForDeparture = new Date(departure);
@@ -41,6 +41,11 @@ const DetailPenerbangan = (props) => {
         hour: "2-digit",
         minute: "2-digit",
     });
+
+    const pricingForAdult = new Intl.NumberFormat('id-ID').format(price*adult)
+    const pricingForChild = new Intl.NumberFormat('id-ID').format(price*child)
+    const pricingForInfrant = new Intl.NumberFormat('id-ID').format(price*infrant)
+
     return (
         <div className="space-y-4">
             <div className="flex justify-between m-0">
@@ -89,7 +94,7 @@ const DetailPenerbangan = (props) => {
                         <>
                             <div className="flex justify-between">
                                 <span>{ticket} Ticket(s)</span>
-                                <span>IDR {price}</span>
+                                <span>IDR {total_price}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span>Tax</span>
@@ -99,16 +104,16 @@ const DetailPenerbangan = (props) => {
                     ) : (
                         <>
                             <div className="flex justify-between">
-                                <span>{adult} Adults</span>
-                                <span>IDR {price}</span>
+                                <span>{adult} Adult(s)</span>
+                                <span>IDR {pricingForAdult}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span>{youth} Youth</span>
-                                <span>IDR 0</span>
+                                <span>{child} Child(s)</span>
+                                <span>IDR {pricingForChild}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span>{baby} Baby</span>
-                                <span>IDR 0</span>
+                                <span>{infrant} Baby(s)</span>
+                                <span>IDR {pricingForInfrant}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span>Tax</span>
