@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import PaidButton from "../Button/PaidButton";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { sendTicket } from "../../services/transaction.service";
 
 const OrderDetailCard = ({ orderDetails }) => {
     const navigate = useNavigate();
+    const {email} = useSelector((state) => state.userState.user);
 
     if (!orderDetails) {
         return <div className="text-red-600">Data pesanan tidak tersedia.</div>;
@@ -58,7 +61,7 @@ const OrderDetailCard = ({ orderDetails }) => {
             ? "unpaid"
             : "cancelled";
 
-    const handleClick = async () => {
+    const handleClick = async() => {
         if (buttonType === "unpaid") {
             navigate(`/payment?booking-code=${bookingCode}`);
         } else {
@@ -68,6 +71,7 @@ const OrderDetailCard = ({ orderDetails }) => {
             } catch (error) {
                 console.log(error);
             }
+
         }
     };
 
@@ -185,9 +189,7 @@ const OrderDetailCard = ({ orderDetails }) => {
                                 : "bg-purple-700 hover:bg-purple-800 text-white"
                         }`}
                     >
-                        {buttonType === "unpaid"
-                            ? "Lanjut Bayar"
-                            : "Cetak Tiket"}{" "}
+                        {buttonType === "unpaid" ? "Lanjut Bayar" : "Cetak Tiket"}{" "}
                     </button>
                 </div>
             )}
