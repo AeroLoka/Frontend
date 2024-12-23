@@ -58,11 +58,16 @@ const OrderDetailCard = ({ orderDetails }) => {
             ? "unpaid"
             : "cancelled";
 
-    const handleClick = () => {
+    const handleClick = async () => {
         if (buttonType === "unpaid") {
             navigate(`/payment?booking-code=${bookingCode}`);
         } else {
-            toast.success("Tiket berhasil dikirim ke email Anda");
+            try {
+                const response = await sendTicket({ email, bookingCode });
+                toast.success("Tiket berhasil dikirim ke email Anda");
+            } catch (error) {
+                console.log(error);
+            }
         }
     };
 
@@ -180,7 +185,9 @@ const OrderDetailCard = ({ orderDetails }) => {
                                 : "bg-purple-700 hover:bg-purple-800 text-white"
                         }`}
                     >
-                        {buttonType === "unpaid" ? "Lanjut Bayar" : "Cetak Tiket"}{" "}
+                        {buttonType === "unpaid"
+                            ? "Lanjut Bayar"
+                            : "Cetak Tiket"}{" "}
                     </button>
                 </div>
             )}
