@@ -1,8 +1,19 @@
-# React + Vite
+# Aero Loka  
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aero Loka adalah aplikasi pemesanan tiket pesawat yang dikembangkan sebagai final project dalam program Binar Academy. Fitur Utama pada aplikasi ini memungkinkan pengguna untuk mencari tiket pesawat, melakukan pemesanan, melakukan pembayaran melalui Midtrans, serta melihat riwayat transaksi dan menampilkan notifikasi.  
 
-Currently, two official plugins are available:
+## Fitur Utama  
+- Pencarian Tiket
+Pengguna dapat mencari tiket berdasarkan kriteria seperti rute dan tanggal.  
+- Pemesanan
+Memesan tiket dengan detail penumpang.  
+- Pembayaran dengan Midtrans
+Sistem pembayaran menggunakan Midtrans.  
+- Riwayat Transaksi
+Melihat daftar transaksi yang telah dilakukan.  
+- Notifikasi
+Melihat notifikasi dari proses yang telah dilakukan.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Teknologi yang Digunakan  
+- Frontend: React.js  
+- Payment Gateway: Midtrans  
