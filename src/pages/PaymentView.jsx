@@ -5,6 +5,7 @@ import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 import { useSearchParams } from "react-router-dom";
 import { getBookingByCode } from "../services/transaction.service";
 import TitleOfPage from "../components/Title/TitleOfPage";
+import { toast } from "react-toastify";
 
 const PaymentView = () => {
     TitleOfPage("Aeroloka - Pembayaran");
@@ -35,22 +36,19 @@ const PaymentView = () => {
                 embedId: "snap-container",
                 onSuccess: function (result) {
                     /* You may add your own implementation here */
-                    alert("payment success!");
-                    console.log(result);
+                    toast.info("payment success!");
                 },
                 onPending: function (result) {
                     /* You may add your own implementation here */
-                    alert("wating your payment!");
-                    console.log(result);
+                    toast.info("wating your payment!");
                 },
                 onError: function (result) {
                     /* You may add your own implementation here */
-                    alert("payment failed!");
-                    console.log(result);
+                    toast.info("payment failed!");
                 },
                 onClose: function () {
                     /* You may add your own implementation here */
-                    alert("you closed the popup without finishing the payment");
+                    toast.info("you closed the popup without finishing the payment");
                 },
             });
         } catch (error) {
