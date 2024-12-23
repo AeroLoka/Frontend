@@ -6,10 +6,13 @@ import { verifyOtp, resendOtp } from "../../services/auth.service";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { clearOtpData } from "../../features/otpSlice";
+import TitleOfPage from "../../components/Title/TitleOfPage";
 
 const OTPView = () => {
   const dispatch = useDispatch();
   const { email, otpToken } = useSelector((state) => state.otpState);
+
+  TitleOfPage("Aeroloka - Verifikasi OTP");
 
   useEffect(() => {
     if (!email || !otpToken) {

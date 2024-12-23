@@ -58,17 +58,17 @@ const router = createBrowserRouter([
         loader: checkAuth(store),
       },
       {
-        path: `/payment-status`,
+        path: "/payment-status",
         element: <PaymentStatusPage />,
         loader: checkAuth(store),
       },
       {
-        path: `/order-history`,
+        path: "/order-history",
         element: <OrderHistory />,
         loader: checkAuth(store),
       },
       {
-        path: `/notifications`,
+        path: "/notifications",
         element: <NotificationView />,
         loader: checkAuth(store),
       },

@@ -2,9 +2,12 @@ import React from "react";
 import InputForm from "./InputForm";
 import { useFormContext, useWatch } from "react-hook-form";
 import ToggleSwitch from "../Button/SwitchButton";
+import { useSelector } from "react-redux";
 
 const FormPemesan = () => {
     const { control, setValue } = useFormContext();
+
+    const {email, phoneNumber, name} = useSelector((state) => state.userState.user);
 
     const hasLastName = useWatch({
         control,
@@ -31,6 +34,7 @@ const FormPemesan = () => {
                 validation={{
                     required: "First name is required",
                 }}
+                value={name}
             />
             <div className="flex justify-between mb-4">
                 <span className="font-bold">Do you have family name?</span>
@@ -58,6 +62,7 @@ const FormPemesan = () => {
                         message: "Invalid phone number",
                     },
                 }}
+                value={phoneNumber}
             />
 
             <InputForm
@@ -72,6 +77,7 @@ const FormPemesan = () => {
                         message: "Invalid email address",
                     },
                 }}
+                value={email}
             />
         </div>
     );

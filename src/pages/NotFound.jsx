@@ -4,10 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import Navbar from "../components/Navbar/Navbar";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
+import TitleOfPage from "../components/Title/TitleOfPage";
 
 const NotFound = () => {
   const { user } = useSelector((state) => state.userState);
   const navigate = useNavigate();
+
+  TitleOfPage("Aeroloka - Halaman Tidak Ditemukan");
 
   const handleBeranda = () => {
     navigate("/");

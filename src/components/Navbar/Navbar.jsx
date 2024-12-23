@@ -37,7 +37,11 @@ const Navbar = () => {
               href="/login"
               className="flex items-center justify-center w-[105px] h-[48px] bg-[#7126B5] text-white rounded-[12px] text-sm font-medium hover:bg-purple-900"
             >
-              <img src="/icons/fi_log-in.svg" alt="Login Icon" className="mr-2 h-5 w-5" />
+              <img
+                src="/icons/fi_log-in.svg"
+                alt="Login Icon"
+                className="mr-2 h-5 w-5"
+              />
               Masuk
             </a>
           </div>
@@ -59,7 +63,7 @@ const Navbar = () => {
             isToggleMenuOpen ? "" : "hidden"
           }`}
         >
-          <div className="relative w-full max-w-[444px] mb-4">
+          <div className="relative w-full mb-4">
             <input
               type="text"
               placeholder="Cari di sini ..."
@@ -76,7 +80,11 @@ const Navbar = () => {
               href="/login"
               className="flex items-center justify-center w-full h-[48px] bg-[#7126B5] text-white rounded-[12px] text-sm font-medium hover:bg-purple-800"
             >
-              <img src="/icons/fi_log-in.svg" alt="Login Icon" />
+              <img
+                src="/icons/fi_log-in.svg"
+                alt="Login Icon"
+                className="mr-2 h-5 w-5"
+              />
               Masuk
             </a>
           </div>

@@ -1,16 +1,34 @@
 import React, { useState } from "react";
 import CardTicket from "../Card/CardTicket";
 
-const ResultsSection = ({ loading, tickets }) => {
+const ResultsSection = ({ loading, tickets, onSelectTicket, onNavigate }) => {
   const [selectedTicketId, setSelectedTicketId] = useState(null);
 
   const handleSelect = (ticketId) => {
     setSelectedTicketId((prevId) => (prevId === ticketId ? null : ticketId));
+    const selectedTicket = tickets.find((ticket) => ticket.id === ticketId);
+    onSelectTicket(selectedTicket);
   };
 
-  return (
-    <section className="md:w-4/5 md:ml-8 mt-8 md:mt-0 flex-col items-center justify-center">
-      {loading ? (
+  const formatDuration = (durationInMinutes) => {
+    const hours = Math.floor(durationInMinutes / 60);
+    const minutes = durationInMinutes % 60;
+    return `${hours > 0 ? `${hours}h ` : ""}${
+      minutes > 0 ? `${minutes}m` : ""
+    }`;
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = date.toLocaleString("en-US", { month: "long" });
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
+
+  const renderTickets = () => {
+    if (loading) {
+      return (
         <div className="flex flex-col items-center justify-center text-center">
           <p className="text-gray-600 text-lg font-medium mb-5">
             Mencari penerbangan terbaik...
@@ -23,30 +41,37 @@ const ResultsSection = ({ loading, tickets }) => {
             />
           </div>
         </div>
-      ) : tickets && tickets.length > 0 ? (
-        tickets.map((ticket) => (
-          <CardTicket
-            key={ticket.id}
-            ticket={ticket}
-            isOpen={selectedTicketId === ticket.id}
-            onSelect={() => handleSelect(ticket.id)}
-          />
-        ))
-      ) : tickets && tickets.length === 0 ? (
-        <div className="flex flex-col items-center justify-center text-center">
-          <img
-            src="/images/NotTicket2.png"
-            alt="Tiket Habis"
-            className="w-72 h-62"
-          />
-          <p className="text-black text-lg font-medium mt-2">
-            Maaf, Tiket terjual habis!
-          </p>
-          <p className="text-[#7126B5] text-lg font-medium mt-2">
-            Coba cari perjalanan lainnya!
-          </p>
-        </div>
-      ) : (
+      );
+    }
+    if (Array.isArray(tickets) && tickets.length > 0) {
+      return tickets.map((ticket) => (
+        <CardTicket
+          key={ticket.id}
+          ticket={{
+            ...ticket,
+            airline: ticket.airlines.name,
+            airport: ticket.airport.name,
+            airportTerminal: ticket.airport.terminal,
+            flightNumber: ticket.id,
+            classType: ticket.class,
+            departureCity: ticket.originCity.shortname,
+            arrivalCity: ticket.destinationCity.shortname,
+            departureTime: ticket.departure.split("T")[1].slice(0, 5),
+            arrivalTime: ticket.return.split("T")[1].slice(0, 5),
+            departureDate: formatDate(ticket.departure),
+            arrivalDate: formatDate(ticket.return),
+            duration: formatDuration(ticket.duration),
+            price: `Rp ${Number(ticket.price).toLocaleString("id-ID")}`,
+            airlineDetail: ticket.information,
+          }}
+          isOpen={selectedTicketId === ticket.id}
+          onSelect={() => handleSelect(ticket.id)}
+          onNavigate={onNavigate}
+        />
+      ));
+    }
+    if (Array.isArray(tickets) && tickets.length === 0) {
+      return (
         <div className="flex flex-col items-center justify-center text-center">
           <img
             src="/images/ilustrasi.png"
@@ -57,7 +82,13 @@ const ResultsSection = ({ loading, tickets }) => {
             Tidak ada penerbangan yang tersedia
           </p>
         </div>
-      )}
+      );
+    }
+  };
+
+  return (
+    <section className="w-full md:w-4/5 px-4 md:ml-8 mt-8 md:mt-0 flex flex-col items-center justify-center">
+      {renderTickets()}
     </section>
   );
 };

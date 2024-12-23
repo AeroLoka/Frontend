@@ -10,10 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../features/userSlice";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
+import TitleOfPage from "../components/Title/TitleOfPage";
 
 const ProfileView = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  TitleOfPage("Aeroloka - Profil");
 
   const [activeView, setActiveView] = useState("profile");
   const handleLogout = () => {

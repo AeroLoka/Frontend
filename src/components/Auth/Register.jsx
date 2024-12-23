@@ -1,5 +1,5 @@
 import { FormProvider, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputForm from "../form/InputForm";
 import { toast } from "react-toastify";
 import { register } from "../../services/auth.service";
@@ -132,15 +132,14 @@ const Register = () => {
             <div className="text-center text-sm mt-10">
                 <p className="">
                     Belum punya akun?
-                    <a href="">
+                    <Link to={"/login"}>
                         <span
-                            onClick={() => navigate("/login")}
                             className="text-[#7126B5] font-bold"
                         >
                             {" "}
                             Masuk di sini
                         </span>
-                    </a>
+                    </Link>
                 </p>
             </div>
         </div>

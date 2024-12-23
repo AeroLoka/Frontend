@@ -13,17 +13,21 @@ import { addBooking } from "../features/bookingSlice";
 import { useDispatch } from "react-redux";
 import { createBooking } from "../services/transaction.service";
 import { getAllSeatByFlightId, getFlightById } from "../services/flight.service";
+import TitleOfPage from "../components/Title/TitleOfPage";
 
 const OrderPage = () => {
+    TitleOfPage("Aeroloka - Form Pemesanan");
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [searchParams] = useSearchParams();
 
-    const fi = parseInt(searchParams.get("fi"),10)
+    const fi = parseInt(searchParams.get("flightId"),10)
     const adult = searchParams.get("adult")
-    const youth = searchParams.get("child") || 0
-    const baby = searchParams.get("baby") || 0
+    const child = searchParams.get("child") || 0
+    const infrant = searchParams.get("infant") || 0
+
+    const totalPassenger = parseInt(adult, 10) + parseInt(child, 10) + parseInt(infrant, 10);
 
     const [data, setData] = useState({});
     const [seats, setSeats] = useState([]);
@@ -75,7 +79,7 @@ const OrderPage = () => {
         ).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
     };
 
-    const [passengerCount, setPassengerCount] = useState(adult);
+    const [passengerCount, setPassengerCount] = useState(totalPassenger);
 
     const methods = useForm({
         defaultValues: {
@@ -136,7 +140,7 @@ const OrderPage = () => {
         creatingBooking();
     };
 
-    const price = new Intl.NumberFormat('id-ID').format((data?.price * adult));
+    const price = new Intl.NumberFormat('id-ID').format((data?.price * totalPassenger));
 
     return (
         <>
@@ -192,10 +196,10 @@ const OrderPage = () => {
                                     terminal={data?.airport?.terminal}
                                     returnFlight={data?.return}
                                     return_airport={data?.destinationCity?.fullname}
-                                    price={price}
+                                    price={data?.price}
                                     adult={adult}
-                                    youth={youth}
-                                    baby={baby}
+                                    child={child}
+                                    infrant={infrant}
                                     total_price={price}
                                 />
                             </div>
