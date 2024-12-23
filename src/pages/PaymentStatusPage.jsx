@@ -1,19 +1,30 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Navbar from "../components/Navbar/Navbar";
 import Stepper from "../components/Stepper/Stepper";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
 import TitleOfPage from "../components/Title/TitleOfPage";
+import { sendTicket } from "../services/transaction.service";
+import { useSelector } from "react-redux";
 
 const PaymentStatusPage = () => {
   const navigate = useNavigate();
+  const {email} = useSelector((state) => state.userState.user);
 
   TitleOfPage("Aeroloka - Status Pembayaran");
+  const [searchParams] = useSearchParams();
+  const bookingCode = searchParams.get("booking-code");
 
   // dummy
-  const handleClick = () => {
-    toast.success("Tiket berhasil dikirim ke email Anda!")
+  const handleClick = async() => {
+    try {
+      const response = await sendTicket({email, bookingCode});
+      toast.success("Tiket berhasil dikirim ke email Anda!")
+    } catch (error) {
+      toast.error(error.message || "Failed to load orders");
+    }
+    
   }
 
   return (

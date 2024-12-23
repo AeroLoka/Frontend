@@ -27,4 +27,13 @@ const getAllBookingByUser = async (data) => {
     }
 }
 
-export { createBooking, getBookingByCode, getAllBookingByUser };
+const sendTicket = async (data) => {
+    try {
+        const response = await axiosInstance.post("/notifications/ticket-details", data);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data || error.message;
+    }
+}
+
+export { createBooking, getBookingByCode, getAllBookingByUser, sendTicket };

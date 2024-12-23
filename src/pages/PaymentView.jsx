@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import Stage from "../components/Navbar/Stage";
 import DetailPenerbangan from "../components/Section/DetailPenerbangan";
 import LoggedInNavbar from "../components/Navbar/LoggedInNavbar";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { getBookingByCode } from "../services/transaction.service";
 import TitleOfPage from "../components/Title/TitleOfPage";
 import { toast } from "react-toastify";
 
 const PaymentView = () => {
+    const navigate = useNavigate()
     TitleOfPage("Aeroloka - Pembayaran");
     const [searchParams] = useSearchParams();
     const bookingCode = searchParams.get("booking-code");
@@ -35,7 +36,7 @@ const PaymentView = () => {
             window.snap.embed(snap_token, {
                 embedId: "snap-container",
                 onSuccess: function (result) {
-                    /* You may add your own implementation here */
+                    navigate("/payment-status?booking-code=" + bookingCode);
                     toast.info("payment success!");
                 },
                 onPending: function (result) {
